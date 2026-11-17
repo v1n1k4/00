@@ -1,0 +1,132 @@
+{
+  "nodes": [
+    {
+      "id": "node-moc",
+      "type": "file",
+      "file": "00 - MOC (Mapa de Conteúdo CLAEX v10).md",
+      "x": -220,
+      "y": -420,
+      "width": 460,
+      "height": 280,
+      "color": "5"
+    },
+    {
+      "id": "node-frontend",
+      "type": "file",
+      "file": "01 - Modernização Frontend (Claude Code Design Toolkit).md",
+      "x": -820,
+      "y": -20,
+      "width": 440,
+      "height": 300,
+      "color": "4"
+    },
+    {
+      "id": "node-oklch",
+      "type": "file",
+      "file": "02 - Design Tokens OKLCH e Theme Studio.md",
+      "x": -820,
+      "y": 360,
+      "width": 440,
+      "height": 300,
+      "color": "6"
+    },
+    {
+      "id": "node-optimizer",
+      "type": "file",
+      "file": "03 - Otimizador Híbrido (Memético NSGA-II + Simulated Annealing).md",
+      "x": -210,
+      "y": -20,
+      "width": 460,
+      "height": 320,
+      "color": "2"
+    },
+    {
+      "id": "node-ai",
+      "type": "file",
+      "file": "04 - Orquestração Multi-Modelo IA (Gemini 2.5 Pro, Claude Sonnet 4, o3-mini).md",
+      "x": 420,
+      "y": -20,
+      "width": 460,
+      "height": 320,
+      "color": "3"
+    },
+    {
+      "id": "node-quality",
+      "type": "file",
+      "file": "05 - Pipeline de Qualidade (Baseline UI, Acessibilidade WCAG e Motion).md",
+      "x": -210,
+      "y": 360,
+      "width": 460,
+      "height": 300,
+      "color": "1"
+    },
+    {
+      "id": "node-formula",
+      "type": "text",
+      "text": "### Equação de Aptidão CLAEX v10\n$$F(G) = F_{\\text{base}} - P_{\\text{hard}} - P_{\\text{cognitiva}} - P_{\\text{janelas}} + B_{\\text{geminadas}} + R_{\\text{IA}}$$\n- **População**: 48 indivíduos × 72 gerações\n- **Simulated Annealing**: $T_0 = 42.0, \\alpha = 0.945$\n- **Busca Local**: 2-Opt Kempe-Chain",
+      "x": 420,
+      "y": 360,
+      "width": 460,
+      "height": 300,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "fromNode": "node-moc",
+      "fromSide": "bottom",
+      "toNode": "node-frontend",
+      "toSide": "top",
+      "label": "Claude Design Toolkit"
+    },
+    {
+      "id": "edge-2",
+      "fromNode": "node-moc",
+      "fromSide": "bottom",
+      "toNode": "node-optimizer",
+      "toSide": "top",
+      "label": "Meta-Heurística v10"
+    },
+    {
+      "id": "edge-3",
+      "fromNode": "node-moc",
+      "fromSide": "bottom",
+      "toNode": "node-ai",
+      "toSide": "top",
+      "label": "Multi-Model LLM Router"
+    },
+    {
+      "id": "edge-4",
+      "fromNode": "node-frontend",
+      "fromSide": "bottom",
+      "toNode": "node-oklch",
+      "toSide": "top",
+      "label": "--brand-hue (0°–360°)"
+    },
+    {
+      "id": "edge-5",
+      "fromNode": "node-frontend",
+      "fromSide": "right",
+      "toNode": "node-quality",
+      "toSide": "left",
+      "label": "WCAG AA + Reduced Motion"
+    },
+    {
+      "id": "edge-6",
+      "fromNode": "node-optimizer",
+      "fromSide": "right",
+      "toNode": "node-ai",
+      "toSide": "left",
+      "label": "Telemetria & RegraIaGrade"
+    },
+    {
+      "id": "edge-7",
+      "fromNode": "node-optimizer",
+      "fromSide": "bottom",
+      "toNode": "node-formula",
+      "toSide": "left",
+      "label": "Função Multi-Objetivo"
+    }
+  ]
+}

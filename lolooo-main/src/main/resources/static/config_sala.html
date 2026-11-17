@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAEX // Configurações da Sala</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        .aulas {
+            background: var(--bg-carbon);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .aulas { grid-template-columns: 1fr; }
+        }
+        .btn-add-materia {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(210, 255, 0, 0.1);
+            color: var(--neon-lime);
+            border: 1px solid var(--border-lime);
+            padding: 10px 20px;
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+        .btn-add-materia:hover {
+            background: var(--neon-lime);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-glow);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating Dock Header -->
+    <header>
+        <div class="brand-container">
+            <div class="bars" id="menuToggle" aria-label="Abrir Menu">
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+            </div>
+            <a href="index.html" class="brand-logo">
+                CLAEX<span>.</span>
+            </a>
+            <span class="brand-telemetry">[SALA // CONFIGURAÇÕES]</span>
+        </div>
+
+        <nav class="dock-links">
+            <a href="index.html" class="dock-link">Início</a>
+            <a href="listar_sala.html" class="dock-link active">Salas</a>
+            <a href="grade.html" class="dock-link">Grade</a>
+            <a href="tabela_cadastros.html" class="dock-link">Professores</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="listar_sala.html" class="btn-ghost">Voltar às Salas</a>
+        </div>
+    </header>
+
+    <!-- Side Drawer Menu -->
+    <aside id="side-menu">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="brand-logo">CLAEX<span>.</span></div>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;">✕</button>
+        </div>
+        <div class="telemetry-tag">Navegação Rápida</div>
+        <a href="index.html" class="side-link">🏠 Início</a>
+        <a href="form_login.html?tipo=entrar" class="side-link">🔑 Acesso / Login</a>
+        <a href="listar_sala.html" class="side-link">📚 Salas & Turmas</a>
+        <a href="form_nova_sala.html" class="side-link">➕ Criar Nova Sala</a>
+        <a href="config_sala.html" class="side-link">⚙️ Configurações de Sala</a>
+        <a href="tabela_cadastros.html" class="side-link">👥 Painel de Professores</a>
+    </aside>
+    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+
+    <main style="padding: 30px 20px 80px;">
+        <form id="form_nova_sala" class="spotlight-card">
+            <div class="telemetry-tag">[AJUSTE DE PARÂMETROS // REPO v1n1k4/lolooo]</div>
+            <h1 style="font-size: 2.2rem; margin-bottom: 8px;">Configuração da Sala</h1>
+            <p style="margin-bottom: 28px; color: var(--text-secondary);">
+                Altere os horários, intervalos e regras de temporização desta turma no banco de dados.
+            </p>
+
+            <article class="form-grid">
+                <div>
+                    <label>Nome da Sala:
+                        <input type="text" id="nome" placeholder="Nome da sala" required>
+                    </label>
+                </div>
+                <div>
+                    <label>Duração de uma Aula (minutos):
+                        <input type="number" id="duracao_aula" placeholder="50" required>
+                    </label>
+                </div>
+                <div>
+                    <label>Duração do Intervalo (minutos):
+                        <input type="number" id="duracao_intervalo" placeholder="20" required>
+                    </label>
+                </div>
+                <div>
+                    <label>Hora de Início da Aula:
+                        <input type="time" id="inicio_aula" required>
+                    </label>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label>Quantidade de Aulas por Dia:
+                        <input type="number" id="quant_aulas" placeholder="6" required>
+                    </label>
+                </div>
+            </article>
+
+            <button type="submit" class="submit" style="margin-top: 32px;">
+                ⚡ Atualizar Dados no Banco de Dados
+            </button>
+        </form>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">CLAEX<span>.</span></div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <a href="index.html">Início</a>
+                    <a href="listar_sala.html">Salas</a>
+                    <a href="grade.html">Grade de Horários</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2026 CLAEX. Todos os direitos reservados.</div>
+            <div class="footer-status">ONLINE // DATABASE CONNECTED</div>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="js/claex-notify.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // 🔒 Trava de segurança: impede que Alunos ou Professores vejam o formulário
+        window.API.protegerPagina(['escola', 'administrador']);
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        let salaCarregada = null;
+
+        function formatarHoraParaInput(horaStr) {
+            if (!horaStr) return "08:00";
+            return horaStr.substring(0, 5);
+        }
+
+        async function carregarDadosSala() {
+            if (!id) {
+                alert("ID da sala não especificado na URL.");
+                window.location.href = "listar_sala.html";
+                return;
+            }
+
+            try {
+                // Busca no banco através de SalaController: /salas/{id}
+                salaCarregada = await window.API.salas.buscarPorId(id);
+                
+                if (salaCarregada) {
+                    document.getElementById("nome").value = salaCarregada.nome_sala || "";
+                    document.getElementById("duracao_aula").value = salaCarregada.duracao_aula || 50;
+                    document.getElementById("duracao_intervalo").value = salaCarregada.duracao_intervalo || 20;
+                    document.getElementById("inicio_aula").value = formatarHoraParaInput(salaCarregada.inicio_aula);
+                    document.getElementById("quant_aulas").value = salaCarregada.quant_aula || 6;
+                }
+            } catch(e) {
+                console.error("Erro ao carregar sala:", e);
+                alert("Erro ao buscar informações da sala no banco de dados: " + e.message);
+            }
+        }
+
+        document.getElementById("form_nova_sala").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            if (!id) return;
+
+            const submitBtn = document.querySelector("#form_nova_sala .submit");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Atualizando no Banco de Dados...";
+
+            let inicio = document.getElementById("inicio_aula").value;
+            if (inicio && inicio.length === 5) {
+                inicio += ":00";
+            }
+
+            const salaAtualizada = {
+                nome_sala: document.getElementById("nome").value.trim(),
+                duracao_aula: parseInt(document.getElementById("duracao_aula").value, 10),
+                duracao_intervalo: parseInt(document.getElementById("duracao_intervalo").value, 10),
+                inicio_aula: inicio,
+                quant_aula: parseInt(document.getElementById("quant_aulas").value, 10)
+            };
+
+            // Preserva escola se já existia
+            if (salaCarregada && salaCarregada.escola) {
+                salaAtualizada.escola = salaCarregada.escola;
+            }
+
+            try {
+                // Envia PUT /salas/{id} para SalaController em v1n1k4/lolooo
+                await window.API.salas.atualizar(id, salaAtualizada);
+                alert("Sala atualizada com sucesso no banco de dados!");
+                window.location.href = "listar_sala.html";
+            } catch(error) {
+                alert("Erro ao atualizar sala no servidor: " + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "⚡ Atualizar Dados no Banco de Dados";
+            }
+        });
+
+        carregarDadosSala();
+    </script>
+
+    <script src="js/webgl-background.js"></script>
+    <script src="js/unlumen-effects.js"></script>
+</body>
+</html>

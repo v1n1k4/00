@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAEX // Portal do Professor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-glass);
+            padding: 10px 22px;
+            border-radius: 999px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover {
+            color: var(--text-pure);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .tab-btn.active {
+            background: var(--neon-lime);
+            color: #000;
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 15px var(--neon-glow);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .form-grid label {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 16px;
+        }
+        .prof-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .prof-table th {
+            background: var(--bg-carbon);
+            color: var(--neon-lime);
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .prof-table td {
+            padding: 14px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand-container">
+            <div class="bars" id="menuToggle" aria-label="Abrir Menu">
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+            </div>
+            <a href="index.html" class="brand-logo">CLAEX<span>.</span></a>
+            <span class="brand-telemetry">[PAINEL DO PROFESSOR]</span>
+        </div>
+
+        <nav class="dock-links">
+            <a href="index.html" class="dock-link">Início</a>
+            <a href="listar_sala.html" class="dock-link">Ver Grades / Salas</a>
+            <a href="painel_professor.html" class="dock-link active">Minhas Informações</a>
+        </nav>
+
+        <div class="header-actions"></div>
+    </header>
+
+    <aside id="side-menu">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="brand-logo">CLAEX<span>.</span></div>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;">✕</button>
+        </div>
+        <div class="telemetry-tag">Navegação Rápida</div>
+        <a href="index.html" class="side-link">🏠 Início</a>
+        <a href="listar_sala.html" class="side-link">📚 Salas & Grades (Leitura)</a>
+        <a href="painel_professor.html" class="side-link">👨‍🏫 Minhas Informações</a>
+        <a href="form_nova_sala.html" class="side-link admin-only">➕ Criar Nova Sala</a>
+        <a href="tabela_cadastros.html" class="side-link admin-only">👥 Painel de Cadastros</a>
+    </aside>
+    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+
+    <main style="padding: 40px 24px; max-width: 1200px; margin: 0 auto; width: 100%;">
+        <div style="margin-bottom: 24px;">
+            <div class="telemetry-tag">[ÁREA DOCENTE // AUTONOMIA DE DADOS]</div>
+            <h1 id="prof-welcome" style="font-size: 2.2rem;">Portal do Professor</h1>
+            <p style="color: var(--text-secondary);">Cadastre sua disponibilidade de horários, vincule suas matérias e consulte as grades das turmas.</p>
+        </div>
+
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="switchTab('tab-disponibilidade', this)">Minha Disponibilidade</button>
+            <button class="tab-btn" onclick="switchTab('tab-materias', this)">Minhas Matérias</button>
+            <button class="tab-btn" onclick="switchTab('tab-salas', this)">Consultar Grades das Salas</button>
+        </nav>
+
+        <!-- ABA 1: MINHA DISPONIBILIDADE -->
+        <section id="tab-disponibilidade" class="tab-content active">
+            <h2 style="margin-bottom: 16px;">Gestão de Disponibilidade</h2>
+            <form id="form-disponibilidade" class="spotlight-card" style="margin-bottom: 28px;">
+                <div class="form-grid">
+                    <div>
+                        <label>Dia da Semana</label>
+                        <select id="disp-dia" required>
+                            <option value="Segunda-feira">Segunda-feira</option>
+                            <option value="Terça-feira">Terça-feira</option>
+                            <option value="Quarta-feira">Quarta-feira</option>
+                            <option value="Quinta-feira">Quinta-feira</option>
+                            <option value="Sexta-feira">Sexta-feira</option>
+                            <option value="Sábado">Sábado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Horário Inicial</label>
+                        <input type="time" id="disp-inicio" value="07:30" required>
+                    </div>
+                    <div>
+                        <label>Horário Final</label>
+                        <input type="time" id="disp-fim" value="12:00" required>
+                    </div>
+                    <div>
+                        <label>Modalidade</label>
+                        <select id="disp-modalidade" required>
+                            <option value="Presencial">Presencial</option>
+                            <option value="On-line">On-line</option>
+                            <option value="Ambas">Ambas</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 16px;">
+                    <label style="display: block; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Observação (Opcional)</label>
+                    <input type="text" id="disp-obs" placeholder="Ex: Preferência por aulas no primeiro turno">
+                </div>
+                <button type="submit" class="submit" style="margin-top: 20px;">+ Cadastrar Horário Disponível</button>
+            </form>
+
+            <h3 style="margin-bottom: 12px;">Meus Horários Cadastrados</h3>
+            <div style="overflow-x: auto;">
+                <table class="prof-table">
+                    <thead>
+                        <tr>
+                            <th>Dia</th>
+                            <th>Início</th>
+                            <th>Fim</th>
+                            <th>Modalidade</th>
+                            <th>Observação</th>
+                            <th style="text-align: right;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-disponibilidade">
+                        <tr><td colspan="6" style="color: var(--text-muted);">Carregando disponibilidades...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ABA 2: MINHAS MATÉRIAS -->
+        <section id="tab-materias" class="tab-content">
+            <h2 style="margin-bottom: 16px;">Minhas Matérias</h2>
+            <form id="form-materia" class="spotlight-card" style="margin-bottom: 28px;">
+                <div class="form-grid">
+                    <div>
+                        <label>Matéria</label>
+                        <select id="mat-select" required>
+                            <option value="" selected disabled>Selecione uma matéria</option>
+                            <option value="Português">Português</option>
+                            <option value="Matemática">Matemática</option>
+                            <option value="Física">Física</option>
+                            <option value="Química">Química</option>
+                            <option value="Biologia">Biologia</option>
+                            <option value="História">História</option>
+                            <option value="Geografia">Geografia</option>
+                            <option value="Sociologia">Sociologia</option>
+                            <option value="Filosofia">Filosofia</option>
+                            <option value="Educação Física">Educação Física</option>
+                            <option value="Artes">Artes</option>
+                            <option value="Língua Inglesa">Língua Inglesa</option>
+                            <option value="Língua Espanhola">Língua Espanhola</option>
+                            <option value="__outra__">✏️ Outra matéria (digitar)</option>
+                        </select>
+                        <input type="text" id="mat-nome-custom" placeholder="Digite o nome da matéria"
+                               style="display:none; margin-top: 10px;">
+                    </div>
+                    <div>
+                        <label>Nível de Ensino</label>
+                        <input type="text" id="mat-nivel" placeholder="Ex: Ensino Médio / Técnico" required>
+                    </div>
+                    <div>
+                        <label>Experiência</label>
+                        <input type="text" id="mat-exp" placeholder="Ex: 5 anos" required>
+                    </div>
+                </div>
+                <button type="submit" class="submit" style="margin-top: 20px;">+ Vincular Matéria ao Meu Perfil</button>
+            </form>
+
+            <h3 style="margin-bottom: 12px;">Matérias Vinculadas</h3>
+            <div id="lista-materias" class="grid-cards"></div>
+        </section>
+
+        <!-- ABA 3: SALAS & GRADES (SOMENTE LEITURA PARA PROFESSOR) -->
+        <section id="tab-salas" class="tab-content">
+            <h2>Salas & Grades Horárias (Modo Visualização)</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">Clique em qualquer turma para visualizar a grade horária correspondente.</p>
+            <div id="container-salas" class="grid-cards"></div>
+        </section>
+    </main>
+
+    <script src="js/claex-notify.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/webgl-background.js"></script>
+    <script src="js/unlumen-effects.js"></script>
+    <script>
+        // Permite acesso a Professor e Administrador
+        if (window.API.protegerPagina(['professor', 'administrador', 'escola'])) {
+            const u = window.API.getUsuarioAtual();
+            if (u && u.nome) {
+                document.getElementById("prof-welcome").textContent = `Olá, Prof. ${u.nome}`;
+            }
+        }
+
+        function switchTab(tabId, btnEl) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (btnEl) btnEl.classList.add('active');
+        }
+
+        // 1. CARREGAR DISPONIBILIDADES DO BANCO
+        async function carregarDisponibilidades() {
+            const tbody = document.getElementById("lista-disponibilidade");
+            try {
+                const lista = await window.API.professorArea.listarDisponibilidade();
+                if (!lista || lista.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="color: var(--text-muted); text-align: center;">Nenhum horário de disponibilidade cadastrado ainda.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = lista.map(item => `
+                    <tr>
+                        <td><strong>${item.diaSemana}</strong></td>
+                        <td style="font-family: var(--font-mono); color: var(--neon-cyan);">${(item.horarioInicial || '').substring(0,5)}</td>
+                        <td style="font-family: var(--font-mono); color: var(--neon-cyan);">${(item.horarioFinal || '').substring(0,5)}</td>
+                        <td>${item.modalidade || 'Presencial'}</td>
+                        <td style="color: var(--text-secondary);">${item.observacao || '—'}</td>
+                        <td style="text-align: right;">
+                            <button type="button" class="btn-ghost" style="color: #ff6666; border-color: rgba(255,59,48,0.3); padding: 6px 12px; font-size: 0.8rem;" onclick="deletarDisponibilidade(${item.id})">🗑️ Remover</button>
+                        </td>
+                    </tr>
+                `).join("");
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="6" style="color: #ff9999;">Erro ao carregar disponibilidades: ${e.message}</td></tr>`;
+            }
+        }
+
+        document.getElementById("form-disponibilidade").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const payload = {
+                diaSemana: document.getElementById("disp-dia").value,
+                horarioInicial: document.getElementById("disp-inicio").value,
+                horarioFinal: document.getElementById("disp-fim").value,
+                modalidade: document.getElementById("disp-modalidade").value,
+                observacao: document.getElementById("disp-obs").value.trim()
+            };
+
+            const res = await window.API.professorArea.salvarDisponibilidade(payload);
+            if (res.ok) {
+                document.getElementById("disp-obs").value = "";
+                carregarDisponibilidades();
+            } else {
+                alert("Erro ao cadastrar disponibilidade: " + res.msg);
+            }
+        });
+
+        async function deletarDisponibilidade(id) {
+            if (await CLAEX.confirm("Confirma a remoção deste horário disponível?", { title: "Remover horário" })) {
+                const res = await window.API.professorArea.deletarDisponibilidade(id);
+                if (res.ok) carregarDisponibilidades();
+                else alert("Erro ao remover registro.");
+            }
+        }
+
+        // 2. CARREGAR E VINCULAR MATÉRIAS DO PROFESSOR
+        const matSelect = document.getElementById("mat-select");
+        const matCustom = document.getElementById("mat-nome-custom");
+
+        matSelect.addEventListener("change", () => {
+            if (matSelect.value === "__outra__") {
+                matCustom.style.display = "block";
+                matCustom.required = true;
+                matCustom.focus();
+            } else {
+                matCustom.style.display = "none";
+                matCustom.required = false;
+                matCustom.value = "";
+            }
+        });
+
+        async function carregarMaterias() {
+            const container = document.getElementById("lista-materias");
+            try {
+                const lista = await window.API.professorArea.listarMaterias();
+                if (!lista || lista.length === 0) {
+                    container.innerHTML = `<div class="spotlight-card" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Nenhuma matéria vinculada ao seu perfil ainda.</div>`;
+                    return;
+                }
+                container.innerHTML = lista.map(mp => {
+                    const nomeMat = mp.materia ? mp.materia.nome_materia : "Matéria";
+                    return `
+                        <article class="spotlight-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+                            <div>
+                                <div class="telemetry-tag" style="margin-bottom: 6px;">DISCIPLINA VINCULADA</div>
+                                <h3 style="font-size: 1.3rem;">${nomeMat}</h3>
+                                <p style="font-size: 0.85rem; margin-top: 6px;">Nível: <strong>${mp.nivelEnsino || 'Médio'}</strong> • Experiência: <strong>${mp.experiencia || '—'}</strong></p>
+                            </div>
+                            <button type="button" class="btn-ghost" style="color: #ff6666; border-color: rgba(255,59,48,0.3); font-size: 0.8rem; padding: 6px 12px; align-self: flex-start;" onclick="desvincularMateria(${mp.id})">🗑️ Desvincular</button>
+                        </article>
+                    `;
+                }).join("");
+            } catch (e) {
+                container.innerHTML = `<div style="color: #ff9999;">Erro ao carregar matérias: ${e.message}</div>`;
+            }
+        }
+
+        document.getElementById("form-materia").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const nomeMateria = matSelect.value === "__outra__" ? matCustom.value.trim() : matSelect.value;
+            if (!nomeMateria) {
+                alert("Selecione uma matéria da lista ou digite o nome de uma nova.");
+                return;
+            }
+
+            const payload = {
+                nomeMateria,
+                nivelEnsino: document.getElementById("mat-nivel").value.trim(),
+                experiencia: document.getElementById("mat-exp").value.trim()
+            };
+
+            const btn = e.target.querySelector(".submit");
+            btn.disabled = true;
+            btn.textContent = "Vinculando...";
+
+            try {
+                const res = await window.API.professorArea.vincularMateria(payload);
+                if (res.ok) {
+                    e.target.reset();
+                    matCustom.style.display = "none";
+                    carregarMaterias();
+                } else {
+                    alert("Erro ao vincular matéria: " + res.msg);
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "+ Vincular Matéria ao Meu Perfil";
+            }
+        });
+
+        async function desvincularMateria(id) {
+            if (await CLAEX.confirm("Deseja desvincular esta matéria do seu perfil?", { title: "Desvincular matéria" })) {
+                const res = await window.API.professorArea.desvincularMateria(id);
+                if (res.ok) carregarMaterias();
+                else alert("Erro ao desvincular matéria.");
+            }
+        }
+
+        // 3. CARREGAR SALAS (SOMENTE VISUALIZAÇÃO DA GRADE)
+        async function carregarSalasLeitura() {
+            const container = document.getElementById("container-salas");
+            try {
+                const salas = await window.API.salas.listar();
+                if (!salas || salas.length === 0) {
+                    container.innerHTML = `<div class="spotlight-card" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Nenhuma sala cadastrada pela administração ainda.</div>`;
+                    return;
+                }
+                container.innerHTML = salas.map(s => `
+                    <a href="grade.html?id=${s.id_sala}" style="text-decoration: none;">
+                        <article class="caixa_sala spotlight-card">
+                            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <span class="telemetry-tag" style="margin: 0; font-size: 0.65rem;">SALA #${s.id_sala}</span>
+                                <span style="color: var(--neon-lime); font-size: 0.8rem; font-family: var(--font-mono);">VER GRADE →</span>
+                            </div>
+                            <p>${s.nome_sala}</p>
+                            <div style="margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
+                                ${s.quant_aula || 6} aulas/dia • ${s.duracao_aula || 50}min
+                            </div>
+                        </article>
+                    </a>
+                `).join("");
+            } catch (e) {
+                container.innerHTML = `<div style="color: #ff9999;">Erro ao carregar salas.</div>`;
+            }
+        }
+
+        carregarDisponibilidades();
+        carregarMaterias();
+        carregarSalasLeitura();
+    </script>
+</body>
+</html>

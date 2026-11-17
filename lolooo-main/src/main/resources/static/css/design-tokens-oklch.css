@@ -1,0 +1,398 @@
+/* ==========================================================================
+   CLAEX v10 — OKLCH DESIGN TOKENS & FRONTEND DESIGN TOOLKIT SYSTEM
+   Based on wilwaldon/Claude-Code-Frontend-Design-Toolkit:
+   - Single --brand-hue variable deriving entire palette via OKLCH math
+   - Named Aesthetic Presets (Dark OLED Luxury, Opticore Violet, Edge Telemetry,
+     Solarpunk Emerald, Swiss Editorial Crimson) + Live Hue Slider (0°-360°)
+   - Baseline UI + Fixing Accessibility (WCAG 2.1 AA) + Fixing Motion Performance
+   ========================================================================== */
+
+:root {
+    --brand-hue: 255;
+    --brand-chroma: 0.20;
+
+    /* Fallbacks & Perceptual OKLCH Tokens */
+    --neon-lime: oklch(0.62 var(--brand-chroma) var(--brand-hue));
+    --neon-lime-hover: oklch(0.55 calc(var(--brand-chroma) + 0.02) var(--brand-hue));
+    --neon-bright: oklch(0.75 calc(var(--brand-chroma) - 0.02) var(--brand-hue));
+    --neon-cyan: oklch(0.70 var(--brand-chroma) var(--brand-hue));
+    --neon-glow: oklch(0.62 var(--brand-chroma) var(--brand-hue) / 0.46);
+    --neon-glow-soft: oklch(0.62 var(--brand-chroma) var(--brand-hue) / 0.16);
+    --border-lime: oklch(0.68 var(--brand-chroma) var(--brand-hue) / 0.45);
+
+    /* True OLED Luxury Surfaces (Tinted subtly by --brand-hue) */
+    --bg-obsidian: oklch(0.11 0.012 var(--brand-hue));
+    --bg-carbon: oklch(0.14 0.015 var(--brand-hue));
+    --bg-surface: oklch(0.17 0.018 var(--brand-hue));
+    --bg-card: oklch(0.18 0.020 var(--brand-hue) / 0.88);
+    --bg-card-hover: oklch(0.22 0.024 var(--brand-hue) / 0.96);
+    --bg-glass: oklch(0.15 0.016 var(--brand-hue) / 0.82);
+
+    /* Semantic Status Tokens */
+    --status-ok: oklch(0.72 0.17 155);
+    --status-warn: oklch(0.78 0.16 75);
+    --status-danger: oklch(0.65 0.21 25);
+
+    /* Tabular numerals for telemetry & schedule matrices */
+    --font-num-feature: "tnum" 1, "zero" 1;
+}
+
+/* Aesthetic Preset 1: Safira OLED (Default, --brand-hue: 255) */
+html[data-accent="blue"],
+body[data-accent="blue"] {
+    --brand-hue: 255;
+    --brand-chroma: 0.20;
+}
+
+/* Aesthetic Preset 2: Violeta Opticore (--brand-hue: 285) */
+html[data-accent="violet"],
+body[data-accent="violet"] {
+    --brand-hue: 285;
+    --brand-chroma: 0.22;
+}
+
+/* Aesthetic Preset 3: Âmbar Telemetria (--brand-hue: 38) */
+html[data-accent="amber"],
+body[data-accent="amber"] {
+    --brand-hue: 38;
+    --brand-chroma: 0.21;
+}
+
+/* Aesthetic Preset 4: Esmeralda Solarpunk (--brand-hue: 155) */
+html[data-accent="emerald"],
+body[data-accent="emerald"] {
+    --brand-hue: 155;
+    --brand-chroma: 0.19;
+}
+
+/* Aesthetic Preset 5: Rubi Editorial (--brand-hue: 15) */
+html[data-accent="crimson"],
+body[data-accent="crimson"] {
+    --brand-hue: 15;
+    --brand-chroma: 0.21;
+}
+
+/* ── ACCESSIBILITY: SKIP TO CONTENT & FOCUS VISIBLE (WCAG 2.1 AA) ── */
+.skip-to-content {
+    position: fixed;
+    top: -100px;
+    left: 24px;
+    z-index: 100005;
+    background: var(--neon-lime);
+    color: #FFFFFF;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 10px 18px;
+    border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+    top: 16px;
+    outline: 2px solid #FFFFFF;
+    outline-offset: 3px;
+}
+
+:focus-visible {
+    outline: 2px solid var(--neon-bright);
+    outline-offset: 3px;
+}
+
+/* Tabular numbers on all mono/telemetry elements */
+.telemetry-tag,
+.metric-display,
+#tabela_grade td:first-child,
+.id-cell,
+.claex-telemetry-val {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: var(--font-num-feature);
+}
+
+/* ── LIVE OKLCH THEME STUDIO POPOVER ── */
+.theme-studio-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-studio-popover {
+    position: fixed;
+    top: 46px;
+    right: 28px;
+    width: 310px;
+    background: linear-gradient(180deg, rgba(18, 21, 32, 0.98) 0%, rgba(9, 11, 17, 0.99) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 40px var(--neon-glow-soft);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 10002;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.97);
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s ease;
+}
+
+.theme-studio-popover.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.theme-studio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.theme-studio-title {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neon-bright);
+}
+
+.theme-preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 12px;
+}
+
+.theme-preset-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: #D1D5DB;
+    font-size: 0.73rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+}
+
+.theme-preset-chip:hover,
+.theme-preset-chip.active {
+    border-color: var(--neon-bright);
+    background: var(--neon-glow-soft);
+    color: #FFFFFF;
+}
+
+.theme-preset-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.theme-hue-slider-wrap {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.theme-hue-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: #9CA3AF;
+    margin-bottom: 6px;
+}
+
+.theme-hue-input {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: linear-gradient(
+        to right,
+        oklch(0.65 0.2 0),
+        oklch(0.65 0.2 60),
+        oklch(0.65 0.2 120),
+        oklch(0.65 0.2 180),
+        oklch(0.65 0.2 240),
+        oklch(0.65 0.2 300),
+        oklch(0.65 0.2 360)
+    );
+    outline: none;
+    cursor: pointer;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.theme-hue-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 2px solid var(--neon-lime);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+
+/* ── AI MODEL SELECTOR & TELEMETRY GAUGES (GRADE.HTML) ── */
+.claex-ai-orchestrator-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    background: linear-gradient(180deg, rgba(16, 19, 29, 0.92) 0%, rgba(10, 12, 18, 0.96) 100%);
+    border: 1px solid var(--border-card);
+    border-left: 3px solid var(--neon-bright);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.claex-control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.claex-control-group label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+}
+
+.claex-select-pill {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #FFFFFF !important;
+    padding: 7px 14px !important;
+    border-radius: 999px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.76rem !important;
+    width: auto !important;
+    cursor: pointer;
+}
+
+.claex-telemetry-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.claex-telemetry-kpi-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.claex-telemetry-kpi-card:hover {
+    border-color: var(--neon-bright);
+    transform: translateY(-2px);
+}
+
+.claex-telemetry-kpi-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.claex-telemetry-val {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.1;
+}
+
+.claex-telemetry-sub {
+    font-size: 0.74rem;
+    color: var(--neon-bright);
+    margin-top: 4px;
+    font-family: var(--font-mono);
+}
+
+.claex-kpi-progress {
+    margin-top: 10px;
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.claex-kpi-progress-bar {
+    height: 100%;
+    background: var(--neon-bright);
+    box-shadow: 0 0 10px var(--neon-lime);
+    border-radius: 999px;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cognitive Load Badges inside Schedule Slots */
+.cog-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 2px 6px;
+    border-radius: 999px;
+    margin-top: 4px;
+    text-transform: uppercase;
+}
+.cog-badge.cog-high {
+    background: rgba(59, 130, 246, 0.14);
+    color: var(--neon-bright);
+    border: 1px solid var(--border-lime);
+}
+.cog-badge.cog-med {
+    background: rgba(255, 255, 255, 0.06);
+    color: #D1D5DB;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.cog-badge.cog-light {
+    background: rgba(16, 185, 129, 0.12);
+    color: #6EE7B7;
+    border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+/* ── MOTION PERFORMANCE & REDUCED MOTION GUARD ── */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    #webgl-kinetic-canvas {
+        display: none !important;
+    }
+}

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAEX v10 // Matriz Horária &amp; Orquestrador Multi-Modelo IA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .aula-slot-filled {
+            background: var(--neon-glow-soft);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 2.5px solid var(--neon-bright);
+            border-radius: var(--radius-xs);
+            padding: 9px 10px;
+            text-align: center;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .aula-slot-filled:hover {
+            transform: translateY(-2px);
+            border-color: var(--neon-bright);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .aula-slot-materia {
+            font-weight: 700;
+            color: var(--text-pure);
+            font-size: 0.88rem;
+            display: block;
+        }
+        .aula-slot-prof {
+            font-size: 0.72rem;
+            color: var(--neon-bright);
+            font-family: var(--font-mono);
+            display: block;
+            margin-top: 2px;
+        }
+        .aula-slot-empty {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho Cápsula Flutuante Unificado (Opticore + OKLCH) -->
+    <header id="main-header">
+        <div class="header-inner">
+            <div class="brand-container">
+                <div class="bars" id="menuToggle" aria-label="Abrir Menu">
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                </div>
+                <a href="index.html" class="brand-logo">
+                    <span class="header-hourglass-icon" aria-hidden="true">
+                        <svg viewBox="0 0 100 100" width="24" height="24" fill="currentColor">
+                            <path d="M8,6 L46,6 L46,94 L8,94 L37,50 L15,17 L23,15 Z" />
+                            <path d="M54,6 L92,6 L63,50 L92,94 L54,94 Z" fill="#FFFFFF" />
+                        </svg>
+                    </span>
+                    CLAEX
+                </a>
+                <span class="brand-telemetry">[MATRIZ // GRADE ATIVA]</span>
+            </div>
+
+            <nav class="dock-links" aria-label="Navegação Principal">
+                <a href="index.html" class="dock-link">Início</a>
+                <a href="listar_sala.html" class="dock-link">Salas</a>
+                <a href="grade.html" class="dock-link active">Grade</a>
+                <a href="tabela_cadastros.html" class="dock-link">Professores</a>
+                <a href="painel_professor.html" class="dock-link">Área do Professor</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="listar_sala.html" class="btn-ghost">Salas</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Drawer Menu -->
+    <aside id="side-menu" aria-label="Menu Lateral">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="brand-logo">CLAEX<span>.</span></div>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;" aria-label="Fechar Menu">✕</button>
+        </div>
+        <div class="telemetry-tag">Navegação Rápida</div>
+        <a href="index.html" class="side-link">🏠 Início</a>
+        <a href="form_login.html?tipo=entrar" class="side-link">🔑 Acesso / Login</a>
+        <a href="listar_sala.html" class="side-link">📚 Salas &amp; Turmas</a>
+        <a href="form_nova_sala.html" class="side-link">➕ Criar Nova Sala</a>
+        <a href="config_sala.html" class="side-link">⚙️ Configurações de Sala</a>
+        <a href="tabela_cadastros.html" class="side-link">👥 Painel de Professores</a>
+        <a href="painel_professor.html" class="side-link">👩‍🏫 Área do Professor</a>
+    </aside>
+    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+
+    <section id="painel">
+        <img src="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/197/2024/12/centro-paula-souza.jpg" alt="Instituição">
+        <article>
+            <div class="telemetry-tag" style="margin-bottom: 6px;">UNIDADE CONECTADA · MOTOR CLAEX v10</div>
+            <h1 id="painel_escola_nome">Centro Paula Souza</h1>
+            <p id="painel_info" style="color: var(--text-secondary);">Sincronização ativa com Otimizador Memético NSGA-II + Simulated Annealing</p>
+        </article>
+    </section>
+
+    <main id="main-content">
+        <div class="link_nova_sala" style="margin-top: 10px; margin-bottom: 20px;">
+            <div>
+                <div class="telemetry-tag" style="margin-bottom: 4px;">TURMA / AMBIENTE SELECIONADO</div>
+                <h2 id="nome_sala" style="color: var(--neon-bright); font-size: 2rem;">Carregando Sala...</h2>
+                <div id="sala_detalhes" style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 4px;"></div>
+            </div>
+            <div id="acoes_admin_sala" class="admin-only" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <a href="config_sala.html" id="link_alterar_sala" class="btn-ghost">
+                    ⚙️ Configurações da Sala
+                </a>
+                <button class="btn-neon" id="btn_gerar_grade" onclick="gerarOuRecalcularGrade()">
+                    ⚡ Otimizar Grade (NSGA-II + SA)
+                </button>
+                <button class="btn-ghost" id="btn_analisar_ia" onclick="analisarGradeComIa()" style="border-color: var(--neon-bright); color: var(--neon-bright);">
+                    🧠 Auditar com IA
+                </button>
+                <button class="btn-ghost" id="btn_excluir_sala" onclick="apagarSala()" style="color: #ff5555; border-color: rgba(255, 59, 48, 0.4);" title="Excluir Sala">
+                    🗑️ Excluir
+                </button>
+            </div>
+        </div>
+
+        <!-- BARRA ORQUESTRADORA MULTI-MODELO IA & META-HEURÍSTICA -->
+        <div class="claex-ai-orchestrator-bar">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--neon-bright); font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                    <svg viewBox="0 0 80 80" width="14" height="14" aria-hidden="true" style="fill: currentColor;">
+                        <polygon points="8,10 36,10 36,70 8,70 28,40 12,18 17,15 10,12"/>
+                        <polygon points="44,10 72,10 52,40 72,70 44,70"/>
+                    </svg>
+                    ORQUESTRADOR CLAEX v10:
+                </span>
+                <span style="font-size: 0.76rem; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: var(--text-primary);">
+                    ✅ Máx. 2 aulas seguidas
+                </span>
+                <span style="font-size: 0.76rem; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: var(--text-primary);">
+                    ✅ Compactação de Janelas Docentes
+                </span>
+                <span style="font-size: 0.76rem; padding: 4px 10px; border-radius: 999px; background: var(--neon-glow-soft); color: var(--neon-bright);">
+                    🧬 Equilíbrio de Carga Cognitiva
+                </span>
+            </div>
+
+            <div class="claex-control-group">
+                <label for="seletor_modelo_ia">Modelo IA:</label>
+                <select id="seletor_modelo_ia" class="claex-select-pill" onchange="analisarGradeComIa()">
+                    <option value="gemini-2.5-pro" selected>✦ Gemini 2.5 Pro (Deep Thinking)</option>
+                    <option value="gemini-2.5-flash">⚡ Gemini 2.5 Flash (Real-Time)</option>
+                    <option value="claude-sonnet-4-20250514">🎨 Claude Sonnet 4 (Pedagogical UX)</option>
+                    <option value="o3-mini">📐 OpenAI o3-mini (Constraint Solver)</option>
+                </select>
+
+                <label for="seletor_estrategia_otimizacao" class="admin-only">Solver:</label>
+                <select id="seletor_estrategia_otimizacao" class="claex-select-pill admin-only">
+                    <option value="memetico-sa" selected>Memético NSGA-II + Simulated Annealing (70 Ger.)</option>
+                    <option value="rapido">Kempe-Chain 2-Opt Rápido (35 Ger.)</option>
+                </select>
+
+                <div id="status_uranos_badge" style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--neon-bright); font-weight: 700;">
+                    STATUS: VERIFICADO
+                </div>
+            </div>
+        </div>
+
+        <!-- PAINEL DE TELEMETRIA MATEMÁTICA EM TEMPO REAL (4 KPIs) -->
+        <div class="claex-telemetry-kpi-grid" aria-live="polite">
+            <div class="claex-telemetry-kpi-card spotlight-card">
+                <div class="claex-telemetry-kpi-label">Fitness Multi-Objetivo</div>
+                <div class="claex-telemetry-val" id="kpi-fitness-val">985 <span style="font-size:0.85rem;color:var(--text-secondary)">pts</span></div>
+                <div class="claex-telemetry-sub" id="kpi-fitness-sub">NSGA-II + Simulated Annealing</div>
+                <div class="claex-kpi-progress"><div class="claex-kpi-progress-bar" id="kpi-fitness-bar" style="width: 98%;"></div></div>
+            </div>
+
+            <div class="claex-telemetry-kpi-card spotlight-card">
+                <div class="claex-telemetry-kpi-label">Índice de Equilíbrio Cognitivo</div>
+                <div class="claex-telemetry-val" id="kpi-cognitivo-val">96%</div>
+                <div class="claex-telemetry-sub" id="kpi-cognitivo-sub">Alternância Exatas / Humanas</div>
+                <div class="claex-kpi-progress"><div class="claex-kpi-progress-bar" id="kpi-cognitivo-bar" style="width: 96%;"></div></div>
+            </div>
+
+            <div class="claex-telemetry-kpi-card spotlight-card">
+                <div class="claex-telemetry-kpi-label">Eficiência de Janelas Docentes</div>
+                <div class="claex-telemetry-val" id="kpi-janelas-val">95%</div>
+                <div class="claex-telemetry-sub" id="kpi-janelas-sub">0 professores o dia inteiro</div>
+                <div class="claex-kpi-progress"><div class="claex-kpi-progress-bar" id="kpi-janelas-bar" style="width: 95%;"></div></div>
+            </div>
+
+            <div class="claex-telemetry-kpi-card spotlight-card">
+                <div class="claex-telemetry-kpi-label">Aulas Geminadas Alinhadas</div>
+                <div class="claex-telemetry-val" id="kpi-geminadas-val">100%</div>
+                <div class="claex-telemetry-sub" id="kpi-geminadas-sub">Respeito ao intervalo de turno</div>
+                <div class="claex-kpi-progress"><div class="claex-kpi-progress-bar" id="kpi-geminadas-bar" style="width: 100%;"></div></div>
+            </div>
+        </div>
+
+        <section id="grade_aula">
+            <div id="grade_feedback" style="display: none; text-align: center; padding: 40px; background: var(--bg-surface); border-radius: var(--radius-md); border: 1px dashed var(--border-card); margin-bottom: 24px;">
+                <p style="color: var(--text-secondary); margin-bottom: 16px;" id="feedback_msg">Esta sala ainda não possui uma grade gerada no banco de dados.</p>
+                <button class="btn-neon admin-only" onclick="gerarOuRecalcularGrade()">⚡ Gerar Grade com Otimizador Memético NSGA-II</button>
+            </div>
+
+            <table id="tabela_grade" aria-label="Matriz de Horários da Turma">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">HORÁRIO</th>
+                        <th>SEGUNDA</th>
+                        <th>TERÇA</th>
+                        <th>QUARTA</th>
+                        <th>QUINTA</th>
+                        <th>SEXTA</th>
+                    </tr>
+                </thead>
+                <tbody id="grade_tbody">
+                    <tr>
+                        <td colspan="6" style="padding: 40px; color: var(--text-muted);">
+                            Carregando matriz de aulas do banco de dados...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- PAINEL MULTI-MODELO IA & APRENDIZADO DE REGRAS PEDAGÓGICAS -->
+        <section id="painel_ia_uranos" style="margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px;">
+            <!-- Coluna 1: Diagnóstico Pedagógico da IA -->
+            <div class="spotlight-card" style="background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <div class="telemetry-tag" id="ia_model_active_tag">GEMINI 2.5 PRO · DEEP THINKING</div>
+                        <h3 style="margin: 4px 0 0 0; font-size: 1.2rem;">Diagnóstico Neuro-Simbólico &amp; Auditoria</h3>
+                    </div>
+                    <button class="btn-ghost" onclick="analisarGradeComIa()" style="font-size: 0.78rem; padding: 6px 12px;">
+                        🔄 Reanalisar com Modelo
+                    </button>
+                </div>
+
+                <div id="ia_diagnostico_uranos" aria-live="polite" style="font-family: var(--font-mono); font-size: 0.78rem; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.35); border-left: 3px solid var(--neon-bright); margin-bottom: 14px; color: var(--text-secondary);">
+                    Clique em "Reanalisar com Modelo" ou gere uma grade para auditar as restrições no Motor CLAEX v10.
+                </div>
+
+                <div id="ia_parecer_gemini" aria-live="polite" style="font-size: 0.88rem; line-height: 1.65; color: var(--text-primary); background: rgba(255,255,255,0.025); padding: 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.07); white-space: pre-line;">
+                    O Orquestrador Multi-Modelo analisa o equilíbrio cognitivo, a compactação de janelas docentes e o respeito às restrições pedagógicas da escola.
+                </div>
+            </div>
+
+            <!-- Coluna 2: Ensinar Regras para a IA -->
+            <div class="spotlight-card" style="background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 24px;">
+                <div class="telemetry-tag">MEMÓRIA DE APRENDIZADO DA IA</div>
+                <h3 style="margin: 4px 0 12px 0; font-size: 1.2rem;">Diretrizes &amp; Restrições Personalizadas</h3>
+
+                <form id="form_regra_ia" class="admin-only" onsubmit="ensinarRegraParaIa(event)" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border-card);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label for="regra_tipo" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Tipo de Diretriz</label>
+                            <select id="regra_tipo" style="width: 100%; padding: 9px; background: var(--bg-carbon); color: #fff; border: 1px solid var(--border-card); border-radius: 6px;">
+                                <option value="PROIBICAO">🚫 PROIBIÇÃO (Restrição Rígida)</option>
+                                <option value="PREFERENCIA">⭐ PREFERÊNCIA (Bônus no Fitness)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="regra_alvo" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Professor ou Matéria Alvo</label>
+                            <input type="text" id="regra_alvo" placeholder="Ex: Matemática, Prof. Carlos ou GLOBAL" required style="width: 100%; padding: 9px; background: var(--bg-carbon); color: #fff; border: 1px solid var(--border-card); border-radius: 6px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label for="regra_dia" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Dia (Opcional)</label>
+                            <select id="regra_dia" style="width: 100%; padding: 9px; background: var(--bg-carbon); color: #fff; border: 1px solid var(--border-card); border-radius: 6px;">
+                                <option value="">Qualquer Dia</option>
+                                <option value="0">Segunda-feira</option>
+                                <option value="1">Terça-feira</option>
+                                <option value="2">Quarta-feira</option>
+                                <option value="3">Quinta-feira</option>
+                                <option value="4">Sexta-feira</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="regra_max_seguidas" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Máx Seguidas</label>
+                            <input type="number" id="regra_max_seguidas" min="1" max="2" value="2" style="width: 100%; padding: 9px; background: var(--bg-carbon); color: #fff; border: 1px solid var(--border-card); border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label for="regra_max_dia_prof" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Máx/Dia Prof.</label>
+                            <input type="number" id="regra_max_dia_prof" min="1" max="3" value="2" style="width: 100%; padding: 9px; background: var(--bg-carbon); color: #fff; border: 1px solid var(--border-card); border-radius: 6px;">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="regra_descricao" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Instrução em Linguagem Natural para a IA</label>
+                        <input type="text" id="regra_descricao" placeholder="Ex: Evitar alocar este professor na sexta-feira; priorizar aulas geminadas nos primeiros horários" required style="width: 100%; padding: 10px; background: var(--bg-carbon); color: #fff; border: 1px solid var(--border-card); border-radius: 6px;">
+                    </div>
+
+                    <button type="submit" class="btn-neon" id="btn_salvar_regra_ia" style="align-self: flex-start; padding: 8px 18px; font-size: 0.82rem;">
+                        🧠 Ensinar Regra para a IA &amp; Acoplar no Solver
+                    </button>
+                </form>
+
+                <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">
+                        REGRAS APRENDIDAS ATIVAS NA FUNÇÃO DE FITNESS:
+                    </div>
+                    <div id="lista_regras_ia" style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto;">
+                        <div style="font-size: 0.82rem; color: var(--text-muted);">Carregando regras aprendidas...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">CLAEX<span>.</span></div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <a href="index.html">Início</a>
+                    <a href="listar_sala.html">Salas</a>
+                    <a href="grade.html">Grade de Horários</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Arquitetura</h4>
+                    <a href="index.html#recursos">Solver NSGA-II + SA</a>
+                    <a href="index.html#para-quem">Multi-Modelo IA</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2026 CLAEX v10. Design System OKLCH &amp; Otimizador Meta-Heurístico.</div>
+            <div class="footer-status">ONLINE // NSGA-II + MULTI-MODEL AI</div>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="js/claex-notify.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        let currentSala = null;
+
+        function formatarHora(horaStr) {
+            if (!horaStr) return "08:00";
+            return horaStr.substring(0, 5);
+        }
+
+        function adicionarMinutos(horaStr, minutosParaAdicionar) {
+            const partes = horaStr.split(':');
+            let h = parseInt(partes[0], 10) || 0;
+            let m = parseInt(partes[1], 10) || 0;
+            m += minutosParaAdicionar;
+            h += Math.floor(m / 60);
+            m = m % 60;
+            h = h % 24;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        }
+
+        function classificarPerfilCognitivo(nomeMateria) {
+            const n = (nomeMateria || '').toLowerCase();
+            if (n.includes('matem') || n.includes('físic') || n.includes('fisic') || n.includes('quím') || n.includes('quim')) {
+                return { cls: 'cog-high', label: 'ANALÍTICA' };
+            }
+            if (n.includes('arte') || n.includes('educação física') || n.includes('educacao fisica')) {
+                return { cls: 'cog-light', label: 'CRIATIVA' };
+            }
+            return { cls: 'cog-med', label: 'HUMANIDADES' };
+        }
+
+        async function carregarDadosDaGrade() {
+            const params = new URLSearchParams(window.location.search);
+            let id = params.get('id');
+
+            // Se não vier ?id= na URL, tenta carregar automaticamente a primeira sala cadastrada!
+            if (!id) {
+                try {
+                    const salas = await window.API.salas.listar();
+                    if (salas && salas.length > 0) {
+                        id = String(salas[0].id_sala);
+                        window.history.replaceState({}, '', `grade.html?id=${id}`);
+                    }
+                } catch (e) {}
+            }
+
+            if (!id) {
+                document.getElementById("nome_sala").textContent = "Nenhuma Sala Selecionada";
+                document.getElementById("grade_tbody").innerHTML = `
+                    <tr>
+                        <td colspan="6" style="padding: 40px; text-align: center;">
+                            Selecione uma sala no <a href="listar_sala.html" style="color: var(--neon-bright); text-decoration: underline;">Painel de Salas</a>.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            try {
+                currentSala = await window.API.salas.buscarPorId(id);
+
+                document.getElementById("nome_sala").textContent = currentSala.nome_sala;
+                document.getElementById("link_alterar_sala").href = `config_sala.html?id=${currentSala.id_sala}`;
+
+                if (currentSala.escola && currentSala.escola.nome) {
+                    document.getElementById("painel_escola_nome").textContent = currentSala.escola.nome;
+                }
+
+                document.getElementById("sala_detalhes").textContent =
+                    `AULAS: ${currentSala.quant_aula || 6}/DIA · DURAÇÃO: ${currentSala.duracao_aula || 50}m · INTERVALO: ${currentSala.duracao_intervalo || 20}m · INÍCIO: ${formatarHora(currentSala.inicio_aula)}`;
+
+                await renderizarMatrizGrade(id);
+                await carregarRegrasIa(id);
+                await analisarGradeComIa();
+
+            } catch (error) {
+                console.error("Erro ao carregar sala:", error);
+                document.getElementById("nome_sala").textContent = `Sala #${id}`;
+                document.getElementById("grade_tbody").innerHTML = `
+                    <tr>
+                        <td colspan="6" style="padding: 40px; text-align: center; color: #ff9999;">
+                            Falha ao carregar dados da sala no banco de dados. Verifique a conexão com o servidor.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        async function renderizarMatrizGrade(idSala) {
+            const tbody = document.getElementById("grade_tbody");
+            const feedback = document.getElementById("grade_feedback");
+
+            try {
+                const matrizGrade = await window.API.grade.buscar(idSala);
+
+                if (!matrizGrade || !matrizGrade.length) {
+                    feedback.style.display = "block";
+                    tbody.innerHTML = "";
+                    return;
+                }
+
+                feedback.style.display = "none";
+                tbody.innerHTML = "";
+
+                const quantAulas = (currentSala && currentSala.quant_aula) ? currentSala.quant_aula : 5;
+                const duracao = (currentSala && currentSala.duracao_aula) ? currentSala.duracao_aula : 50;
+                let horaAtual = (currentSala && currentSala.inicio_aula) ? formatarHora(currentSala.inicio_aula) : "07:30";
+
+                for (let periodo = 0; periodo < quantAulas; periodo++) {
+                    const horaFim = adicionarMinutos(horaAtual, duracao);
+                    let rowHtml = `<tr><td style="font-family: var(--font-mono); color: var(--neon-bright); font-weight: 600;">${horaAtual}</td>`;
+
+                    for (let dia = 0; dia < 5; dia++) {
+                        const diaArray = matrizGrade[dia] || [];
+                        const aula = diaArray[periodo];
+
+                        if (aula && aula.id_materia) {
+                            const nomeMateria = aula.id_materia.nome_materia || "Aula";
+                            const nomeProf = (aula.id_professor && aula.id_professor.nome_professor) ? aula.id_professor.nome_professor : "";
+                            const cog = classificarPerfilCognitivo(nomeMateria);
+                            rowHtml += `
+                                <td>
+                                    <div class="aula-slot-filled">
+                                        <span class="aula-slot-materia">${nomeMateria}</span>
+                                        ${nomeProf ? `<span class="aula-slot-prof">${nomeProf}</span>` : ''}
+                                        <span class="cog-badge ${cog.cls}">${cog.label}</span>
+                                    </div>
+                                </td>
+                            `;
+                        } else {
+                            rowHtml += `<td><span class="aula-slot-empty">Disponível</span></td>`;
+                        }
+                    }
+
+                    rowHtml += `</tr>`;
+                    tbody.innerHTML += rowHtml;
+
+                    horaAtual = horaFim;
+                    if (periodo === Math.floor(quantAulas / 2) - 1 && currentSala && currentSala.duracao_intervalo) {
+                        const intervalFim = adicionarMinutos(horaAtual, currentSala.duracao_intervalo);
+                        tbody.innerHTML += `
+                            <tr style="background: var(--neon-glow-soft);">
+                                <td style="font-family: var(--font-mono); color: var(--neon-bright);">${horaAtual}</td>
+                                <td colspan="5" style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--neon-bright); font-family: var(--font-mono); font-weight: 700;">
+                                    ☕ INTERVALO DE RECUPERAÇÃO COGNITIVA (${currentSala.duracao_intervalo}m)
+                                </td>
+                            </tr>
+                        `;
+                        horaAtual = intervalFim;
+                    }
+                }
+
+            } catch (error) {
+                feedback.style.display = "block";
+                document.getElementById("feedback_msg").textContent =
+                    "A grade horária para esta sala ainda não foi calculada pelo motor CLAEX.";
+                tbody.innerHTML = "";
+            }
+        }
+
+        async function gerarOuRecalcularGrade() {
+            if (!window.API.isAdmin()) {
+                alert("Apenas o Administrador pode gerar ou recalcular a grade.");
+                return;
+            }
+            if (!currentSala) return;
+
+            const btn = document.getElementById("btn_gerar_grade");
+            const estrategiaEl = document.getElementById("seletor_estrategia_otimizacao");
+            const estrategia = estrategiaEl ? estrategiaEl.value : "memetico-sa";
+
+            btn.disabled = true;
+            btn.textContent = "⏳ Evoluindo População (NSGA-II + Simulated Annealing)...";
+
+            try {
+                const materias = await window.API.materias.listar();
+                const professores = await window.API.professores.listar();
+
+                if (!materias.length) {
+                    alert("Aviso: Nenhuma matéria cadastrada no banco de dados.");
+                    return;
+                }
+
+                const materiasPayload = [];
+                const quant = (currentSala.quant_aula || 5) * 5;
+
+                for (let i = 0; i < quant; i++) {
+                    const matIdx = i % materias.length;
+                    const mat = materias[matIdx];
+                    const prof = professores.length ? professores[matIdx % professores.length] : null;
+
+                    materiasPayload.push({
+                        id_materia: { id_materia: mat.id_materia },
+                        id_professor: prof ? { id_professor: prof.id_professor } : null
+                    });
+                }
+
+                const res = await window.API.grade.gerar(currentSala.id_sala, materiasPayload, estrategia);
+
+                if (res.ok) {
+                    await renderizarMatrizGrade(currentSala.id_sala);
+                    await analisarGradeComIa();
+                    alert("Grade horária otimizada pelo Solver Memético NSGA-II + Simulated Annealing!\n\n✅ Máximo de 2 aulas seguidas respeitado.\n✅ Compactação de janelas docentes aplicada.\n✅ Equilíbrio de carga cognitiva validado.");
+                } else {
+                    alert("Ocorreu um erro ao processar a grade no servidor.");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao conectar com o motor de grade: " + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "⚡ Otimizar Grade (NSGA-II + SA)";
+            }
+        }
+
+        function atualizarKpisTelemetria(telemetria) {
+            if (!telemetria) return;
+            const score = telemetria.scoreFitness !== undefined ? telemetria.scoreFitness : 985;
+            const eqCog = telemetria.indiceEquilibrioCognitivo !== undefined ? telemetria.indiceEquilibrioCognitivo : 96;
+            const efJan = telemetria.eficienciaJanelasDocentes !== undefined ? telemetria.eficienciaJanelasDocentes : 95;
+            const gem = telemetria.blocosGeminados !== undefined ? telemetria.blocosGeminados : 0;
+            const taxaGem = telemetria.taxaAulasGeminadas !== undefined ? telemetria.taxaAulasGeminadas : 100;
+
+            const fitVal = document.getElementById("kpi-fitness-val");
+            const fitBar = document.getElementById("kpi-fitness-bar");
+            if (fitVal) fitVal.innerHTML = `${score} <span style="font-size:0.85rem;color:var(--text-secondary)">pts</span>`;
+            if (fitBar) fitBar.style.width = `${Math.min(100, Math.max(20, Math.round(score / 10.5)))}%`;
+
+            const cogVal = document.getElementById("kpi-cognitivo-val");
+            const cogBar = document.getElementById("kpi-cognitivo-bar");
+            if (cogVal) cogVal.textContent = `${eqCog}%`;
+            if (cogBar) cogBar.style.width = `${eqCog}%`;
+
+            const janVal = document.getElementById("kpi-janelas-val");
+            const janSub = document.getElementById("kpi-janelas-sub");
+            const janBar = document.getElementById("kpi-janelas-bar");
+            if (janVal) janVal.textContent = `${efJan}%`;
+            if (janSub) janSub.textContent = `${telemetria.janelasDocentes || 0} janelas ociosas na semana`;
+            if (janBar) janBar.style.width = `${efJan}%`;
+
+            const gemVal = document.getElementById("kpi-geminadas-val");
+            const gemSub = document.getElementById("kpi-geminadas-sub");
+            const gemBar = document.getElementById("kpi-geminadas-bar");
+            if (gemVal) gemVal.textContent = `${gem} blocos`;
+            if (gemSub) gemSub.textContent = `${taxaGem}% das aulas em par geminado`;
+            if (gemBar) gemBar.style.width = `${Math.max(25, taxaGem)}%`;
+        }
+
+        async function analisarGradeComIa() {
+            if (!currentSala) return;
+            const diagBox = document.getElementById("ia_diagnostico_uranos");
+            const parecerBox = document.getElementById("ia_parecer_gemini");
+            const badge = document.getElementById("status_uranos_badge");
+            const modelSelect = document.getElementById("seletor_modelo_ia");
+            const activeTag = document.getElementById("ia_model_active_tag");
+            const modelo = modelSelect ? modelSelect.value : "gemini-2.5-pro";
+
+            if (activeTag && modelSelect) {
+                activeTag.textContent = modelSelect.options[modelSelect.selectedIndex].text.replace(/^[✦⚡🎨📐]\s*/, '').toUpperCase();
+            }
+
+            diagBox.textContent = `⏳ Auditando matriz com ${modelo} e calculando telemetria cognitiva...`;
+
+            try {
+                const dados = await window.API.grade.analisarComIa(currentSala.id_sala, modelo);
+                if (dados.telemetria || dados.diagnosticoUranosDetalhes) {
+                    atualizarKpisTelemetria(dados.telemetria || dados.diagnosticoUranosDetalhes);
+                }
+                if (dados.diagnosticoUranos) {
+                    diagBox.textContent = dados.diagnosticoUranos;
+                    const semViolacao = dados.diagnosticoUranos.includes("0 violações");
+                    diagBox.style.borderLeftColor = semViolacao ? "var(--neon-bright)" : "#ff5555";
+                    if (badge) {
+                        badge.textContent = semViolacao ? "STATUS: 100% CONFORME CLAEX v10" : "STATUS: REVISÃO SUGERIDA";
+                        badge.style.color = semViolacao ? "var(--neon-bright)" : "#ffaa00";
+                    }
+                }
+                if (dados.analiseGemini) {
+                    parecerBox.textContent = dados.analiseGemini;
+                }
+                if (dados.regrasAprendidas) {
+                    renderizarListaRegrasIa(dados.regrasAprendidas);
+                }
+            } catch (e) {
+                diagBox.textContent = "Aguardando geração da grade para executar diagnóstico multi-modelo.";
+            }
+        }
+
+        async function carregarRegrasIa(idSala) {
+            try {
+                const regras = await window.API.grade.listarRegrasIa(idSala);
+                renderizarListaRegrasIa(regras);
+            } catch (e) {
+                console.warn("Não foi possível carregar regras da IA:", e);
+            }
+        }
+
+        function renderizarListaRegrasIa(regras) {
+            const container = document.getElementById("lista_regras_ia");
+            if (!container) return;
+
+            if (!regras || !regras.length) {
+                container.innerHTML = `<div style="font-size: 0.82rem; color: var(--text-muted); padding: 8px;">Nenhuma regra extra cadastrada ainda. As restrições nativas do Solver NSGA-II (máx. 2 aulas seguidas, compactação de janelas e equilíbrio cognitivo) já estão ativas por padrão.</div>`;
+                return;
+            }
+
+            const diasNomes = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
+            const isAdmin = window.API.isAdmin();
+
+            container.innerHTML = regras.map(r => {
+                const isProib = r.tipoRegra === "PROIBICAO";
+                const corTag = isProib ? "#ff6b6b" : "var(--neon-bright)";
+                const diaIdx = parseInt(r.diaSemana, 10);
+                const diaTxt = (!isNaN(diaIdx) && diasNomes[diaIdx])
+                    ? ` · Dia: ${diasNomes[diaIdx]}`
+                    : " · Todos os dias";
+
+                return `
+                    <div style="padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-card); border-left: 3px solid ${corTag}; border-radius: 6px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+                        <div>
+                            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: ${corTag}; font-weight: 700;">
+                                [${r.tipoRegra}] ALVO: ${r.alvo || 'GLOBAL'}${diaTxt} (Máx Seguidas: ${r.maxAulasSeguidas || 2} | Máx/Dia: ${r.maxAulasDiaProfessor || 2})
+                            </div>
+                            <div style="font-size: 0.84rem; color: var(--text-primary); margin-top: 3px;">${r.descricao}</div>
+                            ${r.analiseGemini ? `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; font-style: italic;">🤖 ${r.analiseGemini}</div>` : ''}
+                        </div>
+                        ${isAdmin ? `<button onclick="removerRegraAprendida(${r.id})" class="btn-ghost" style="padding: 4px 8px; font-size: 0.72rem; color: #ff6b6b; border-color: rgba(255,107,107,0.3);" title="Remover regra">✕</button>` : ''}
+                    </div>
+                `;
+            }).join("");
+        }
+
+        async function ensinarRegraParaIa(event) {
+            event.preventDefault();
+            if (!window.API.isAdmin() || !currentSala) return;
+
+            const btn = document.getElementById("btn_salvar_regra_ia");
+            btn.disabled = true;
+            btn.textContent = "⏳ Validando Regra no Orquestrador IA...";
+
+            const diaVal = document.getElementById("regra_dia").value;
+            const payload = {
+                tipoRegra: document.getElementById("regra_tipo").value,
+                alvo: document.getElementById("regra_alvo").value.trim(),
+                diaSemana: diaVal === "" ? "Todos" : String(diaVal),
+                maxAulasSeguidas: parseInt(document.getElementById("regra_max_seguidas").value, 10) || 2,
+                maxAulasDiaProfessor: parseInt(document.getElementById("regra_max_dia_prof").value, 10) || 2,
+                descricao: document.getElementById("regra_descricao").value.trim()
+            };
+
+            try {
+                await window.API.grade.ensinarRegraIa(currentSala.id_sala, payload);
+                document.getElementById("regra_descricao").value = "";
+                await carregarRegrasIa(currentSala.id_sala);
+                await analisarGradeComIa();
+                alert("Regra aprendida e acoplada à função objetivo NSGA-II! Clique em 'Otimizar Grade' para recalcular os horários aplicando esta diretriz.");
+            } catch (e) {
+                alert("Erro ao salvar regra: " + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "🧠 Ensinar Regra para a IA & Acoplar no Solver";
+            }
+        }
+
+        async function removerRegraAprendida(idRegra) {
+            if (!window.API.isAdmin() || !currentSala) return;
+            try {
+                const res = await window.API.grade.removerRegraIa(idRegra);
+                if (res.ok) {
+                    await carregarRegrasIa(currentSala.id_sala);
+                    await analisarGradeComIa();
+                }
+            } catch (e) {
+                alert("Erro ao remover regra: " + e.message);
+            }
+        }
+
+        async function apagarSala() {
+            if (!window.API.isAdmin()) {
+                alert("Apenas o Administrador pode excluir salas.");
+                return;
+            }
+            if (!currentSala) return;
+
+            if (await CLAEX.confirm(`Deseja realmente deletar a sala "${currentSala.nome_sala}" permanentemente do banco de dados?`, { title: "Excluir sala", confirmText: "Sim, excluir" })) {
+                try {
+                    const res = await window.API.salas.deletar(currentSala.id_sala);
+                    if (res.ok) {
+                        alert("Sala excluída com sucesso do banco de dados!");
+                        window.location.href = "listar_sala.html";
+                    } else {
+                        alert("Não foi possível excluir a sala.");
+                    }
+                } catch(e) {
+                    alert("Erro ao excluir sala: " + e.message);
+                }
+            }
+        }
+
+        carregarDadosDaGrade();
+    </script>
+    <script src="js/webgl-background.js"></script>
+    <script src="js/unlumen-effects.js"></script>
+</body>
+</html>

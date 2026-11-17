@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAEX // Criar Nova Sala</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        .aulas {
+            background: var(--bg-carbon);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .aulas { grid-template-columns: 1fr; }
+        }
+        .btn-add-materia {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(210, 255, 0, 0.1);
+            color: var(--neon-lime);
+            border: 1px solid var(--border-lime);
+            padding: 10px 20px;
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+        .btn-add-materia:hover {
+            background: var(--neon-lime);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-glow);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating Dock Header -->
+    <header>
+        <div class="brand-container">
+            <div class="bars" id="menuToggle" aria-label="Abrir Menu">
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+                <div class="menu-bar"></div>
+            </div>
+            <a href="index.html" class="brand-logo">
+                CLAEX<span>.</span>
+            </a>
+            <span class="brand-telemetry">[CADASTRO // NOVA SALA]</span>
+        </div>
+
+        <nav class="dock-links">
+            <a href="index.html" class="dock-link">Início</a>
+            <a href="listar_sala.html" class="dock-link active">Salas</a>
+            <a href="grade.html" class="dock-link">Grade</a>
+            <a href="tabela_cadastros.html" class="dock-link">Professores</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="listar_sala.html" class="btn-ghost">Voltar às Salas</a>
+        </div>
+    </header>
+
+    <!-- Side Drawer Menu -->
+    <aside id="side-menu">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="brand-logo">CLAEX<span>.</span></div>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;">✕</button>
+        </div>
+        <div class="telemetry-tag">Navegação Rápida</div>
+        <a href="index.html" class="side-link">🏠 Início</a>
+        <a href="form_login.html?tipo=entrar" class="side-link">🔑 Acesso / Login</a>
+        <a href="listar_sala.html" class="side-link">📚 Salas & Turmas</a>
+        <a href="form_nova_sala.html" class="side-link">➕ Criar Nova Sala</a>
+        <a href="config_sala.html" class="side-link">⚙️ Configurações de Sala</a>
+        <a href="tabela_cadastros.html" class="side-link">👥 Painel de Professores</a>
+    </aside>
+    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+
+    <main style="padding: 30px 20px 80px;">
+        <form id="form_nova_sala" class="spotlight-card">
+            <div class="telemetry-tag">[CONFIGURADOR DE AMBIENTE]</div>
+            <h1 style="font-size: 2.2rem; margin-bottom: 8px;">Cadastrar Nova Sala</h1>
+            <p style="margin-bottom: 28px; color: var(--text-secondary);">
+                Defina os parâmetros de temporização e associe as disciplinas e docentes para cálculo da grade no banco de dados.
+            </p>
+
+            <input type="hidden" id="id">
+
+            <article class="form-grid">
+                <div>
+                    <label>Nome da Sala / Turma:
+                        <input type="text" id="nome" placeholder="Ex: 3º Ano Ensino Médio A" required>
+                    </label>
+                </div>
+
+                <div>
+                    <label>Instituição / Escola:
+                        <select id="id_escola" required>
+                            <option value="">Carregando escolas cadastradas...</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div>
+                    <label>Duração de uma Aula (minutos):
+                        <input type="number" id="duracao_aula" placeholder="Ex: 50" value="50" required>
+                    </label>
+                </div>
+                <div>
+                    <label>Duração do Intervalo (minutos):
+                        <input type="number" id="duracao_intervalo" placeholder="Ex: 20" value="20" required>
+                    </label>
+                </div>
+                <div>
+                    <label>Hora de Início das Aulas:
+                        <input type="time" id="inicio_aula" value="07:30" required>
+                    </label>
+                </div>
+                <div>
+                    <label>Quantidade de Aulas por Dia:
+                        <input type="number" id="quant_aulas" placeholder="Ex: 6" value="6" required>
+                    </label>
+                </div>
+            </article>
+
+            <div style="margin-top: 36px; border-top: 1px solid var(--border-glass); padding-top: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h3 style="font-size: 1.2rem;">Matérias & Docentes Alocados</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Adicione as disciplinas que serão calculadas nesta turma pelo algoritmo CLAEX.</p>
+                    </div>
+                    <button type="button" class="btn-add-materia" onclick="addMateria()">
+                        + Adicionar Matéria
+                    </button>
+                </div>
+
+                <div id="aulas" style="margin-top: 16px;">
+                    <!-- Aulas adicionadas dinamicamente aqui -->
+                </div>
+            </div>
+
+            <button type="submit" class="submit" style="margin-top: 32px;">
+                ⚡ Gravar Sala & Gerar Grade no Banco
+            </button>
+        </form>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">CLAEX<span>.</span></div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <a href="index.html">Início</a>
+                    <a href="listar_sala.html">Salas</a>
+                    <a href="grade.html">Grade de Horários</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2026 CLAEX. Todos os direitos reservados.</div>
+            <div class="footer-status">ONLINE // READY FOR SCHEDULE OPTIMIZATION</div>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="js/claex-notify.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // 🔒 Trava de segurança: impede que Alunos ou Professores vejam o formulário
+        window.API.protegerPagina(['escola', 'administrador']);
+        let cachedMaterias = [];
+        let cachedProfessores = [];
+
+        // Carrega escolas cadastradas no banco de dados para evitar erro de Foreign Key
+        async function carregarEscolas() {
+            const selectEscola = document.getElementById("id_escola");
+            try {
+                const cadastros = await window.API.cadastros.listar();
+                const escolas = cadastros.filter(c => {
+                    const t = (c.tipo || '').toLowerCase();
+                    return t === "escola" || t === "administrador" || t === "admin";
+                });
+
+                selectEscola.innerHTML = "";
+
+                if (escolas.length > 0) {
+                    escolas.forEach(e => {
+                        selectEscola.innerHTML += `<option value="${e.id}">${e.nome}</option>`;
+                    });
+                } else if (cadastros.length > 0) {
+                    // Se não tiver marcado como "escola", usa os cadastros disponíveis
+                    cadastros.forEach(c => {
+                        selectEscola.innerHTML += `<option value="${c.id}">${c.nome} (${c.tipo})</option>`;
+                    });
+                } else {
+                    selectEscola.innerHTML = `<option value="1">Escola Padrão (ID 1)</option>`;
+                }
+            } catch(e) {
+                console.error("Erro ao carregar escolas:", e);
+                selectEscola.innerHTML = `<option value="1">Escola Padrão (ID 1)</option>`;
+            }
+        }
+
+        async function initForm() {
+            await carregarEscolas();
+
+            try {
+                cachedMaterias = await window.API.materias.listar();
+                cachedProfessores = await window.API.professores.listar();
+
+                // Adiciona uma matéria por padrão se houver
+                if (cachedMaterias.length > 0) {
+                    addMateria();
+                }
+            } catch(e) {
+                console.error("Erro ao carregar dados iniciais:", e);
+            }
+        }
+
+        function addMateria() {
+            let aulas = document.getElementById("aulas");
+            
+            aulas.insertAdjacentHTML('beforeend', `
+            <div class="aulas">
+                <div>
+                    <label>Disciplina: 
+                        <select class="materia" required>
+                            <option value="" selected disabled>Selecione a matéria</option>
+                            ${cachedMaterias.map(m => `
+                                <option value="${m.id_materia}">${m.nome_materia}</option>
+                            `).join('')}
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <label>Professor Responsável: 
+                        <select class="professor">
+                            <option value="null">Selecione o professor</option>
+                            ${cachedProfessores.map(p => `
+                                <option value="${p.id_professor}">${p.nome_professor}</option>
+                            `).join('')}
+                        </select>
+                    </label>
+                </div>
+            </div>
+            `);
+        }
+
+        document.getElementById("form_nova_sala").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.querySelector("#form_nova_sala .submit");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Salvando Sala no Banco de Dados...";
+
+            // Garante formato LocalTime HH:mm:00
+            let inicio = document.getElementById("inicio_aula").value;
+            if (inicio && inicio.length === 5) {
+                inicio += ":00";
+            }
+
+            const escolaId = document.getElementById("id_escola").value || 1;
+
+            const sala = {
+                nome_sala: document.getElementById("nome").value.trim(),
+                duracao_aula: parseInt(document.getElementById("duracao_aula").value, 10),
+                duracao_intervalo: parseInt(document.getElementById("duracao_intervalo").value, 10),
+                inicio_aula: inicio,
+                quant_aula: parseInt(document.getElementById("quant_aulas").value, 10),
+                escola: {
+                    id: parseInt(escolaId, 10)
+                }
+            };
+
+            try {
+                // 1. Salva a Sala no repositório v1n1k4/lolooo (POST /salas/salvar)
+                const salaSalva = await window.API.salas.salvar(sala);
+                const idSala = salaSalva.id_sala;
+
+                // 2. Coleta matérias alocadas
+                let materiasPayload = [];
+                let aulas = document.querySelectorAll(".aulas");
+                aulas.forEach((aula) => {
+                    const matVal = aula.querySelector(".materia").value;
+                    const profVal = aula.querySelector(".professor").value;
+                    if (matVal) {
+                        materiasPayload.push({
+                            id_materia: { id_materia: parseInt(matVal, 10) },
+                            id_professor: (profVal && profVal !== "null") ? { id_professor: parseInt(profVal, 10) } : null
+                        });
+                    }
+                });
+
+                // Se houver matérias, gera a grade pelo algoritmo Spring Boot (/grade/gerargrade/{id_sala})
+                if (materiasPayload.length > 0) {
+                    submitBtn.textContent = "Calculando e Gerando Grade Horária...";
+                    await window.API.grade.gerar(idSala, materiasPayload);
+                }
+
+                alert("Sala criada com sucesso no banco de dados!");
+                window.location.href = `grade.html?id=${idSala}`;
+
+            } catch (error) {
+                console.error("Erro ao salvar sala:", error);
+                alert("Erro ao conectar com o banco de dados: " + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "⚡ Gravar Sala & Gerar Grade no Banco";
+            }
+        });
+
+        initForm();
+    </script>
+    <script src="js/webgl-background.js"></script>
+    <script src="js/unlumen-effects.js"></script>
+</body>
+</html>
