@@ -1,47 +1,43 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-surface="editorial" data-accent="lime">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLAEX // Portal do Professor</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.15.0/dist/motion.js"></script>
     <style>
         .tabs {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 28px;
-            border-bottom: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-card);
             padding-bottom: 12px;
             flex-wrap: wrap;
         }
         .tab-btn {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--bg-carbon);
             color: var(--text-secondary);
-            border: 1px solid var(--border-glass);
-            padding: 10px 22px;
+            border: 1px solid var(--border-card);
+            padding: 10px 20px;
             border-radius: 999px;
             font-family: var(--font-heading);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.18s ease;
         }
         .tab-btn:hover {
             color: var(--text-pure);
-            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--text-pure);
         }
         .tab-btn.active {
             background: var(--neon-lime);
-            color: #000;
-            border-color: var(--neon-lime);
-            box-shadow: 0 0 15px var(--neon-glow);
+            color: var(--text-on-accent);
+            border-color: #111112;
         }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -70,56 +66,61 @@
         }
         .prof-table th {
             background: var(--bg-carbon);
-            color: var(--neon-lime);
+            color: var(--text-pure);
             padding: 14px 16px;
             text-align: left;
-            font-size: 0.82rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border-card);
         }
         .prof-table td {
             padding: 14px 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--border-glass);
             font-size: 0.9rem;
+            color: var(--text-primary);
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="brand-container">
-            <div class="bars" id="menuToggle" aria-label="Abrir Menu">
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
+    <header id="main-header">
+        <div class="header-inner">
+            <div class="brand-container">
+                <div class="bars" id="menuToggle" aria-label="Abrir Menu">
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                </div>
+                <a href="index.html" class="brand-logo">CLAEX<span>.</span></a>
+                <span class="brand-telemetry">[PAINEL DO PROFESSOR]</span>
             </div>
-            <a href="index.html" class="brand-logo">CLAEX<span>.</span></a>
-            <span class="brand-telemetry">[PAINEL DO PROFESSOR]</span>
+
+            <nav class="dock-links" aria-label="Navegação Principal">
+                <a href="index.html" class="dock-link">Início</a>
+                <a href="listar_sala.html" class="dock-link">Ver Grades / Salas</a>
+                <a href="painel_professor.html" class="dock-link active">Minhas Informações</a>
+            </nav>
+
+            <div class="header-actions"></div>
         </div>
-
-        <nav class="dock-links">
-            <a href="index.html" class="dock-link">Início</a>
-            <a href="listar_sala.html" class="dock-link">Ver Grades / Salas</a>
-            <a href="painel_professor.html" class="dock-link active">Minhas Informações</a>
-        </nav>
-
-        <div class="header-actions"></div>
     </header>
 
-    <aside id="side-menu">
+    <aside id="side-menu" aria-label="Menu Lateral">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <div class="brand-logo">CLAEX<span>.</span></div>
-            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;">✕</button>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1rem;" aria-label="Fechar Menu">✕</button>
         </div>
         <div class="telemetry-tag">Navegação Rápida</div>
-        <a href="index.html" class="side-link">🏠 Início</a>
-        <a href="listar_sala.html" class="side-link">📚 Salas & Grades (Leitura)</a>
-        <a href="painel_professor.html" class="side-link">👨‍🏫 Minhas Informações</a>
-        <a href="form_nova_sala.html" class="side-link admin-only">➕ Criar Nova Sala</a>
-        <a href="tabela_cadastros.html" class="side-link admin-only">👥 Painel de Cadastros</a>
+        <a href="index.html" class="side-link">01 // Início</a>
+        <a href="listar_sala.html" class="side-link">02 // Salas &amp; Grades (Leitura)</a>
+        <a href="painel_professor.html" class="side-link">03 // Minhas Informações</a>
+        <a href="form_nova_sala.html" class="side-link admin-only">04 // Criar Nova Sala</a>
+        <a href="tabela_cadastros.html" class="side-link admin-only">05 // Painel de Cadastros</a>
     </aside>
-    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+    <div class="menu-overlay"></div>
 
-    <main style="padding: 40px 24px; max-width: 1200px; margin: 0 auto; width: 100%;">
+    <main id="main-content" style="padding: 40px 24px; max-width: 1200px; margin: 0 auto; width: 100%;">
         <div style="margin-bottom: 24px;">
             <div class="telemetry-tag">[ÁREA DOCENTE // AUTONOMIA DE DADOS]</div>
             <h1 id="prof-welcome" style="font-size: 2.2rem;">Portal do Professor</h1>
@@ -132,7 +133,6 @@
             <button class="tab-btn" onclick="switchTab('tab-salas', this)">Consultar Grades das Salas</button>
         </nav>
 
-        <!-- ABA 1: MINHA DISPONIBILIDADE -->
         <section id="tab-disponibilidade" class="tab-content active">
             <h2 style="margin-bottom: 16px;">Gestão de Disponibilidade</h2>
             <form id="form-disponibilidade" class="spotlight-card" style="margin-bottom: 28px;">
@@ -192,7 +192,6 @@
             </div>
         </section>
 
-        <!-- ABA 2: MINHAS MATÉRIAS -->
         <section id="tab-materias" class="tab-content">
             <h2 style="margin-bottom: 16px;">Minhas Matérias</h2>
             <form id="form-materia" class="spotlight-card" style="margin-bottom: 28px;">
@@ -214,10 +213,9 @@
                             <option value="Artes">Artes</option>
                             <option value="Língua Inglesa">Língua Inglesa</option>
                             <option value="Língua Espanhola">Língua Espanhola</option>
-                            <option value="__outra__">✏️ Outra matéria (digitar)</option>
+                            <option value="__outra__">Outra matéria (digitar)</option>
                         </select>
-                        <input type="text" id="mat-nome-custom" placeholder="Digite o nome da matéria"
-                               style="display:none; margin-top: 10px;">
+                        <input type="text" id="mat-nome-custom" placeholder="Digite o nome da matéria" style="display:none; margin-top: 10px;">
                     </div>
                     <div>
                         <label>Nível de Ensino</label>
@@ -235,9 +233,8 @@
             <div id="lista-materias" class="grid-cards"></div>
         </section>
 
-        <!-- ABA 3: SALAS & GRADES (SOMENTE LEITURA PARA PROFESSOR) -->
         <section id="tab-salas" class="tab-content">
-            <h2>Salas & Grades Horárias (Modo Visualização)</h2>
+            <h2>Salas &amp; Grades Horárias (Modo Visualização)</h2>
             <p style="color: var(--text-secondary); margin-bottom: 16px;">Clique em qualquer turma para visualizar a grade horária correspondente.</p>
             <div id="container-salas" class="grid-cards"></div>
         </section>
@@ -246,9 +243,9 @@
     <script src="js/claex-notify.js"></script>
     <script src="js/api.js"></script>
     <script src="js/webgl-background.js"></script>
+    <script src="js/motion-ui.js"></script>
     <script src="js/unlumen-effects.js"></script>
     <script>
-        // Permite acesso a Professor e Administrador
         if (window.API.protegerPagina(['professor', 'administrador', 'escola'])) {
             const u = window.API.getUsuarioAtual();
             if (u && u.nome) {
@@ -263,7 +260,6 @@
             if (btnEl) btnEl.classList.add('active');
         }
 
-        // 1. CARREGAR DISPONIBILIDADES DO BANCO
         async function carregarDisponibilidades() {
             const tbody = document.getElementById("lista-disponibilidade");
             try {
@@ -275,17 +271,17 @@
                 tbody.innerHTML = lista.map(item => `
                     <tr>
                         <td><strong>${item.diaSemana}</strong></td>
-                        <td style="font-family: var(--font-mono); color: var(--neon-cyan);">${(item.horarioInicial || '').substring(0,5)}</td>
-                        <td style="font-family: var(--font-mono); color: var(--neon-cyan);">${(item.horarioFinal || '').substring(0,5)}</td>
+                        <td style="font-family: var(--font-mono); color: var(--accent-ink); font-weight: 600;">${(item.horarioInicial || '').substring(0,5)}</td>
+                        <td style="font-family: var(--font-mono); color: var(--accent-ink); font-weight: 600;">${(item.horarioFinal || '').substring(0,5)}</td>
                         <td>${item.modalidade || 'Presencial'}</td>
                         <td style="color: var(--text-secondary);">${item.observacao || '—'}</td>
                         <td style="text-align: right;">
-                            <button type="button" class="btn-ghost" style="color: #ff6666; border-color: rgba(255,59,48,0.3); padding: 6px 12px; font-size: 0.8rem;" onclick="deletarDisponibilidade(${item.id})">🗑️ Remover</button>
+                            <button type="button" class="btn-ghost" style="color: var(--status-danger); border-color: rgba(220,38,38,0.3); padding: 6px 12px; font-size: 0.78rem;" onclick="deletarDisponibilidade(${item.id})">Remover</button>
                         </td>
                     </tr>
                 `).join("");
             } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="6" style="color: #ff9999;">Erro ao carregar disponibilidades: ${e.message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="color: var(--status-danger);">Erro ao carregar disponibilidades: ${e.message}</td></tr>`;
             }
         }
 
@@ -316,7 +312,6 @@
             }
         }
 
-        // 2. CARREGAR E VINCULAR MATÉRIAS DO PROFESSOR
         const matSelect = document.getElementById("mat-select");
         const matCustom = document.getElementById("mat-nome-custom");
 
@@ -346,15 +341,15 @@
                         <article class="spotlight-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
                             <div>
                                 <div class="telemetry-tag" style="margin-bottom: 6px;">DISCIPLINA VINCULADA</div>
-                                <h3 style="font-size: 1.3rem;">${nomeMat}</h3>
+                                <h3 style="font-size: 1.25rem;">${nomeMat}</h3>
                                 <p style="font-size: 0.85rem; margin-top: 6px;">Nível: <strong>${mp.nivelEnsino || 'Médio'}</strong> • Experiência: <strong>${mp.experiencia || '—'}</strong></p>
                             </div>
-                            <button type="button" class="btn-ghost" style="color: #ff6666; border-color: rgba(255,59,48,0.3); font-size: 0.8rem; padding: 6px 12px; align-self: flex-start;" onclick="desvincularMateria(${mp.id})">🗑️ Desvincular</button>
+                            <button type="button" class="btn-ghost" style="color: var(--status-danger); border-color: rgba(220,38,38,0.3); font-size: 0.78rem; padding: 6px 12px; align-self: flex-start;" onclick="desvincularMateria(${mp.id})">Desvincular</button>
                         </article>
                     `;
                 }).join("");
             } catch (e) {
-                container.innerHTML = `<div style="color: #ff9999;">Erro ao carregar matérias: ${e.message}</div>`;
+                container.innerHTML = `<div style="color: var(--status-danger);">Erro ao carregar matérias: ${e.message}</div>`;
             }
         }
 
@@ -399,7 +394,6 @@
             }
         }
 
-        // 3. CARREGAR SALAS (SOMENTE VISUALIZAÇÃO DA GRADE)
         async function carregarSalasLeitura() {
             const container = document.getElementById("container-salas");
             try {
@@ -413,7 +407,7 @@
                         <article class="caixa_sala spotlight-card">
                             <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                 <span class="telemetry-tag" style="margin: 0; font-size: 0.65rem;">SALA #${s.id_sala}</span>
-                                <span style="color: var(--neon-lime); font-size: 0.8rem; font-family: var(--font-mono);">VER GRADE →</span>
+                                <span style="color: var(--accent-ink); font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700;">VER GRADE →</span>
                             </div>
                             <p>${s.nome_sala}</p>
                             <div style="margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
@@ -423,7 +417,7 @@
                     </a>
                 `).join("");
             } catch (e) {
-                container.innerHTML = `<div style="color: #ff9999;">Erro ao carregar salas.</div>`;
+                container.innerHTML = `<div style="color: var(--status-danger);">Erro ao carregar salas.</div>`;
             }
         }
 

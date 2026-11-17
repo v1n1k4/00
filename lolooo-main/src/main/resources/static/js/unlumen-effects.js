@@ -1,34 +1,24 @@
 /**
- * CLAEX v10 MOTOR — LANDO NORRIS (LN04 F1 TELEMETRY) × CLAUDE CODE CONTROLLERS
- * References:
- * - https://landonorris.com/ (Awwwards Site of the Year 2025 — OFF+BRAND)
- * - https://github.com/anthropics/claude-code
- * - https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit
- * Features:
- * - LN4 Helmet Livery Studio (Default: LN4 Acid Lime #D2FF00 + 4 F1 Liveries + 0°–360° OKLCH Slider)
- * - "The Cursor as Narrator" (F1 Telemetry Reticle + Contextual Action Pill)
- * - ON TRACK / OFF TRACK Interactive Mode Switcher (landonorris.com signature)
- * - Interactive Claude Code Agentic Terminal Widget
- * - Central Ampulheta CLAEX Circuit Hub Inspector & Schedule Simulator
+ * CLAEX EDITORIAL × LANDO NORRIS (LN04) × CLAUDE CODE UI CONTROLLERS
+ * - Surface Polarity Switcher: Editorial Light (#F5F5F0) / Carbon Paddock (#111112)
+ * - 5 F1 Helmet Liveries + Live 0°–360° OKLCH --brand-hue Studio (Zero Neon)
+ * - ON TRACK / OFF TRACK Switcher + Narrator Pill Cursor + MotionUI Terminal CLI
  */
-
 (function () {
     'use strict';
 
     const LIVERIES = {
-        lime:   { label: 'LN4 Acid Lime',     hue: 112, lightness: 0.91, chroma: 0.23, textOn: '#0B0C0E', color: '#D2FF00' },
-        amber:  { label: 'McLaren Papaya',    hue: 52,  lightness: 0.75, chroma: 0.21, textOn: '#0B0C0E', color: '#FF8000' },
-        cyan:   { label: 'Silverstone Aero',  hue: 198, lightness: 0.84, chroma: 0.19, textOn: '#0B0C0E', color: '#00F0FF' },
-        violet: { label: 'Dark Glitter GP',   hue: 288, lightness: 0.68, chroma: 0.22, textOn: '#FFFFFF', color: '#A855F7' },
-        blue:   { label: 'Monaco Porcelain',  hue: 255, lightness: 0.65, chroma: 0.20, textOn: '#FFFFFF', color: '#3B82F6' }
+        lime:   { label: 'LN4 Acid Lime',    hue: 112, lightness: 0.91, chroma: 0.23, textOn: '#111112', color: '#D2FF00' },
+        amber:  { label: 'McLaren Papaya',   hue: 52,  lightness: 0.74, chroma: 0.21, textOn: '#111112', color: '#FF8000' },
+        cyan:   { label: 'Silverstone Aero', hue: 196, lightness: 0.82, chroma: 0.18, textOn: '#111112', color: '#00D4E5' },
+        violet: { label: 'Night GP Violet',  hue: 285, lightness: 0.62, chroma: 0.20, textOn: '#FFFFFF', color: '#8B5CF6' },
+        blue:   { label: 'Monaco Porcelain', hue: 255, lightness: 0.58, chroma: 0.19, textOn: '#FFFFFF', color: '#2563EB' }
     };
 
-    // 0. ENSURE SKIP-TO-CONTENT & UNIFIED LN04 TOPBAR ON EVERY PAGE
     function ensureUnifiedShell() {
         const mainEl = document.querySelector('main') || document.querySelector('.page');
-        if (mainEl && !mainEl.id) {
-            mainEl.id = 'main-content';
-        }
+        if (mainEl && !mainEl.id) mainEl.id = 'main-content';
+
         if (!document.querySelector('.skip-to-content')) {
             const skip = document.createElement('a');
             skip.href = '#main-content';
@@ -42,32 +32,39 @@
             topbar.className = 'edge-topbar';
             topbar.innerHTML = `
                 <div class="edge-topbar-inner">
-                    <a href="grade.html?id=1" class="edge-topbar-promo" data-cursor-label="TELEMETRIA">
+                    <a href="grade.html?id=1" class="edge-topbar-promo" data-cursor-label="PIT-WALL">
                         <span class="pulse-dot"></span>
-                        <span>LN04 TELEMETRY SPEC · MOTOR CLAEX NSGA-II + CLAUDE CODE &amp; GEMINI 2.5 PRO →</span>
+                        <span>MOTOR CLAEX // NSGA-II + SIMULATED ANNEALING &amp; CLAUDE CODE CLI →</span>
                     </a>
                     <div class="edge-topbar-links">
-                        <button type="button" class="accent-switch-btn" id="accentSwitchBtn" data-cursor-label="LIVERY" title="Trocar Pintura F1 (Helmets Hall of Fame)">
+                        <button type="button" class="accent-switch-btn" id="accentSwitchBtn" data-cursor-label="ESTÚDIO" title="Configurar Superfície e Pintura OKLCH">
                             <span class="swatch"></span>
-                            <span id="accentLabel">Livery: LN4 Acid Lime</span>
+                            <span id="accentLabel">Editorial · LN4 Lime</span>
                         </button>
                         <a href="painel_professor.html">Área do Professor</a>
                         <a href="form_login.html">Log in</a>
-                        <span style="color:var(--neon-lime);font-family:var(--font-mono);font-weight:700;">LN04 // v10</span>
                     </div>
                 </div>
             `;
             document.body.prepend(topbar);
         }
+
+        if (!document.getElementById('lando-scroll-progress')) {
+            const prog = document.createElement('div');
+            prog.className = 'lando-scroll-progress';
+            prog.id = 'lando-scroll-progress';
+            prog.setAttribute('aria-hidden', 'true');
+            document.body.prepend(prog);
+        }
     }
 
-    // 1. LN04 HELMET LIVERY & OKLCH STUDIO CONTROLLER
-    function initSingleAccentController() {
+    function initThemeStudio() {
         ensureUnifiedShell();
 
         const storedKey = localStorage.getItem('claex_livery_key');
         const savedAccent = (storedKey && LIVERIES[storedKey]) ? storedKey : 'lime';
-        const savedCustomHue = localStorage.getItem('claex_custom_hue');
+        const savedHue = localStorage.getItem('claex_custom_hue');
+        const savedSurface = localStorage.getItem('claex_surface_mode') || 'editorial';
 
         let popover = document.getElementById('claex-theme-studio');
         if (!popover) {
@@ -75,26 +72,30 @@
             popover.id = 'claex-theme-studio';
             popover.className = 'theme-studio-popover';
             popover.setAttribute('role', 'dialog');
-            popover.setAttribute('aria-label', 'Estúdio de Pintura LN04 OKLCH');
+            popover.setAttribute('aria-label', 'Theme Studio OKLCH');
             popover.innerHTML = `
                 <div class="theme-studio-header">
-                    <span class="theme-studio-title">🏎️ LN04 HELMET LIVERIES · OKLCH</span>
-                    <button type="button" id="themeStudioClose" style="background:none;border:none;color:#9CA3AF;cursor:pointer;font-size:0.85rem;" aria-label="Fechar">✕</button>
+                    <span class="theme-studio-title">DESIGN STUDIO // OKLCH &amp; SURFACE</span>
+                    <button type="button" id="themeStudioClose" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:0.85rem;" aria-label="Fechar">✕</button>
+                </div>
+                <div class="surface-mode-switch" role="group" aria-label="Modo de Superfície">
+                    <button type="button" class="surface-mode-btn" data-surface-set="editorial">Editorial Claro</button>
+                    <button type="button" class="surface-mode-btn" data-surface-set="carbon">Carbon Paddock</button>
                 </div>
                 <div class="theme-preset-grid">
                     ${Object.entries(LIVERIES).map(([key, cfg]) => `
                         <button type="button" class="theme-preset-chip" data-preset-key="${key}">
-                            <span class="theme-preset-dot" style="background:${cfg.color};box-shadow:0 0 8px ${cfg.color}"></span>
+                            <span class="theme-preset-dot" style="background:${cfg.color}"></span>
                             <span>${cfg.label}</span>
                         </button>
                     `).join('')}
                 </div>
                 <div class="theme-hue-slider-wrap">
                     <div class="theme-hue-label">
-                        <span>MATIZ TELEMETRIA (--brand-hue)</span>
-                        <strong id="themeHueValue" style="color:var(--neon-lime)">112°</strong>
+                        <span>MATIZ OKLCH (--brand-hue)</span>
+                        <strong id="themeHueValue">112°</strong>
                     </div>
-                    <input type="range" id="themeHueSlider" class="theme-hue-input" min="0" max="360" value="112" aria-label="Ajustar matiz OKLCH">
+                    <input type="range" id="themeHueSlider" class="theme-hue-input" min="0" max="360" value="112" aria-label="Matiz OKLCH">
                 </div>
             `;
             document.body.appendChild(popover);
@@ -104,16 +105,20 @@
         const hueValLabel = document.getElementById('themeHueValue');
         const accentLabel = document.getElementById('accentLabel');
 
-        const applyLivery = (presetKey, customHue) => {
+        const applyState = (surfaceMode, presetKey, customHue) => {
+            const mode = surfaceMode === 'carbon' ? 'carbon' : 'editorial';
             const preset = LIVERIES[presetKey] || LIVERIES.lime;
-            const hue = customHue !== null && customHue !== undefined ? Number(customHue) : preset.hue;
+            const hue = customHue != null ? Number(customHue) : preset.hue;
             const isHighLum = (hue >= 45 && hue <= 205);
-            const lightness = customHue != null ? (isHighLum ? 0.88 : 0.68) : preset.lightness;
-            const chroma = customHue != null ? 0.22 : preset.chroma;
-            const textOn = customHue != null ? (isHighLum ? '#0B0C0E' : '#FFFFFF') : preset.textOn;
+            const lightness = customHue != null ? (isHighLum ? 0.88 : 0.64) : preset.lightness;
+            const chroma = customHue != null ? 0.21 : preset.chroma;
+            const textOn = customHue != null ? (isHighLum ? '#111112' : '#FFFFFF') : preset.textOn;
 
+            document.documentElement.setAttribute('data-surface', mode);
             document.documentElement.setAttribute('data-accent', presetKey);
+            document.body.setAttribute('data-surface', mode);
             document.body.setAttribute('data-accent', presetKey);
+
             document.documentElement.style.setProperty('--brand-hue', String(hue));
             document.documentElement.style.setProperty('--brand-lightness', String(lightness));
             document.documentElement.style.setProperty('--brand-chroma', String(chroma));
@@ -122,34 +127,46 @@
             if (hueSlider) hueSlider.value = String(hue);
             if (hueValLabel) hueValLabel.textContent = `${hue}°`;
             if (accentLabel) {
+                const modeShort = mode === 'carbon' ? 'Carbon' : 'Editorial';
                 accentLabel.textContent = customHue != null
-                    ? `Livery OKLCH · ${hue}°`
-                    : `Livery: ${preset.label}`;
+                    ? `${modeShort} · OKLCH ${hue}°`
+                    : `${modeShort} · ${preset.label}`;
             }
 
+            popover.querySelectorAll('.surface-mode-btn').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-surface-set') === mode);
+            });
             popover.querySelectorAll('.theme-preset-chip').forEach(chip => {
                 chip.classList.toggle('active', chip.getAttribute('data-preset-key') === presetKey && customHue == null);
             });
-
             document.querySelectorAll('[data-livery-pill]').forEach(pill => {
                 pill.classList.toggle('active', pill.getAttribute('data-livery-pill') === presetKey && customHue == null);
             });
         };
 
         window.CLAEXThemeStudio = {
+            setSurface: (mode) => {
+                const next = mode === 'carbon' ? 'carbon' : 'editorial';
+                localStorage.setItem('claex_surface_mode', next);
+                const k = localStorage.getItem('claex_livery_key') || 'lime';
+                const ch = localStorage.getItem('claex_custom_hue');
+                applyState(next, k, ch ? Number(ch) : null);
+            },
             setLivery: (key) => {
                 if (!LIVERIES[key]) return;
                 localStorage.setItem('claex_livery_key', key);
                 localStorage.removeItem('claex_custom_hue');
-                applyLivery(key, null);
+                const mode = localStorage.getItem('claex_surface_mode') || 'editorial';
+                applyState(mode, key, null);
             },
             setHue: (h) => {
                 localStorage.setItem('claex_custom_hue', String(h));
-                applyLivery(localStorage.getItem('claex_livery_key') || 'lime', h);
+                const mode = localStorage.getItem('claex_surface_mode') || 'editorial';
+                applyState(mode, localStorage.getItem('claex_livery_key') || 'lime', h);
             }
         };
 
-        applyLivery(savedAccent, savedCustomHue ? Number(savedCustomHue) : null);
+        applyState(savedSurface, savedAccent, savedHue ? Number(savedHue) : null);
 
         const btn = document.getElementById('accentSwitchBtn');
         if (btn) {
@@ -158,32 +175,21 @@
                 popover.classList.toggle('open');
             });
         }
-
         const closeBtn = document.getElementById('themeStudioClose');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => popover.classList.remove('open'));
-        }
+        if (closeBtn) closeBtn.addEventListener('click', () => popover.classList.remove('open'));
 
-        popover.querySelectorAll('.theme-preset-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                const key = chip.getAttribute('data-preset-key');
-                window.CLAEXThemeStudio.setLivery(key);
-            });
+        popover.querySelectorAll('[data-surface-set]').forEach(b => {
+            b.addEventListener('click', () => window.CLAEXThemeStudio.setSurface(b.getAttribute('data-surface-set')));
         });
-
+        popover.querySelectorAll('[data-preset-key]').forEach(chip => {
+            chip.addEventListener('click', () => window.CLAEXThemeStudio.setLivery(chip.getAttribute('data-preset-key')));
+        });
         document.querySelectorAll('[data-livery-pill]').forEach(pill => {
-            pill.addEventListener('click', () => {
-                const key = pill.getAttribute('data-livery-pill');
-                window.CLAEXThemeStudio.setLivery(key);
-            });
+            pill.addEventListener('click', () => window.CLAEXThemeStudio.setLivery(pill.getAttribute('data-livery-pill')));
         });
-
         if (hueSlider) {
-            hueSlider.addEventListener('input', (e) => {
-                window.CLAEXThemeStudio.setHue(Number(e.target.value));
-            });
+            hueSlider.addEventListener('input', (e) => window.CLAEXThemeStudio.setHue(Number(e.target.value)));
         }
-
         document.addEventListener('click', (e) => {
             if (popover.classList.contains('open') && !popover.contains(e.target) && e.target !== btn) {
                 popover.classList.remove('open');
@@ -191,83 +197,45 @@
         });
     }
 
-    // 2. THE CURSOR AS NARRATOR (LANDO NORRIS SOTY 2025 RETICLE + PILL)
+    // Narrator Pill Cursor (zero neon laser dot/ring — editorial telemetry label only)
     function initNarratorCursor() {
-        if (!window.matchMedia('(pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-        }
+        if (!window.matchMedia('(pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        let dot = document.querySelector('.telemetry-cursor-dot');
-        let ring = document.querySelector('.telemetry-cursor-ring');
         let pill = document.querySelector('.ln4-cursor-pill');
-
-        if (!dot) {
-            dot = document.createElement('div');
-            dot.className = 'telemetry-cursor-dot';
-            document.body.appendChild(dot);
-        }
-        if (!ring) {
-            ring = document.createElement('div');
-            ring.className = 'telemetry-cursor-ring';
-            document.body.appendChild(ring);
-        }
         if (!pill) {
             pill = document.createElement('div');
             pill.className = 'ln4-cursor-pill';
-            pill.textContent = 'EXPLORAR';
             document.body.appendChild(pill);
         }
 
-        let mouseX = -100, mouseY = -100;
-        let ringX = -100, ringY = -100;
-
         window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-            pill.style.transform = `translate3d(${mouseX + 18}px, ${mouseY - 18}px, 0) scale(${pill.classList.contains('visible') ? 1 : 0.75})`;
+            pill.style.transform = `translate3d(${e.clientX + 16}px, ${e.clientY - 16}px, 0) scale(${pill.classList.contains('visible') ? 1 : 0.85})`;
         }, { passive: true });
 
-        function renderLoop() {
-            ringX += (mouseX - ringX) * 0.22;
-            ringY += (mouseY - ringY) * 0.22;
-            ring.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0)`;
-            requestAnimationFrame(renderLoop);
-        }
-        requestAnimationFrame(renderLoop);
-
         document.addEventListener('mouseover', (e) => {
-            const target = e.target.closest('[data-cursor-label], .lando-showcase-card, .sim-slot, .btn-opticore, .btn-neon, .caixa_sala, .claude-cmd-chip');
+            const target = e.target.closest('[data-cursor-label], .lando-showcase-card, .sim-slot, .caixa_sala');
             if (target) {
-                ring.classList.add('active');
                 let label = target.getAttribute('data-cursor-label');
                 if (!label) {
                     if (target.classList.contains('lando-showcase-card')) label = 'INSPECIONAR';
-                    else if (target.classList.contains('sim-slot')) label = 'SIMULAR SLOT';
+                    else if (target.classList.contains('sim-slot')) label = 'ALTERAR SLOT';
                     else if (target.classList.contains('caixa_sala')) label = 'ABRIR GRADE';
-                    else if (target.classList.contains('claude-cmd-chip')) label = 'EXECUTAR CLI';
-                    else label = 'ACIONAR';
                 }
-                pill.textContent = `[${label}]`;
+                pill.textContent = label;
                 pill.classList.add('visible');
-            } else if (e.target.closest('a, button, select, input')) {
-                ring.classList.add('active');
-                pill.classList.remove('visible');
             } else {
-                ring.classList.remove('active');
                 pill.classList.remove('visible');
             }
         }, { passive: true });
     }
 
-    // 3. ON TRACK / OFF TRACK SWITCHER (LANDONORRIS.COM SIGNATURE TOGGLE)
     function initOnOffTrackSwitcher() {
         const modeBtns = document.querySelectorAll('[data-ln4-mode]');
         if (!modeBtns.length) return;
 
         const onTrackSections = document.querySelectorAll('[data-track-group="on-track"]');
         const offTrackSections = document.querySelectorAll('[data-track-group="off-track"]');
-        const sectorStatus = document.getElementById('ln4-hud-mode-val');
+        const modeVal = document.getElementById('ln4-hud-mode-val');
 
         modeBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -278,25 +246,20 @@
                 if (mode === 'on-track') {
                     onTrackSections.forEach(el => { el.style.display = ''; });
                     offTrackSections.forEach(el => { el.style.display = 'none'; });
-                    if (sectorStatus) sectorStatus.innerHTML = 'ON TRACK <span class="purple-sector">RACE PACE</span>';
+                    if (modeVal) modeVal.textContent = 'ON TRACK · MOTOR';
                 } else if (mode === 'off-track') {
                     onTrackSections.forEach(el => { el.style.display = 'none'; });
                     offTrackSections.forEach(el => { el.style.display = ''; });
-                    if (sectorStatus) sectorStatus.innerHTML = 'OFF TRACK <span class="purple-sector">PADDOCK</span>';
+                    if (modeVal) modeVal.textContent = 'OFF TRACK · PADDOCK';
                 } else {
                     onTrackSections.forEach(el => { el.style.display = ''; });
                     offTrackSections.forEach(el => { el.style.display = ''; });
-                    if (sectorStatus) sectorStatus.innerHTML = 'FULL TELEMETRY <span class="purple-sector">DRS ON</span>';
-                }
-
-                if (window.ScrollTrigger) {
-                    setTimeout(() => window.ScrollTrigger.refresh(), 60);
+                    if (modeVal) modeVal.textContent = 'COMPLETO · 2026';
                 }
             });
         });
     }
 
-    // 4. CLAUDE CODE AGENTIC CLI INTERACTIVE WIDGET (anthropics/claude-code)
     function initClaudeCodeTerminal() {
         const outputEl = document.getElementById('claude-cli-output');
         const chips = document.querySelectorAll('[data-claude-cmd]');
@@ -305,73 +268,79 @@
         chips.forEach(chip => {
             chip.addEventListener('click', () => {
                 const cmd = chip.getAttribute('data-claude-cmd');
+                const writeLine = (promptCmd, detailText) => {
+                    outputEl.innerHTML = `<span style="color:var(--neon-lime)">❯ claude</span> ${promptCmd}<br/><span class="cli-typed-result"></span>`;
+                    const typedEl = outputEl.querySelector('.cli-typed-result');
+                    if (window.MotionUI) {
+                        window.MotionUI.textScramble(typedEl, detailText, 380);
+                    } else {
+                        typedEl.textContent = detailText;
+                    }
+                };
+
                 if (cmd === 'optimize') {
                     const solveBtn = document.getElementById('sim-solve-btn');
                     if (solveBtn) solveBtn.click();
-                    outputEl.innerHTML = `<span style="color:var(--neon-lime)">❯ claude "otimizar grade com NSGA-II + Simulated Annealing"</span><br/>✓ [Memetic NSGA-II] 48 indivíduos × 72 gerações convergiram em 38ms · <strong>Fitness: 1060 pts (0 conflitos)</strong>.`;
+                    writeLine('/optimize --nsga2 --sa', '✓ 48 indivíduos × 72 gerações · 0 conflitos · Fitness 1060 pts.');
+                } else if (cmd === 'audit') {
+                    writeLine('/audit --model claude-sonnet-4', '✓ Equilíbrio cognitivo 98% · 0 janelas ociosas · máx. 2 seguidas OK.');
                 } else if (cmd === 'livery-lime') {
                     if (window.CLAEXThemeStudio) window.CLAEXThemeStudio.setLivery('lime');
-                    outputEl.innerHTML = `<span style="color:var(--neon-lime)">❯ claude "/livery --set ln4-acid-lime"</span><br/>✓ Design Tokens OKLCH sincronizados em <strong>--brand-hue: 112° (#D2FF00)</strong> sobre Carbon Asphalt (#111112).`;
-                } else if (cmd === 'livery-papaya') {
-                    if (window.CLAEXThemeStudio) window.CLAEXThemeStudio.setLivery('amber');
-                    outputEl.innerHTML = `<span style="color:var(--neon-lime)">❯ claude "/livery --set mclaren-papaya"</span><br/>✓ Design Tokens OKLCH sincronizados em <strong>--brand-hue: 52° (#FF8000 McLaren Papaya)</strong>.`;
-                } else if (cmd === 'audit') {
-                    outputEl.innerHTML = `<span style="color:var(--neon-lime)">❯ claude "auditar equilíbrio cognitivo e janelas docentes"</span><br/>✓ [Claude Sonnet 4 + Gemini 2.5 Pro] 98% Equilíbrio Cognitivo · 0 janelas ociosas · Regra ≤2 aulas seguidas 100% blindada.`;
+                    writeLine('/livery --brand-hue 112', '✓ Livery sincronizada em OKLCH #D2FF00 LN4 Acid Lime.');
+                } else if (cmd === 'surface-toggle') {
+                    const cur = document.documentElement.getAttribute('data-surface') === 'carbon' ? 'editorial' : 'carbon';
+                    if (window.CLAEXThemeStudio) window.CLAEXThemeStudio.setSurface(cur);
+                    writeLine('/surface --toggle', `✓ Polaridade alternada para modo ${cur === 'carbon' ? 'Carbon Paddock' : 'Editorial Claro'}.`);
                 }
             });
         });
     }
 
-    // 5. POP-UP MODAL INTERATIVO ("DESENVOLVIDO PARA ESCOLAS E PROFESSORES")
     function initProfilePopupModal() {
         const overlay = document.getElementById('claex-profile-popup');
         const closeBtn = document.getElementById('claex-popup-close');
         const cancelBtn = document.getElementById('claex-popup-cancel');
         const triggers = document.querySelectorAll('[data-popup-role]');
-
         if (!overlay || !triggers.length) return;
 
         const profileData = {
             direcao: {
-                icon: '🏫',
-                tag: 'LN01 // PIT-WALL GESTÃO',
+                tag: '#01 // GESTÃO & COORDENAÇÃO',
                 title: 'Direção & Coordenação',
-                desc: 'Controle todas as salas, durações de aula, intervalos e gere grades completas com o Otimizador Memético NSGA-II + Simulated Annealing e múltiplos modelos de IA.',
+                desc: 'Controle salas, intervalos e gere matrizes semanais sem colisões entre turnos com o otimizador NSGA-II + Simulated Annealing.',
                 items: [
-                    'Gestão completa de salas, laboratórios e turmas em tempo real',
-                    'Otimização Meta-Heurística (NSGA-II + Simulated Annealing + Kempe-Chain)',
-                    'Orquestração Multi-Modelo (Gemini 2.5 Pro, Claude Sonnet 4, OpenAI o3-mini)',
-                    'Auditoria de Equilíbrio Cognitivo e Compactação de Janelas Docentes'
+                    'Gestão centralizada de salas, turmas e carga horária',
+                    'Otimização Memética NSGA-II + Kempe-Chain 2-Opt',
+                    'Auditoria multi-modelo (Gemini 2.5 Pro · Claude Sonnet 4 · o3-mini)',
+                    'Compactação automática de janelas docentes'
                 ],
-                ctaText: 'Abrir Painel de Salas →',
+                ctaText: 'Abrir Quadro de Salas →',
                 ctaHref: 'listar_sala.html'
             },
             professor: {
-                icon: '👩‍🏫',
-                tag: 'LN02 // TELEMETRIA DOCENTE',
+                tag: '#02 // AUTONOMIA DOCENTE',
                 title: 'Corpo Docente',
-                desc: 'Autonomia para registrar horários disponíveis e matérias que leciona, garantindo uma grade justa, compacta e sem sobrecarga.',
+                desc: 'Registre seus horários livres entre instituições e proteja sua jornada contra sobrecargas consecutivas.',
                 items: [
-                    'Cadastro próprio de dias e horários disponíveis',
-                    'Proteção Motor CLAEX: nunca passa de 2 aulas seguidas',
-                    'Minimização automática de janelas ociosas entre aulas',
-                    'Sincronização entre diferentes escolas onde leciona'
+                    'Cadastro próprio de disponibilidades e modalidades',
+                    'Trava rígida de no máximo 2 aulas consecutivas',
+                    'Minimização automática de tempos ociosos entre turmas',
+                    'Sincronização nativa com múltiplas escolas'
                 ],
                 ctaText: 'Acessar Área do Professor →',
                 ctaHref: 'painel_professor.html'
             },
             aluno: {
-                icon: '🎓',
-                tag: 'LN03 // GRID ESTUDANTIL',
+                tag: '#03 // QUADRO ESTUDANTIL',
                 title: 'Estudantes & Turmas',
-                desc: 'Acesso rápido, limpo e somente-leitura à matriz oficial de horários da sua sala, com alternância cognitiva equilibrada.',
+                desc: 'Visualização clara, responsiva e somente leitura da grade oficial da turma com alternância cognitiva equilibrada.',
                 items: [
-                    'Consulta em tempo real da grade oficial da turma',
-                    'Equilíbrio cognitivo entre Exatas, Humanidades e Linguagens',
-                    'Visualização protegida (somente leitura) com Design System LN04 OKLCH',
-                    'Acesso imediato pelo computador ou celular'
+                    'Acesso instantâneo à matriz oficial de horários',
+                    'Equilíbrio entre ciências analíticas, humanidades e prática',
+                    'Interface tipográfica limpa de alto contraste (WCAG AA)',
+                    'Disponível para consulta rápida em desktop e mobile'
                 ],
-                ctaText: 'Consultar Grades →',
+                ctaText: 'Ver Grades Publicadas →',
                 ctaHref: 'listar_sala.html'
             }
         };
@@ -379,23 +348,16 @@
         const openModal = (roleKey) => {
             const data = profileData[roleKey];
             if (!data) return;
-
-            document.getElementById('popup-modal-icon').textContent = data.icon;
             document.getElementById('popup-modal-tag').textContent = data.tag;
             document.getElementById('popup-modal-title').textContent = data.title;
             document.getElementById('popup-modal-desc').textContent = data.desc;
-
-            const listEl = document.getElementById('popup-modal-list');
-            listEl.innerHTML = data.items
-                .map(item => `<li><span class="check">✓</span> <span>${item}</span></li>`)
-                .join('');
-
+            document.getElementById('popup-modal-list').innerHTML = data.items
+                .map(item => `<li><span class="check">✓</span><span>${item}</span></li>`).join('');
             const ctaEl = document.getElementById('popup-modal-cta');
             if (ctaEl) {
                 ctaEl.textContent = data.ctaText;
                 ctaEl.setAttribute('href', data.ctaHref);
             }
-
             overlay.classList.add('open');
             overlay.setAttribute('aria-hidden', 'false');
         };
@@ -406,9 +368,7 @@
         };
 
         triggers.forEach(card => {
-            card.addEventListener('click', () => {
-                openModal(card.getAttribute('data-popup-role'));
-            });
+            card.addEventListener('click', () => openModal(card.getAttribute('data-popup-role')));
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -419,86 +379,38 @@
 
         if (closeBtn) closeBtn.addEventListener('click', closeModal);
         if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeModal();
-        });
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && overlay.classList.contains('open')) {
-                closeModal();
-            }
+            if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
         });
     }
 
-    // 6. INTERACTIVE AMPULHETA CLAEX CIRCUIT HUB INSPECTOR
     function initAiHubDiagram() {
         const stage = document.getElementById('ai-hub-diagram');
         const inspectorText = document.getElementById('hub-inspector-text');
         if (!stage || !inspectorText) return;
 
-        const nodes = stage.querySelectorAll('[data-hub-info]');
-        nodes.forEach(node => {
+        stage.querySelectorAll('[data-hub-info]').forEach(node => {
             const updateInfo = () => {
                 stage.querySelectorAll('.hub-sat-node').forEach(n => n.classList.remove('active'));
-                if (node.classList.contains('hub-sat-node')) {
-                    node.classList.add('active');
-                }
+                if (node.classList.contains('hub-sat-node')) node.classList.add('active');
                 const info = node.getAttribute('data-hub-info');
-                if (info) {
-                    inspectorText.innerHTML = info;
-                }
+                if (info) inspectorText.innerHTML = info;
             };
             node.addEventListener('mouseenter', updateInfo);
             node.addEventListener('click', updateInfo);
         });
     }
 
-    // 7. PROXIMITY SPOTLIGHT & 3D TILT CARDS
-    function initSpotlightAndTiltCards() {
-        const cards = document.querySelectorAll('.spotlight-card');
-        if (!cards.length) return;
-
-        window.addEventListener('mousemove', (e) => {
-            cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        }, { passive: true });
-
-        const tiltCards = document.querySelectorAll('[data-tilt]');
-        if (window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            tiltCards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -2.8;
-                    const rotateY = ((x - centerX) / centerX) * 2.8;
-
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-3px)`;
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
-                });
-            });
-        }
-    }
-
-    // 8. INTERACTIVE RBAC PREVIEW SWITCHER
     function initRbacPreview() {
         const tabs = document.querySelectorAll('.rbac-tab');
         const output = document.getElementById('rbac-live-output');
         if (!tabs.length || !output) return;
 
         const messages = {
-            admin: '[DIREÇÃO / PIT-WALL] Acesso total: cadastra salas, seleciona o modelo de IA (Gemini 2.5 Pro / Claude Sonnet 4 / o3-mini) e executa o otimizador Memético NSGA-II.',
-            prof: '[PROFESSOR] Cadastra seus próprios dias/horários disponíveis e disciplinas no Painel do Professor com minimização automática de janelas.',
-            aluno: '[ALUNO] Consulta rápida, limpa e somente-leitura da grade horária oficial da turma com indicadores de equilíbrio cognitivo.'
+            admin: '[DIREÇÃO] Acesso completo: cadastra turmas, define regras de IA e executa o solver Memético NSGA-II + Simulated Annealing.',
+            prof:  '[PROFESSOR] Gerencia disponibilidade horária e disciplinas próprias, com consulta em tempo real das turmas vinculadas.',
+            aluno: '[ALUNO] Acesso somente leitura ao quadro semanal da sala com horários de aula e intervalos estruturados.'
         };
 
         tabs.forEach(tab => {
@@ -506,18 +418,11 @@
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 const role = tab.getAttribute('data-rbac-role');
-                if (messages[role]) {
-                    output.style.opacity = '0.4';
-                    setTimeout(() => {
-                        output.textContent = messages[role];
-                        output.style.opacity = '1';
-                    }, 100);
-                }
+                if (messages[role]) output.textContent = messages[role];
             });
         });
     }
 
-    // 9. SCHEDULE SIMULATOR WIDGET (MOTOR CLAEX)
     function initScheduleSimulator() {
         const container = document.getElementById('claex-interactive-simulator');
         if (!container) return;
@@ -529,52 +434,39 @@
 
         slots.forEach(slot => {
             slot.addEventListener('click', () => {
-                const isConflict = slot.classList.contains('conflict');
-                if (isConflict) {
+                if (slot.classList.contains('conflict')) {
                     slot.classList.remove('conflict');
                     slot.classList.add('resolved');
-                    slot.innerHTML = `<span class="slot-badge">OK</span> ${slot.dataset.subject} <small style="display:block;font-size:.65rem;color:var(--text-secondary)">Equilibrado</small>`;
-                    if (telemetryStatus) {
-                        telemetryStatus.textContent = 'GRADE EQUILIBRADA (NSGA-II + SIMULATED ANNEALING)';
-                    }
-                    if (telemetryLog) {
-                        telemetryLog.textContent = `[RESOLVIDO] Aula de ${slot.dataset.subject} (${slot.dataset.day} ${slot.dataset.time}) ajustada por permutação Kempe-Chain.`;
-                    }
+                    slot.innerHTML = `<span class="slot-badge">OK</span> ${slot.dataset.subject}<small style="display:block;font-size:.66rem;color:var(--text-secondary)">Equilibrado</small>`;
+                    if (telemetryStatus) telemetryStatus.textContent = 'SLOT AJUSTADO POR PERMUTAÇÃO KEMPE-CHAIN';
+                    if (telemetryLog) telemetryLog.textContent = `[RESOLVIDO] ${slot.dataset.subject} (${slot.dataset.day} ${slot.dataset.time}) realocada sem choques.`;
                 } else if (slot.classList.contains('resolved')) {
                     slot.classList.remove('resolved');
-                    slot.innerHTML = `<span class="slot-badge">LIVRE</span> ${slot.dataset.subject} <small style="display:block;font-size:.65rem;color:var(--text-muted)">Disponível</small>`;
+                    slot.innerHTML = `<span class="slot-badge">LIVRE</span> ${slot.dataset.subject}<small style="display:block;font-size:.66rem;color:var(--text-muted)">Disponível</small>`;
                 } else {
                     slot.classList.add('conflict');
-                    slot.innerHTML = `<span class="slot-badge">CHOQUE</span> ${slot.dataset.subject} <small style="display:block;font-size:.65rem;color:#fca5a5">>2 Seguidas</small>`;
-                    if (telemetryStatus) {
-                        telemetryStatus.textContent = 'ALERTA: RESTRIÇÃO DETECTADA';
-                    }
-                    if (telemetryLog) {
-                        telemetryLog.textContent = `[BLOQUEIO MOTOR CLAEX] Docente excederia o limite de 2 aulas seguidas ou teria choque entre unidades.`;
-                    }
+                    slot.innerHTML = `<span class="slot-badge">CHOQUE</span> ${slot.dataset.subject}<small style="display:block;font-size:.66rem;color:#B91C1C">&gt;2 Aulas Seguidas</small>`;
+                    if (telemetryStatus) telemetryStatus.textContent = 'ALERTA: COLISÃO DETECTADA';
+                    if (telemetryLog) telemetryLog.textContent = '[MOTOR CLAEX] Docente excederia o limite rígido de 2 aulas consecutivas.';
                 }
             });
         });
 
         if (solveBtn) {
             solveBtn.addEventListener('click', () => {
-                const conflicts = container.querySelectorAll('.sim-slot.conflict');
-                conflicts.forEach(slot => {
+                container.querySelectorAll('.sim-slot.conflict').forEach(slot => {
                     slot.classList.remove('conflict');
                     slot.classList.add('resolved');
-                    slot.innerHTML = `<span class="slot-badge">OK</span> ${slot.dataset.subject} <small style="display:block;font-size:.65rem;color:var(--text-secondary)">Confirmado</small>`;
+                    slot.innerHTML = `<span class="slot-badge">OK</span> ${slot.dataset.subject}<small style="display:block;font-size:.66rem;color:var(--text-secondary)">Confirmado</small>`;
                 });
-                if (telemetryStatus) {
-                    telemetryStatus.textContent = 'GRADE 100% OTIMIZADA (FITNESS: 1060 PTS · 0 CONFLITOS)';
-                }
-                if (telemetryLog) {
-                    telemetryLog.textContent = '[SINCRONIZADO] Solver Memético NSGA-II + Gemini 2.5 Pro convergiu com 98% de Equilíbrio Cognitivo.';
-                }
+                if (telemetryStatus) telemetryStatus.textContent = 'GRADE OTIMIZADA · FITNESS 1060 PTS · 0 CONFLITOS';
+                if (telemetryLog) telemetryLog.textContent = '[SINCRONIZADO] Solver Memético NSGA-II convergiu com 98% de equilíbrio cognitivo.';
+                const metricEl = document.getElementById('ln4-fitness-counter');
+                if (metricEl && window.MotionUI) window.MotionUI.slidingNumber(metricEl, 1060, ' pts');
             });
         }
     }
 
-    // 10. GLOBAL NAVIGATION DRAWER
     function initNavigation() {
         const bars = document.querySelectorAll('.bars, .menu-icon, #menuToggle');
         const sideMenu = document.querySelector('#side-menu');
@@ -586,33 +478,25 @@
                 if (overlay) overlay.classList.toggle('open');
             }
         }
-
         bars.forEach(bar => bar.addEventListener('click', toggleMenu));
-
-        if (overlay) {
-            overlay.addEventListener('click', () => {
-                if (sideMenu) sideMenu.classList.remove('open');
-                overlay.classList.remove('open');
-            });
-        }
-
+        if (overlay) overlay.addEventListener('click', () => {
+            if (sideMenu) sideMenu.classList.remove('open');
+            overlay.classList.remove('open');
+        });
         const closeMenu = document.querySelector('.close-menu');
-        if (closeMenu) {
-            closeMenu.addEventListener('click', () => {
-                if (sideMenu) sideMenu.classList.remove('open');
-                if (overlay) overlay.classList.remove('open');
-            });
-        }
+        if (closeMenu) closeMenu.addEventListener('click', () => {
+            if (sideMenu) sideMenu.classList.remove('open');
+            if (overlay) overlay.classList.remove('open');
+        });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        initSingleAccentController();
+        initThemeStudio();
         initNarratorCursor();
         initOnOffTrackSwitcher();
         initClaudeCodeTerminal();
         initProfilePopupModal();
         initAiHubDiagram();
-        initSpotlightAndTiltCards();
         initRbacPreview();
         initScheduleSimulator();
         initNavigation();

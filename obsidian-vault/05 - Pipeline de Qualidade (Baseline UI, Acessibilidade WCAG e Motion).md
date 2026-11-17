@@ -2,69 +2,53 @@
 title: "05 - Pipeline de Qualidade (Baseline UI, Acessibilidade WCAG e Motion)"
 aliases:
   - "Pipeline Baseline UI"
-  - "Acessibilidade e Motion CLAEX"
+  - "Motion UI e Motion Primitives CLAEX"
 tags:
   - claex/v10
   - frontend/claude-design-toolkit
+  - motion-ui
+  - motion-primitives
   - wcag-aa
-  - motion-performance
-  - baseline-ui
-created: 2026-04-20
+updated: 2026-11-17
 related:
   - "[[00 - MOC (Mapa de Conteúdo CLAEX v10)]]"
   - "[[01 - Modernização Frontend (Claude Code Design Toolkit)]]"
   - "[[02 - Design Tokens OKLCH e Theme Studio]]"
 ---
 
-# ♿ 05 — Pipeline de Qualidade: `baseline-ui` → `fixing-accessibility` → `fixing-motion-performance`
+# ⚡ 05 — Pipeline de Qualidade: `baseline-ui` → `fixing-accessibility` → `Motion UI`
 
 ⬅️ Voltar para **[[00 - MOC (Mapa de Conteúdo CLAEX v10)]]** | **[[01 - Modernização Frontend (Claude Code Design Toolkit)]]**
 
-> [!info] O Pipeline de 3 Skills do Toolkit
-> No repositório [`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit), a recomendação central para garantir acabamento de nível produção é rodar três verificações em sequência:
-> 1. **`baseline-ui`**: Consistência de espaçamento, hierarquia tipográfica, alinhamento tabular e estados vazios/erro.
-> 2. **`fixing-accessibility`**: Navegação por teclado, anéis `:focus-visible`, *Skip Links*, semântica ARIA e contraste WCAG 2.1 AA.
-> 3. **`fixing-motion-performance`**: Animações restritas a `transform` e `opacity` (GPU-composited) e respeito estrito a `@media (prefers-reduced-motion: reduce)`.
+> [!info] Integração Oficial `Motion` + `Motion Primitives`
+> Além das 3 verificações do [`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit), toda a camada cinética foi reescrita em [`motion-ui.js`](../lolooo-main/src/main/resources/static/js/motion-ui.js) utilizando **[`motion@11.15.0`](https://github.com/motiondivision/motion)** (`window.Motion`: `animate`, `inView`, `scroll`, `stagger`), presets **Motion UI Theme** (`snap`, `ui`, `gentle`, `lively`) e padrões **[`ibelick/motion-primitives`](https://github.com/ibelick/motion-primitives)**.
 
 ---
 
-## 1. Fase 1: `baseline-ui` (Fundação Visual e Tipográfica)
+## 1. Fase 1: `baseline-ui` (Disciplina Espacial & Tipográfica)
 
-- **Alinhamento Numérico Tabular (`tabular-nums`)**:
-  - Aplicado a todas as células de horário (`.col-horario`), contadores de salas/professores, badges de carga cognitiva e KPIs de telemetria (`.kpi-telemetry-value`):
-  ```css
-  .tabular-nums, .col-horario, .metric-display, .kpi-telemetry-value {
-      font-variant-numeric: tabular-nums;
-      font-feature-settings: "tnum" 1, "zero" 1;
-  }
-  ```
-- **Prevenção de Linhas Órfãs (`text-wrap`)**:
-  - `h1, h2, h3` utilizam `text-wrap: balance` para distribuir títulos de forma simétrica.
-  - Parágrafos e relatórios da IA utilizam `text-wrap: pretty` com largura máxima de leitura confortável (`65ch`).
+- **Alinhamento Numérico Tabular (`tabular-nums`)**: aplicado ao rail de métricas do Hero, relógios da matriz em `grade.html`, contadores do simulador ON TRACK e placares KPI.
+- **Cabeçalho em Cápsula Único (`white-space: nowrap`)**: impede que rótulos de navegação, crachás de perfil (`[ADM]`) ou botões `Minhas Infos` / `Sair` quebrem em múltiplas linhas em desktops e notebooks.
+- **Notificações Zero-Collision (`claex-notify.js`)**: toasts posicionados no canto inferior direito (`bottom: 24px; right: 24px`) em carvão `#111112` limpo, sem `box-shadow` fluorescente e sem cobrir botões de cabeçalho (`Entrar`, `Criar conta`).
 
 ---
 
-## 2. Fase 2: `fixing-accessibility` (WCAG 2.1 AA)
+## 2. Fase 2: `fixing-accessibility` (WCAG 2.1 AA em Modo Claro & Carbon)
 
-- **Injeção Automática de Skip-Link**:
-  - `unlumen-effects.js` injeta automaticamente `<a href="#main-content" class="skip-to-content">Pular para o conteúdo principal</a>` no topo do `<body>` e garante que o `<main>` possua `id="main-content"`.
-- **Anel de Foco de Alta Visibilidade (`:focus-visible`)**:
-  - Todos os botões, links da cápsula flutuante, seletores de modelo e inputs exibem um anel duplo em `OKLCH`:
-  ```css
-  :focus-visible {
-      outline: 2px solid var(--accent-bright);
-      outline-offset: 3px;
-      box-shadow: 0 0 0 5px oklch(62% 0.20 var(--brand-hue) / 0.22);
-  }
-  ```
-- **Regiões `aria-live="polite"`**:
-  - Os KPIs de telemetria e o console do **Orquestrador Multi-Modelo IA** em `grade.html` anunciam atualizações de status sem interromper leitores de tela.
+- **Skip-Link e Marcos ARIA**: `unlumen-effects.js` injeta automaticamente `.skip-to-content`, controla foco por `Escape` / `Tab` no Theme Studio e popup de perfis, e mantém regiões `aria-live="polite"`.
+- **Contraste Verificado para Acid Lime `#D2FF00`**:
+  - Em `data-surface="editorial"`, texto e links usam `--accent-ink` (`oklch(0.36 0.13 var(--brand-hue))`) ou `#111112`, enquanto `#D2FF00` é reservado para fundos de botões (`#111112` sobre lime), marcações sublinhadas e molduras.
+  - Badge de usuário injetado dinamicamente por `api.js` (`.header-actions > span`) recebe cápsula com fundo sutil `--neon-subtle` e texto em tinta contrastada `--text-pure` via CSS puro (sem alterar `api.js`).
 
 ---
 
-## 3. Fase 3: `fixing-motion-performance` (60fps & Reduced Motion)
+## 3. Fase 3: `Motion UI` & `fixing-motion-performance` (`js/motion-ui.js`)
 
-- **Curvas de Easing Naturais**:
-  - Substituímos transições lineares por `--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1)` e `--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1)`.
-- **Proteção Vestibular (`prefers-reduced-motion: reduce`)**:
-  - Em `design-tokens-oklch.css`, usuários com sensibilidade a movimento têm todas as animações decorativas, feixes de circuito e deslocamentos 3D desativados instantaneamente, preservando 100% da funcionalidade.
+| Primitiva / Presets | Padrão (`motion-primitives` / Motion UI) | Uso no CLAEX |
+| :--- | :--- | :--- |
+| **`MotionTheme`** | `{ snap: 0.28s, ui: 0.42s, gentle: 0.65s, lively: 0.50s, reducedMotion: 'calm' }` | Curvas calibrated cubic-bezier `[0.16, 1, 0.3, 1]` em todas as interações |
+| **`MotionUI.textScramble`** | `TextScramble` | Decodificação de comando no CLI `claude-code` e eyebrow `PIT-WALL NOTE` |
+| **`MotionUI.slidingNumber`** | `SlidingNumber` | Atualização numérica fluida de pendências no Simulador ON TRACK |
+| **`Motion.inView` Seguro** | `InView` | Anima apenas elementos inicialmente abaixo da dobra (`opacity: 0.08 -> 1`), evitando elementos invisíveis em capturas ou atalhos de âncora |
+| **`Motion.scroll` Docking** | `Scroll` Progress & Dock | Dirige `#lando-scroll-progress` e acopla `#logo-ampulheta` do Hero ao soquete CAD `#hub-center-target` |
+| **Proteção Vestibular** | `prefers-reduced-motion: reduce` | Desativa movimentos e estabiliza transformações imediatamente sem prejudicar o funcionamento |

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-surface="editorial" data-accent="lime">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLAEX // Painel de Salas</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.15.0/dist/motion.js"></script>
 </head>
 <body>
-    <!-- Floating Dock Header -->
     <header id="main-header">
         <div class="header-inner">
             <div class="brand-container">
@@ -18,9 +18,9 @@
                 </div>
                 <a href="index.html" class="brand-logo">
                     <span class="header-hourglass-icon" aria-hidden="true">
-                        <svg viewBox="0 0 100 100" width="22" height="22" fill="currentColor">
-                            <path d="M8,6 L46,6 L46,94 L8,94 L37,50 L15,17 L23,15 Z" />
-                            <path d="M54,6 L92,6 L63,50 L92,94 L54,94 Z" fill="var(--neon-lime)" />
+                        <svg viewBox="0 0 100 100" width="22" height="22">
+                            <path d="M8,6 L46,6 L46,94 L8,94 L37,50 L15,17 L23,15 Z" fill="currentColor" />
+                            <path d="M54,6 L92,6 L63,50 L92,94 L54,94 Z" fill="var(--neon-lime)" stroke="#111112" stroke-width="3" />
                         </svg>
                     </span>
                     CLAEX
@@ -42,36 +42,42 @@
         </div>
     </header>
 
-    <!-- Side Drawer Menu -->
-    <aside id="side-menu">
+    <aside id="side-menu" aria-label="Menu Lateral">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <div class="brand-logo">CLAEX<span>.</span></div>
-            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;" aria-label="Fechar Menu">✕</button>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1rem;" aria-label="Fechar Menu">✕</button>
         </div>
         <div class="telemetry-tag">Navegação Rápida</div>
-        <a href="index.html" class="side-link">🏠 Início</a>
-        <a href="form_login.html?tipo=entrar" class="side-link">🔑 Acesso / Login</a>
-        <a href="listar_sala.html" class="side-link">📚 Salas & Turmas</a>
-        <a href="form_nova_sala.html" class="side-link">➕ Criar Nova Sala</a>
-        <a href="config_sala.html" class="side-link">⚙️ Configurações de Sala</a>
-        <a href="painel_professor.html" class="side-link">👨‍🏫 Área do Professor</a>
-        <a href="tabela_cadastros.html" class="side-link">👥 Painel de Professores</a>
+        <a href="index.html" class="side-link">01 // Início</a>
+        <a href="form_login.html?tipo=entrar" class="side-link">02 // Acesso / Login</a>
+        <a href="listar_sala.html" class="side-link">03 // Salas &amp; Turmas</a>
+        <a href="form_nova_sala.html" class="side-link">04 // Criar Nova Sala</a>
+        <a href="config_sala.html" class="side-link">05 // Configurações de Sala</a>
+        <a href="painel_professor.html" class="side-link">06 // Área do Professor</a>
+        <a href="tabela_cadastros.html" class="side-link">07 // Painel de Professores</a>
     </aside>
-    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+    <div class="menu-overlay"></div>
 
     <section id="painel">
-        <img src="https://bkpsitecpsnew.blob.core.windows.net/uploadsitecps/sites/197/2024/12/centro-paula-souza.jpg" alt="Instituição">
+        <div class="painel-crest" aria-label="Instituição">
+            <svg viewBox="0 0 72 72" width="72" height="72" aria-hidden="true">
+                <rect x="1" y="1" width="70" height="70" rx="14" fill="#111112" stroke="rgba(245,245,240,0.16)" />
+                <path d="M21,15 L35,15 L35,51 L21,51 L31,33 L24,20 L27,19 Z" fill="#F5F5F0" />
+                <path d="M37,15 L51,15 L41,33 L51,51 L37,51 Z" fill="var(--neon-lime)" />
+                <text x="36" y="63" text-anchor="middle" fill="#A1A1AA" font-family="monospace" font-size="8" font-weight="700" letter-spacing="1.5">CPS // SP</text>
+            </svg>
+        </div>
         <article>
             <div class="telemetry-tag" style="margin-bottom: 6px;">UNIDADE CONECTADA</div>
             <h1 id="user_display_name">Centro Paula Souza</h1>
             <p style="display: flex; gap: 24px; margin-top: 6px; flex-wrap: wrap;">
-                <span>Professores Cadastrados: <strong style="color: var(--neon-lime);" id="prof-count">...</strong></span>
-                <span>Salas Ativas no BD: <strong style="color: var(--neon-cyan);" id="sala-count">...</strong></span>
+                <span>Professores Cadastrados: <strong style="color: var(--accent-ink); font-family: var(--font-mono);" id="prof-count">...</strong></span>
+                <span>Salas Ativas no BD: <strong style="color: var(--text-pure); font-family: var(--font-mono);" id="sala-count">...</strong></span>
             </p>
         </article>
     </section>
 
-    <main>
+    <main id="main-content">
         <div class="link_nova_sala">
             <div>
                 <div class="telemetry-tag" style="margin-bottom: 4px;">[MATRIZ DE AMBIENTES // BANCO DE DADOS]</div>
@@ -83,7 +89,6 @@
         </div>
 
         <section id="salas_user">
-            <!-- As salas carregam dinamicamente aqui -->
             <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-secondary);">
                 <p>Conectando ao banco de dados...</p>
             </div>
@@ -91,45 +96,42 @@
     </main>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-brand">CLAEX<span>.</span></div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Navegação</h4>
-                    <a href="index.html">Início</a>
-                    <a href="listar_sala.html">Salas</a>
-                    <a href="grade.html">Grade de Horários</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Legal</h4>
-                    <a href="#">Termos de Uso</a>
-                    <a href="#">Política de Privacidade</a>
+        <div class="footer-panel-inner">
+            <div class="footer-content">
+                <div class="footer-brand">CLAEX<span>.</span></div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Navegação</h4>
+                        <a href="index.html">Início</a>
+                        <a href="listar_sala.html">Salas</a>
+                        <a href="grade.html">Grade de Horários</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Política de Privacidade</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div>&copy; 2026 CLAEX. Todos os direitos reservados.</div>
-            <div class="footer-status">ONLINE // REPO v1n1k4/lolooo CONNECTED</div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 CLAEX. Todos os direitos reservados.</div>
+                <div class="footer-status">ONLINE // DATABASE CONNECTED</div>
+            </div>
         </div>
     </footer>
 
-    <!-- Core API & Interaction Scripts -->
     <script src="js/claex-notify.js"></script>
     <script src="js/api.js"></script>
     <script>
         async function listarSalas() {
             const sect = document.getElementById("salas_user");
-            
-            // Exibir nome do usuário logado se houver
             const user = window.API.getUsuarioAtual();
             if (user && user.nome) {
                 document.getElementById("user_display_name").textContent = `${user.nome} (${user.tipo})`;
             }
 
             try {
-                // Chama SalaController: /salas/listar do repositório v1n1k4/lolooo
                 const salas = await window.API.salas.listar();
-
                 sect.innerHTML = "";
 
                 if (!salas || salas.length === 0) {
@@ -151,7 +153,7 @@
                                 <article class="caixa_sala spotlight-card">
                                     <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                         <span class="telemetry-tag" style="margin: 0; font-size: 0.65rem;">SALA #${sala.id_sala}</span>
-                                        <span style="color: var(--neon-lime); font-size: 0.8rem; font-family: var(--font-mono);">VER GRADE →</span>
+                                        <span style="color: var(--accent-ink); font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700;">VER GRADE →</span>
                                     </div>
                                     <p>${sala.nome_sala}</p>
                                     <div style="margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
@@ -163,7 +165,6 @@
                     });
                 }
 
-                // Busca contagem de professores cadastrados (ProfessorControler: /professores/listar)
                 try {
                     const profs = await window.API.professores.listar();
                     document.getElementById("prof-count").textContent = profs.length || "0";
@@ -172,12 +173,11 @@
                 }
 
             } catch (error) {
-                console.error("Erro ao sincronizar salas com v1n1k4/lolooo:", error);
+                console.error("Erro ao sincronizar salas:", error);
                 sect.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: rgba(255, 59, 48, 0.12); border-radius: var(--radius-md); border: 1px solid var(--neon-red);">
-                        <p style="color: #ff9999; margin-bottom: 8px; font-weight: 700;">Falha de comunicação com o banco de dados.</p>
-                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">Verifique se o backend Spring Boot está ativo ou clique no botão de conexão no canto inferior esquerdo para alternar o servidor.</p>
-                        <small style="color: var(--text-muted); font-family: var(--font-mono);">${error.message}</small>
+                    <div class="error-banner" style="grid-column: 1 / -1; text-align: center; padding: 36px;">
+                        <p style="font-weight: 700; margin-bottom: 6px; color: inherit;">Falha de comunicação com o banco de dados.</p>
+                        <small style="font-family: var(--font-mono);">${error.message}</small>
                     </div>
                 `;
             }
@@ -186,6 +186,7 @@
         listarSalas();
     </script>
     <script src="js/webgl-background.js"></script>
+    <script src="js/motion-ui.js"></script>
     <script src="js/unlumen-effects.js"></script>
 </body>
 </html>

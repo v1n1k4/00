@@ -2,73 +2,85 @@
 title: "02 - Design Tokens OKLCH e Theme Studio"
 aliases:
   - "OKLCH Tokens"
+  - "Editorial vs Carbon Surfaces"
   - "Theme Studio CLAEX"
 tags:
   - claex/v10
   - oklch
   - css-tokens
+  - wcag-contrast
   - frontend/claude-design-toolkit
-created: 2026-04-20
+updated: 2026-11-17
 related:
   - "[[00 - MOC (Mapa de Conteúdo CLAEX v10)]]"
   - "[[01 - Modernização Frontend (Claude Code Design Toolkit)]]"
 ---
 
-# 🌈 02 — Design Tokens `OKLCH` & Live Theme Studio
+# 🌈 02 — Design Tokens `OKLCH`, Polaridade Editorial/Carbon & Theme Studio
 
 ⬅️ Voltar para **[[00 - MOC (Mapa de Conteúdo CLAEX v10)]]** | **[[01 - Modernização Frontend (Claude Code Design Toolkit)]]**
 
-> [!tip] Por que `OKLCH` em vez de `HEX` ou `HSL`?
-> Conforme destacado no `Claude-Code-Frontend-Design-Toolkit` (*Bencium Innovative UX Design*), o espaço de cor `HSL` distorce a luminosidade percebida pelo olho humano quando mudamos o matiz (amarelo e ciano parecem muito mais claros que azul ou violeta na mesma luminosidade HSL de `50%`). Já o espaço **`OKLCH(Lightness Chroma Hue)`** garante **uniformidade perceptual**: ao girar `--brand-hue` de `0°` a `360°`, o contraste de leitura WCAG permanece consistente sem quebrar a legibilidade da interface.
+> [!tip] Contraste Seguro em Papel Claro (`#F5F5F0`) e Carvão Escuro (`#111112`)
+> Cores neon claras como Acid Lime (`#D2FF00`) têm contraste excelente contra preto `#111112`, mas **falham em legibilidade** quando usadas como cor de texto sobre branco (`#FFFFFF` / `#F5F5F0`). Por isso, em `css/design-tokens-oklch.css` separamos explicitamente o **acento preenchido (`--neon-lime`)** da **tinta de texto (`--accent-ink` / `--neon-bright`)** conforme a polaridade da superfície ativa.
 
 ---
 
-## 1. Arquitetura de Variável Raiz Única (`--brand-hue`)
+## 1. Arquitetura de Polaridade Dupla (`data-surface`)
 
-No arquivo `lolooo-main/src/main/resources/static/css/design-tokens-oklch.css`, definimos toda a atmosfera cromática a partir de `--brand-hue`:
+No arquivo `lolooo-main/src/main/resources/static/css/design-tokens-oklch.css`:
 
+### A. Superfície Padrão: `data-surface="editorial"` (Lando Norris Gallery Paper)
 ```css
-:root {
-    /* Semente única de matiz (0 a 360) — Padrão: LN4 Acid Lime (#D2FF00) */
+:root,
+html[data-surface="editorial"] {
     --brand-hue: 112;
-    --brand-lightness: 0.91;
-    --brand-chroma: 0.23;
-    --text-on-accent: #0B0C0E;
+    --bg-obsidian: #F5F5F0;     /* Fundo papel editorial quente */
+    --bg-surface:  #FFFFFF;     /* Cartões elevados sem brilho */
+    --bg-carbon:   #ECECE6;     /* Inputs e células secundárias */
+    --surface-dark: #111112;    /* Painéis de contraste binário */
+    --text-pure:   #111112;     /* Tinta principal */
+    --text-secondary: #52525B;  /* Tinta secundária neutra */
+    --neon-lime:   oklch(0.92 0.22 var(--brand-hue));   /* #D2FF00 para preenchimentos */
+    --text-on-accent: #111112;                           /* Preto ink sobre botões #D2FF00 */
+    --accent-ink:  oklch(0.36 0.13 var(--brand-hue));   /* Texto/links acessíveis WCAG AA sobre claro */
+    --border-card: rgba(17, 17, 18, 0.12);
+}
+```
 
-    /* Superfícies de Asfalto de Pista (#111112) com Tinta Atmosférica */
-    --surface-canvas:   oklch(11% 0.012 var(--brand-hue));
-    --surface-elevated: oklch(14.5% 0.016 var(--brand-hue));
-    --surface-card:     oklch(17.5% 0.020 var(--brand-hue));
-
-    /* Acentos Principais Perceptualmente Uniformes */
-    --accent-primary:   oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue));
-    --accent-bright:    oklch(94% calc(var(--brand-chroma) * 0.92) var(--brand-hue));
-    --accent-deep:      oklch(72% calc(var(--brand-chroma) * 1.05) var(--brand-hue));
-    --accent-glow:      oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.36);
+### B. Superfície Opcional: `data-surface="carbon"` (Motorsport Paddock Matte Dark)
+```css
+html[data-surface="carbon"] {
+    --bg-obsidian: #111112;
+    --bg-surface:  #18181A;
+    --bg-carbon:   #202024;
+    --text-pure:   #F5F5F0;
+    --text-secondary: #A1A1AA;
+    --neon-bright: oklch(0.92 0.22 var(--brand-hue));
+    --accent-ink:  oklch(0.92 0.22 var(--brand-hue));
+    --border-card: rgba(245, 245, 240, 0.12);
 }
 ```
 
 ---
 
-## 2. Os 5 Capacetes / Liveries Oficiais do Theme Studio (`landonorris.com` Edition)
+## 2. Os 5 Liveries Oficiais do Theme Studio (`window.CLAEXThemeStudio`)
 
-O controlador interativo em `unlumen-effects.js` (`window.CLAEXThemeStudio`) disponibiliza 5 pinturas inspiradas nos capacetes de Lando Norris na Fórmula 1 mais o **Slider Contínuo (`0°–360°`)**:
+Em [`unlumen-effects.js`](../lolooo-main/src/main/resources/static/js/unlumen-effects.js), o usuário pode alternar **Polaridade de Superfície (`Editorial` ↔ `Carbon`)**, **Livery F1** e o **Slider contínuo `--brand-hue` (`0°–360°`)**:
 
-| ID do Tema (`data-accent`) | Livery no Studio | Matiz (`--brand-hue`) | Equivalente Sólido | Contexto Recomendado |
-| :--- | :--- | :---: | :---: | :--- |
-| `lime` *(default)* | **LN4 Acid Lime** | `112°` | `#D2FF00` | Assinatura oficial `landonorris.com` sobre asfalto `#111112` |
-| `papaya` | **McLaren Papaya** | `52°` | `#FF8000` | Laranja corrida McLaren F1 Team e alertas de telemetria |
-| `aero` | **Silverstone Aero** | `195°` | `#00F0FF` | Ciano aerodinâmico para inspeção de métricas NSGA-II |
-| `violet` | **Dark Glitter GP** | `292°` | `#A855F7` | Auditoria com `anthropics/claude-code` e `Claude Sonnet 4` |
-| `monaco` | **Monaco Porcelain** | `255°` | `#3B82F6` | Edição especial GP de Mônaco / modo institucional clássico |
+| Preset (`data-accent`) | Livery no Studio | `--brand-hue` | Contexto Principal |
+| :--- | :--- | :---: | :--- |
+| `lime` *(default)* | **LN4 Acid Lime** | `112°` | Paddock oficial `landonorris.com` (`#D2FF00` sobre `#F5F5F0` / `#111112`) |
+| `amber` | **McLaren Papaya** | `52°` | Laranja corrida McLaren F1 Team |
+| `cyan` | **Silverstone Aero** | `195°` | Ciano técnico para métricas e simulador NSGA-II |
+| `violet` | **Night GP Violet** | `292°` | Roxo editorial sob medida para auditoria `Claude Sonnet 4` |
+| `blue` | **Porcelain Blue** | `245°` | Azul institucional de alto contraste |
 
 ---
 
-## 3. Persistência e Sincronização com WebGL / SVGs
+## 3. Persistência entre Páginas & Comandos CLI
 
-Quando o usuário escolhe um preset ou arrasta o controle deslizante `0°–360°`:
-1. `document.documentElement.style.setProperty('--brand-hue', hue)` atualiza instantaneamente todas as variáveis CSS `oklCH` a `60fps`.
-2. Uma função de conversão matemática `oklchToHex(0.62, 0.20, hue)` gera os equivalentes RGB/Hex em tempo real para alimentar os shaders **WebGL** (`webgl-background.js`) e gradientes **SVG** da Ampulheta CLAEX.
-3. A preferência é salva em `localStorage` (`claex_accent_theme` e `claex_brand_hue`) e restaurada automaticamente em todas as páginas do sistema.
+1. As preferências ficam gravadas em `localStorage` (`claex_surface_mode`, `claex_accent_theme`, `claex_brand_hue`) e aplicadas instantaneamente antes da pintura para evitar flash entre navegações.
+2. O terminal minimalista **`claude-code`** na home page permite invocar `/livery --lime` e `/surface --toggle` chamando diretamente `CLAEXThemeStudio.setLivery()` e `CLAEXThemeStudio.setSurface()`.
+3. O fundo CAD em [`webgl-background.js`](../lolooo-main/src/main/resources/static/js/webgl-background.js) lê `--brand-hue` e `data-surface` para desenhar linhas topográficas sutis sem halos ou partículas brilhantes.
 
-➡️ Próxima leitura: **[[03 - Otimizador Híbrido (Memético NSGA-II + Simulated Annealing)]]**
+➡️ Próxima leitura: **[[05 - Pipeline de Qualidade (Baseline UI, Acessibilidade WCAG e Motion)]]**

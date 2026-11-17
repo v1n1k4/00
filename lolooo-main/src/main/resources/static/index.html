@@ -1,53 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-surface="editorial" data-accent="lime">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLAEX — Motor Inteligente de Grades Escolares</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/style-v5-extensions.css">
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.15.0/dist/motion.js"></script>
 
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='10,8 47,8 47,92 10,92 38,50' fill='%233B82F6'/><polygon points='53,8 90,8 62,50 90,92 53,92' fill='%23FFFFFF'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='10,8 47,8 47,92 10,92 38,50' fill='%23111112'/><polygon points='53,8 90,8 62,50 90,92 53,92' fill='%23D2FF00'/></svg>">
 </head>
 <body>
 
-<!-- Barra de Progresso de Telemetria no Topo (Estilo Lando Norris) -->
+<!-- Barra de Progresso de Telemetria no Topo -->
 <div class="lando-scroll-progress" id="lando-scroll-progress" aria-hidden="true"></div>
 
-<!-- Feixe de Luz Volumétrico Diagonal Superior Direito -->
-<div class="edge-light-wrapper" aria-hidden="true">
-    <div class="edge-light-beam"></div>
-    <div class="edge-light-core"></div>
-</div>
-
-<!-- Barra Superior de Anúncio -->
+<!-- Top Telemetry Strip -->
 <div class="edge-topbar">
     <div class="edge-topbar-inner">
-        <a href="grade.html?id=1" class="edge-topbar-promo">
+        <a href="grade.html?id=1" class="edge-topbar-promo" data-cursor-label="PIT-WALL">
             <span class="pulse-dot"></span>
-            <span>CLAEX v10 · Motor Memético NSGA-II + Simulated Annealing · Multi-Modelo IA (Gemini 2.5 Pro · Claude Sonnet 4 · o3-mini) →</span>
+            <span>CLAEX v10 // NSGA-II + Simulated Annealing · Gemini 2.5 Pro · Claude Sonnet 4 →</span>
         </a>
         <div class="edge-topbar-links">
-            <button type="button" class="accent-switch-btn" id="accentSwitchBtn" title="Abrir Theme Studio OKLCH (Claude Code Frontend Design Toolkit)">
+            <button type="button" class="accent-switch-btn" id="accentSwitchBtn" data-cursor-label="ESTÚDIO" title="Configurar Superfície e Pintura OKLCH">
                 <span class="swatch"></span>
-                <span id="accentLabel">Tema: Azul Escolar · 255°</span>
+                <span id="accentLabel">Editorial · LN4 Acid Lime</span>
             </button>
             <a href="painel_professor.html">Área do Professor</a>
             <a href="form_login.html">Log in</a>
-            <span style="color:var(--text-muted)">🌐 PT</span>
         </div>
     </div>
 </div>
 
-<!-- Cabeçalho Cápsula Flutuante (Estilo Opticore) com Símbolo da Ampulheta CLAEX -->
+<!-- Cabeçalho Flutuante -->
 <header id="main-header">
     <div class="header-inner">
         <div class="brand-container">
@@ -58,16 +44,16 @@
             </div>
             <a href="index.html" class="brand-logo">
                 <span class="header-hourglass-icon" aria-hidden="true">
-                    <svg viewBox="0 0 100 100" width="24" height="24" fill="currentColor">
-                        <path d="M8,6 L46,6 L46,94 L8,94 L37,50 L15,17 L23,15 Z" />
-                        <path d="M54,6 L92,6 L63,50 L92,94 L54,94 Z" fill="var(--neon-lime)" />
+                    <svg viewBox="0 0 100 100" width="22" height="22">
+                        <path d="M8,6 L46,6 L46,94 L8,94 L37,50 L15,17 L23,15 Z" fill="currentColor" />
+                        <path d="M54,6 L92,6 L63,50 L92,94 L54,94 Z" fill="var(--neon-lime)" stroke="#111112" stroke-width="3" />
                     </svg>
                 </span>
                 CLAEX
             </a>
         </div>
 
-        <nav class="dock-links" id="floating-dock">
+        <nav class="dock-links" id="floating-dock" aria-label="Navegação Principal">
             <a href="index.html" class="dock-link active">Início</a>
             <a href="#para-quem" class="dock-link">Escolas &amp; Docentes</a>
             <a href="#recursos" class="dock-link">Motor CLAEX</a>
@@ -82,255 +68,240 @@
     </div>
 </header>
 
-<aside id="side-menu">
+<aside id="side-menu" aria-label="Menu Lateral">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-        <div class="brand-logo">CLAEX</div>
-        <button class="close-menu btn-ghost" style="padding:6px 12px;font-size:1.2rem">✕</button>
+        <div class="brand-logo">CLAEX<span>.</span></div>
+        <button class="close-menu btn-ghost" style="padding:6px 12px;font-size:1rem" aria-label="Fechar Menu">✕</button>
     </div>
-    <a href="index.html" class="side-link">Início</a>
-    <a href="form_login.html" class="side-link">Login</a>
-    <a href="listar_sala.html" class="side-link">Salas &amp; Turmas</a>
-    <a href="painel_professor.html" class="side-link">Painel do Professor</a>
-    <a href="form_nova_sala.html" class="side-link">Nova Sala</a>
-    <a href="tabela_cadastros.html" class="side-link">Corpo Docente</a>
-    <div style="margin-top:auto;padding-top:20px;border-top:1px solid var(--border-glass)">
-        <p style="font-size:.73rem;color:var(--text-muted);font-family:var(--font-mono)">MOTOR CLAEX · 2026</p>
+    <div class="telemetry-tag">Navegação</div>
+    <a href="index.html" class="side-link">01 // Início</a>
+    <a href="form_login.html" class="side-link">02 // Login</a>
+    <a href="listar_sala.html" class="side-link">03 // Salas &amp; Turmas</a>
+    <a href="painel_professor.html" class="side-link">04 // Área do Professor</a>
+    <a href="form_nova_sala.html" class="side-link">05 // Nova Sala</a>
+    <a href="tabela_cadastros.html" class="side-link">06 // Cadastros</a>
+    <div style="margin-top:auto;padding-top:20px;border-top:1px solid var(--border-card)">
+        <p style="font-size:.72rem;color:var(--text-muted);font-family:var(--font-mono)">CLAEX ARCHITECTURE · 2026</p>
     </div>
 </aside>
-<div class="menu-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999"></div>
+<div class="menu-overlay"></div>
 
-<main>
+<main class="landing-main" id="main-content">
 
-    <!-- HERO CENTRALIZADO COM A LOGO GIGANTE CLAEX + AMPULHETA QUE DESCE E CONECTA NO SCROLL -->
+    <!-- HERO ASSIMÉTRICO ESTILO LANDO NORRIS (1:2) + DOCKING MOTION UI DA AMPULHETA -->
     <section id="capa_index" class="edge-hero-section">
-        <div class="opticore-pretitle">
-            <span class="sparkle">✦</span> NÓS SOMOS O MOTOR DE ENSINO
+        <div class="ln4-hero-split">
+            <!-- Coluna Esquerda (1/3): Telemetria, Logotipo Docking e Switcher On/Off Track -->
+            <aside class="ln4-hero-rail">
+                <div class="hero-claex-logo-stage" id="hero-logo-stage" aria-label="Marca CLAEX">
+                    <svg class="claex-clae-svg" id="logo-clae" viewBox="0 0 632 160" aria-hidden="true">
+                        <path d="M 82,6 C 36,6 2,40 2,80 C 2,120 36,154 82,154 C 122,154 152,128 158,90 L 82,90 C 72,90 65,86 65,80 C 65,74 72,70 82,70 L 158,70 C 152,32 122,6 82,6 Z" />
+                        <path d="M 184,8 L 242,8 L 242,102 L 296,102 L 296,152 L 184,152 Z" />
+                        <path d="M 366,8 L 418,8 L 474,152 L 408,152 L 392,98 L 376,152 L 310,152 Z" />
+                        <path d="M 498,8 L 626,8 L 626,48 L 558,48 L 558,60 L 610,60 L 610,100 L 558,100 L 558,112 L 626,112 L 626,152 L 498,152 Z" />
+                    </svg>
+                    <svg class="claex-flying-ampulheta" id="logo-ampulheta" viewBox="0 0 160 160" aria-hidden="true">
+                        <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" />
+                        <path class="ampulheta-right-half" d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" />
+                    </svg>
+                </div>
+
+                <div>
+                    <div class="telemetry-tag" style="margin-bottom:8px;">TRACK MODE // FILTRO</div>
+                    <div class="ln4-mode-toggle" role="group" aria-label="Alternar modo On Track e Off Track">
+                        <button type="button" class="ln4-mode-btn active" data-ln4-mode="full">Full</button>
+                        <button type="button" class="ln4-mode-btn" data-ln4-mode="on-track">On Track</button>
+                        <button type="button" class="ln4-mode-btn" data-ln4-mode="off-track">Off Track</button>
+                    </div>
+                </div>
+
+                <div class="ln4-rail-metrics">
+                    <div class="ln4-rail-row">
+                        <span>MODO ATIVO</span>
+                        <strong id="ln4-hud-mode-val" data-motion-scramble>COMPLETO · 2026</strong>
+                    </div>
+                    <div class="ln4-rail-row">
+                        <span>FITNESS NSGA-II</span>
+                        <strong id="ln4-fitness-counter">985 pts</strong>
+                    </div>
+                    <div class="ln4-rail-row">
+                        <span>TRAVA RÍGIDA</span>
+                        <strong>≤ 2 AULAS SEGUIDAS</strong>
+                    </div>
+                    <div class="ln4-rail-row">
+                        <span>CHOQUES ENTRE ESCOLAS</span>
+                        <strong>0 CONFLITOS</strong>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Coluna Direita (2/3): Manchete Editorial & Diagrama de Circuito Arquitetural -->
+            <div class="ln4-hero-main">
+                <div class="opticore-pretitle">
+                    <span class="sparkle"></span>
+                    ENGINE OF ACADEMIC PRECISION · SPEC 2026
+                </div>
+
+                <h1 class="edge-hero-title">
+                    Inteligência na grade que <span class="editorial-serif-em">respeita</span> o tempo real da escola.
+                </h1>
+
+                <p class="edge-hero-subtitle">
+                    O <strong>Motor CLAEX</strong> cruza a disponibilidade dos professores entre múltiplas instituições e sintetiza horários semanais automaticamente — sem conflitos, sem excesso de aulas consecutivas e com auditoria cognitiva em tempo real.
+                </p>
+
+                <div class="edge-hero-ctas">
+                    <a href="form_cadastro.html" class="btn-neon" data-cursor-label="INICIAR">
+                        Começar Projeto
+                    </a>
+                    <a href="listar_sala.html" class="btn-ghost" data-cursor-label="SALAS">
+                        Explorar Quadro de Salas
+                    </a>
+                    <a href="grade.html?id=1" class="btn-ghost" data-cursor-label="MATRIZ">
+                        Ver Matriz ao Vivo →
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <!-- LOGO OFICIAL CLAEX GIGANTE (C L A E + AMPULHETA X QUE DESCE NO SCROLL ATÉ O CENTRO DO CIRCUITO) -->
-        <div class="hero-claex-logo-stage" id="hero-logo-stage" aria-label="CLAEX">
-            <!-- Bloco C L A E (Recolhe suavemente conforme o scroll desce) -->
-            <svg class="claex-clae-svg" id="logo-clae" viewBox="0 0 632 160" aria-hidden="true">
-                <!-- Letra C -->
-                <path d="M 82,6 C 36,6 2,40 2,80 C 2,120 36,154 82,154 C 122,154 152,128 158,90 L 82,90 C 72,90 65,86 65,80 C 65,74 72,70 82,70 L 158,70 C 152,32 122,6 82,6 Z" />
-                <!-- Letra L -->
-                <path d="M 184,8 L 242,8 L 242,102 L 296,102 L 296,152 L 184,152 Z" />
-                <!-- Letra A -->
-                <path d="M 366,8 L 418,8 L 474,152 L 408,152 L 392,98 L 376,152 L 310,152 Z" />
-                <!-- Letra E -->
-                <path d="M 498,8 L 626,8 L 626,48 L 558,48 L 558,60 L 610,60 L 610,100 L 558,100 L 558,112 L 626,112 L 626,152 L 498,152 Z" />
-            </svg>
-
-            <!-- Símbolo da Ampulheta ('X' do CLAEX) que desce no scroll e encaixa no centro do circuito -->
-            <svg class="claex-flying-ampulheta" id="logo-ampulheta" viewBox="0 0 160 160" aria-hidden="true">
-                <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" />
-                <path class="ampulheta-right-half" d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" />
-            </svg>
-        </div>
-
-        <h1 class="edge-hero-title">
-            Inteligência na Grade Escolar
-        </h1>
-
-        <p class="edge-hero-subtitle">
-            O <strong>Motor CLAEX</strong> cruza a disponibilidade dos professores entre escolas e monta a grade automaticamente.
-         zero conflitos entre unidades e respeito total à rotina docente.
-        </p>
-
-        <!-- Botões principais (sem a bolinha lateral) -->
-        <div class="edge-hero-ctas">
-            <a href="form_cadastro.html" class="btn-opticore">
-                <span class="btn-opticore-pill">Começar Agora</span>
-            </a>
-            <a href="listar_sala.html" class="btn-ghost" style="padding:12px 24px">Ver Quadro de Salas</a>
-        </div>
-
-        <!-- DIAGRAMA CENTRAL DE CIRCUITOS COM A AMPULHETA CLAEX NO NÚCLEO -->
+        <!-- Diagrama Central de Circuitos com Docking da Ampulheta CLAEX -->
         <div class="edge-hub-stage" id="ai-hub-diagram">
-            <svg class="edge-hub-svg" viewBox="0 0 1000 360" preserveAspectRatio="none">
-                <!-- Trilhas Superiores Esquerdas -> Ampulheta CLAEX -->
-                <path class="circuit-line" d="M 110,58 L 280,58 L 340,152 L 448,152" />
-                <path class="circuit-pulse" d="M 110,58 L 280,58 L 340,152 L 448,152" />
+            <svg class="edge-hub-svg" viewBox="0 0 1000 310" preserveAspectRatio="none" aria-hidden="true">
+                <path class="circuit-line" d="M 120,56 L 310,56 L 365,132 L 450,132" />
+                <path class="circuit-pulse" d="M 120,56 L 310,56 L 365,132 L 450,132" />
 
-                <!-- Trilhas Médias Esquerdas -> Ampulheta CLAEX -->
-                <path class="circuit-line" d="M 65,180 L 448,180" />
-                <path class="circuit-pulse delay-1" d="M 65,180 L 448,180" />
+                <path class="circuit-line" d="M 95,155 L 444,155" />
+                <path class="circuit-pulse delay-1" d="M 95,155 L 444,155" />
 
-                <!-- Trilhas Inferiores Esquerdas -> Ampulheta CLAEX -->
-                <path class="circuit-line" d="M 120,302 L 260,302 L 330,208 L 448,208" />
-                <path class="circuit-pulse delay-2" d="M 120,302 L 260,302 L 330,208 L 448,208" />
+                <path class="circuit-line" d="M 120,254 L 310,254 L 365,178 L 450,178" />
+                <path class="circuit-pulse delay-2" d="M 120,254 L 310,254 L 365,178 L 450,178" />
 
-                <!-- Trilhas Superiores Direitas -> Ampulheta CLAEX -->
-                <path class="circuit-line" d="M 860,58 L 720,58 L 660,152 L 552,152" />
-                <path class="circuit-pulse delay-1" d="M 860,58 L 720,58 L 660,152 L 552,152" />
+                <path class="circuit-line" d="M 880,56 L 690,56 L 635,132 L 550,132" />
+                <path class="circuit-pulse delay-1" d="M 880,56 L 690,56 L 635,132 L 550,132" />
 
-                <!-- Trilhas Médias Direitas -> Ampulheta CLAEX -->
-                <path class="circuit-line" d="M 935,180 L 552,180" />
-                <path class="circuit-pulse delay-2" d="M 935,180 L 552,180" />
+                <path class="circuit-line" d="M 905,155 L 556,155" />
+                <path class="circuit-pulse delay-2" d="M 905,155 L 556,155" />
 
-                <!-- Trilhas Inferiores Direitas -> Ampulheta CLAEX -->
-                <path class="circuit-line" d="M 880,302 L 730,302 L 660,208 L 552,208" />
-                <path class="circuit-pulse" d="M 880,302 L 730,302 L 660,208 L 552,208" />
-
-                <!-- Barramento Vertical Inferior saindo da Ampulheta CLAEX -->
-                <path class="circuit-line" d="M 484,232 L 484,360" />
-                <path class="circuit-line" d="M 500,232 L 500,360" />
-                <path class="circuit-line" d="M 516,232 L 516,360" />
-                <path class="circuit-pulse reverse" d="M 500,232 L 500,360" />
+                <path class="circuit-line" d="M 880,254 L 690,254 L 635,178 L 550,178" />
+                <path class="circuit-pulse" d="M 880,254 L 690,254 L 635,178 L 550,178" />
             </svg>
 
-            <!-- 3 Nós Satélites da Esquerda -->
-            <div class="hub-sat-node sat-tl active" data-hub-info="Escolas &amp; Unidades: Sincroniza turmas, turnos e salas sem choques entre diferentes instituições.">
-                <span>🏫</span>
-                <span class="hub-sat-caption">Escolas</span>
+            <div class="hub-sat-node sat-tl active" data-hub-info="<strong>Escolas &amp; Unidades:</strong> Sincroniza turmas, turnos e salas sem colisões entre diferentes instituições.">
+                <span class="hub-sat-caption">01 · Escolas</span>
+            </div>
+            <div class="hub-sat-node sat-ml" data-hub-info="<strong>Corpo Docente:</strong> Professores informam seus horários livres diretamente no Portal do Professor.">
+                <span class="hub-sat-caption">02 · Docentes</span>
+            </div>
+            <div class="hub-sat-node sat-bl" data-hub-info="<strong>Disciplinas &amp; Carga:</strong> Alternância cognitiva equilibrada entre exatas, humanidades e práticas.">
+                <span class="hub-sat-caption">03 · Matérias</span>
             </div>
 
-            <div class="hub-sat-node sat-ml" data-hub-info="Corpo Docente: Professores cadastram seus dias e horários livres diretamente no seu painel exclusivo.">
-                <span>👩‍🏫</span>
-                <span class="hub-sat-caption">Professores</span>
-            </div>
-
-            <div class="hub-sat-node sat-bl" data-hub-info="Disciplinas &amp; Carga: Distribuição equilibrada de matérias ao longo dos 5 dias letivos.">
-                <span>📚</span>
-                <span class="hub-sat-caption">Matérias</span>
-            </div>
-
-            <!-- NÓ CENTRAL: SÍMBOLO DA AMPULHETA CLAEX (Substituindo "IA Urania") -->
-            <div class="hub-center-node" id="hub-center-target" data-hub-info="Motor CLAEX + Gemini IA: A Ampulheta CLAEX sincroniza o tempo de todas as salas, garantindo máx. 2 aulas seguidas e equilíbrio docente.">
-                <svg class="hub-ampulheta-svg" id="hub-ampulheta-icon" viewBox="0 0 160 160" aria-label="Ampulheta CLAEX">
-                    <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" />
-                    <path d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" opacity="0.88" />
-                </svg>
+            <div class="hub-center-node" id="hub-center-target" data-hub-info="<strong>Núcleo Motor CLAEX:</strong> A Ampulheta sincroniza o solver NSGA-II com máx. 2 aulas consecutivas e zero janelas.">
+                <div class="hub-icon-stack">
+                    <svg class="hub-ampulheta-ghost" id="hub-socket-ghost" viewBox="0 0 160 160" aria-hidden="true">
+                        <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" />
+                        <path d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" />
+                    </svg>
+                    <svg class="hub-ampulheta-svg" id="hub-ampulheta-icon" viewBox="0 0 160 160" aria-label="Ampulheta CLAEX">
+                        <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" />
+                        <path d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" fill="var(--neon-lime)" />
+                    </svg>
+                </div>
                 <span class="ai-sub">MOTOR CLAEX</span>
             </div>
 
-            <!-- 3 Nós Satélites da Direita -->
-            <div class="hub-sat-node sat-tr" data-hub-info="Regra Motor CLAEX: Trava rigorosa de no máximo 2 aulas seguidas e proibição do mesmo professor o dia inteiro.">
-                <span>🛡️</span>
-                <span class="hub-sat-caption">Máx. 2 Aulas</span>
+            <div class="hub-sat-node sat-tr" data-hub-info="<strong>Regra Rígida:</strong> Bloqueio absoluto acima de 2 aulas seguidas e controle diário por professor.">
+                <span class="hub-sat-caption">04 · Máx. 2 Aulas</span>
             </div>
-
-            <div class="hub-sat-node sat-mr" data-hub-info="Matriz Horária: Geração instantânea da grade semanal pronta para todas as salas de aula.">
-                <span>🗓️</span>
-                <span class="hub-sat-caption">Grades</span>
+            <div class="hub-sat-node sat-mr" data-hub-info="<strong>Matriz Semanal:</strong> Síntese instantânea pronta para visualização em sala de aula.">
+                <span class="hub-sat-caption">05 · Grades</span>
             </div>
-
-            <div class="hub-sat-node sat-br" data-hub-info="Portal do Aluno: Visualização limpa e organizada dos horários de aula e intervalos da turma.">
-                <span>🎓</span>
-                <span class="hub-sat-caption">Alunos</span>
+            <div class="hub-sat-node sat-br" data-hub-info="<strong>Portal do Aluno:</strong> Quadro limpo, responsivo e de leitura imediata.">
+                <span class="hub-sat-caption">06 · Alunos</span>
             </div>
         </div>
 
         <div class="hub-inspector-bar" id="hub-inspector-bar">
-            <span style="color:var(--neon-lime)">●</span>
-            <span id="hub-inspector-text"><strong>Ampulheta CLAEX Conectada:</strong> Passe o mouse ou clique nos nós acima para explorar o motor.</span>
+            <span class="pulse-dot"></span>
+            <span id="hub-inspector-text"><strong>Circuito CLAEX Ativo:</strong> Passe o mouse sobre os módulos acima para inspecionar as regras do solver.</span>
         </div>
     </section>
 
-    <!-- FAIXA MARQUEE DE ALTA VELOCIDADE (ASSINATURA LANDO NORRIS #D2FF00) -->
+    <!-- FAIXA DIVISÓRIA MINIMALISTA (DARK CARBON TICKER) -->
     <div class="ln4-marquee-strip" aria-hidden="true">
         <div class="ln4-marquee-track">
             <span>CLAEX TELEMETRY ENGINE</span><span class="ln4-marquee-sep">///</span>
-            <span>LN04 ACID LIME SPEC</span><span class="ln4-marquee-sep">///</span>
-            <span>ZERO CONFLITOS ENTRE ESCOLAS</span><span class="ln4-marquee-sep">///</span>
-            <span>MÁXIMO 2 AULAS SEGUIDAS</span><span class="ln4-marquee-sep">///</span>
+            <span>ZERO NEON EDITORIAL SPEC</span><span class="ln4-marquee-sep">///</span>
             <span>MEMETIC NSGA-II + SIMULATED ANNEALING</span><span class="ln4-marquee-sep">///</span>
-            <span>CLAUDE CODE × GEMINI 2.5 PRO</span><span class="ln4-marquee-sep">///</span>
-            <span>ALWAYS BRINGING THE FIGHT</span><span class="ln4-marquee-sep">///</span>
+            <span>MAX 2 AULAS SEGUIDAS</span><span class="ln4-marquee-sep">///</span>
+            <span>CLAUDE CODE × MOTION UI</span><span class="ln4-marquee-sep">///</span>
             <span>CLAEX TELEMETRY ENGINE</span><span class="ln4-marquee-sep">///</span>
-            <span>LN04 ACID LIME SPEC</span><span class="ln4-marquee-sep">///</span>
-            <span>ZERO CONFLITOS ENTRE ESCOLAS</span><span class="ln4-marquee-sep">///</span>
-            <span>MÁXIMO 2 AULAS SEGUIDAS</span><span class="ln4-marquee-sep">///</span>
+            <span>ZERO NEON EDITORIAL SPEC</span><span class="ln4-marquee-sep">///</span>
             <span>MEMETIC NSGA-II + SIMULATED ANNEALING</span><span class="ln4-marquee-sep">///</span>
-            <span>CLAUDE CODE × GEMINI 2.5 PRO</span><span class="ln4-marquee-sep">///</span>
-            <span>ALWAYS BRINGING THE FIGHT</span><span class="ln4-marquee-sep">///</span>
+            <span>MAX 2 AULAS SEGUIDAS</span><span class="ln4-marquee-sep">///</span>
+            <span>CLAUDE CODE × MOTION UI</span><span class="ln4-marquee-sep">///</span>
         </div>
     </div>
 
-    <!-- BLOCO EDITORIAL LANDO NORRIS COM ASSINATURA VETORIAL NEON E TROCA RÁPIDA DE LIVERY -->
+    <!-- QUOTE EDITORIAL + SELETOR DE LIVERY OKLCH -->
     <section class="ln4-quote-section" data-track-group="off-track">
         <div>
-            <div class="ln4-quote-eyebrow">MESSAGE FROM THE PIT-WALL // MCLAREN F1 &amp; CLAUDE CODE INSPIRED</div>
+            <div class="ln4-quote-eyebrow" data-motion-scramble>PIT-WALL NOTE // ARCHITECTURE &amp; DESIGN</div>
             <blockquote class="ln4-quote-text">
-                “Não importa onde a rotina escolar começa, mas <span>como ela evolui a cada segundo</span> sem choques e no limite da precisão.”
+                “Não importa quantas turmas e docentes a rede possua, mas <span>a precisão com que cada horário se encaixa</span> sem desperdício.”
             </blockquote>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;align-items:center">
-                <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-secondary);text-transform:uppercase;margin-right:4px">HELMET LIVERIES:</span>
-                <button type="button" class="claude-cmd-chip" data-livery-pill="lime" data-cursor-label="LIVERY #D2FF00">🟢 LN4 Acid Lime</button>
-                <button type="button" class="claude-cmd-chip" data-livery-pill="amber" data-cursor-label="LIVERY PAPAYA">🟠 McLaren Papaya</button>
-                <button type="button" class="claude-cmd-chip" data-livery-pill="cyan" data-cursor-label="LIVERY CHROME">🔵 Silverstone Aero</button>
-                <button type="button" class="claude-cmd-chip" data-livery-pill="violet" data-cursor-label="LIVERY GLITTER">🟣 Dark Glitter GP</button>
-                <button type="button" class="claude-cmd-chip" data-livery-pill="blue" data-cursor-label="LIVERY PORCELAIN">🔷 Porcelain Blue</button>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;align-items:center">
+                <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-secondary);text-transform:uppercase;margin-right:4px">OKLCH LIVERIES:</span>
+                <button type="button" class="claude-cmd-chip light-chip" data-livery-pill="lime">LN4 Acid Lime</button>
+                <button type="button" class="claude-cmd-chip light-chip" data-livery-pill="amber">McLaren Papaya</button>
+                <button type="button" class="claude-cmd-chip light-chip" data-livery-pill="cyan">Silverstone Aero</button>
+                <button type="button" class="claude-cmd-chip light-chip" data-livery-pill="violet">Night GP Violet</button>
+                <button type="button" class="claude-cmd-chip light-chip" data-livery-pill="blue">Porcelain Blue</button>
             </div>
         </div>
         <div class="ln4-signature-wrap">
-            <svg class="ln4-signature-svg" viewBox="0 0 280 90" aria-label="Assinatura Neon CLAEX LN04">
+            <svg class="ln4-signature-svg" viewBox="0 0 280 90" aria-label="Traço Assinatura CLAEX">
                 <path class="ln4-signature-path" d="M 16,66 C 28,20 58,14 68,46 C 74,66 42,74 56,42 L 96,22 L 86,68 M 112,64 C 122,30 144,22 152,58 C 156,70 176,34 192,28 C 204,24 190,64 214,56 C 232,50 248,20 266,16 M 184,74 L 264,58" />
             </svg>
-            <span style="font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.14em;color:var(--text-muted);text-transform:uppercase">
-                CLAEX // LN04 TELEMETRY SIGNATURE
+            <span style="font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.12em;color:var(--text-secondary);text-transform:uppercase">
+                CLAEX · OKLCH ENGINE SPEC
             </span>
         </div>
     </section>
 
-    <!-- SEÇÃO: DESENVOLVIDO PARA ESCOLAS E PROFESSORES (ESTILO LANDO NORRIS HELMETS HALL OF FAME + POP-UP INTERATIVO) -->
-    <section class="section-wrapper" id="para-quem" data-track-group="off-track">
+    <!-- GALERIA DARK CHARCOAL (#111112 CONTRAST BAND — LANDO NORRIS HALL OF FAME) -->
+    <section class="dark-gallery-band" id="para-quem" data-track-group="off-track">
         <div class="section-header">
-            <div class="opticore-watermark" aria-hidden="true">HALL OF FAME</div>
-            <div class="telemetry-tag">LN04 // Ecossistema Escolar</div>
+            <div class="opticore-watermark" aria-hidden="true">ECOSYSTEM</div>
+            <div class="telemetry-tag">LN04 // Perfis Escolares</div>
             <h2 class="section-title">Desenvolvido para Escolas e Professores</h2>
             <p class="section-subtitle">
-                Inspirado na galeria 3D de capacetes de Lando Norris: clique em qualquer módulo abaixo para inspecionar as especificações de cada perfil.
+                Contraste binário escuro sobre a vitrine editorial: selecione qualquer perfil abaixo para inspecionar regras, permissões e fluxo operacional.
             </p>
         </div>
 
         <div class="school-popup-triggers lando-showcase-grid">
-            <!-- CARD 1 (ESTILO LANDO NORRIS): Direção & Coordenação -->
+            <!-- CARD 1: Direção & Coordenação -->
             <div class="lando-showcase-card popup-trigger-card" data-popup-role="direcao" data-lando-col="odd" role="button" tabindex="0">
-                <!-- Moldura Vetorial com Recorte Chanfrado Inferior Direito (Assinatura Lando Norris) -->
                 <svg class="lando-frame-svg" viewBox="0 0 380 430" preserveAspectRatio="none" aria-hidden="true">
                     <path class="lando-frame-bg" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
                     <path class="lando-frame-border" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
-                    <path class="lando-frame-laser" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
                 </svg>
 
                 <div class="lando-card-inner">
                     <div class="popup-trigger-top">
-                        <span class="lando-serial-tag">#01 // PIT-WALL</span>
-                        <span class="popup-trigger-badge">Ver telemetria ↗</span>
+                        <span class="lando-serial-tag" data-motion-scramble>#01 // COORDENAÇÃO</span>
+                        <span class="popup-trigger-badge">Inspecionar ↗</span>
                     </div>
 
-                    <!-- Peça 3D Central Flutuante: Símbolo CLAEX (Ampulheta) + Livro Mestre Aberto -->
                     <div class="lando-3d-stage">
-                        <div class="lando-3d-glow"></div>
                         <svg class="lando-3d-object" viewBox="0 0 220 180" aria-hidden="true">
-                            <defs>
-                                <linearGradient id="claexBookCover" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#1E293B" />
-                                    <stop offset="55%" stop-color="#0F172A" />
-                                    <stop offset="100%" stop-color="#060911" />
-                                </linearGradient>
-                                <linearGradient id="claexBookPage" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#E2E8F0" />
-                                    <stop offset="100%" stop-color="#94A3B8" />
-                                </linearGradient>
-                            </defs>
-                            <!-- Sombra de base -->
-                            <ellipse cx="110" cy="162" rx="68" ry="10" fill="rgba(0,0,0,0.65)" />
-                            <!-- Anel de Telemetria ao redor do Símbolo CLAEX -->
-                            <ellipse cx="110" cy="88" rx="64" ry="20" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.3" stroke-dasharray="6 6" />
-                            <!-- Base Livro Mestre Aberto em Perspectiva 3D -->
-                            <path d="M 38,128 L 110,144 L 182,128 L 170,106 L 110,120 L 50,106 Z" fill="url(#claexBookCover)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" />
-                            <path d="M 44,122 L 110,137 L 110,115 L 52,101 Z" fill="url(#claexBookPage)" opacity="0.9" />
-                            <path d="M 176,122 L 110,137 L 110,115 L 168,101 Z" fill="url(#claexBookPage)" opacity="0.75" />
-                            <!-- Símbolo Oficial CLAEX (Ampulheta) 3D Flutuando no Centro -->
-                            <g transform="translate(72, 22) scale(0.48)">
-                                <!-- Sombra 3D da Ampulheta -->
-                                <path d="M 16,14 L 81,14 L 81,158 L 16,158 L 60,86 L 28,32 L 38,29 Z" fill="rgba(0,0,0,0.55)" />
-                                <path d="M 91,14 L 156,14 L 112,86 L 156,158 L 91,158 Z" fill="rgba(0,0,0,0.55)" />
-                                <!-- Metade Esquerda da Ampulheta CLAEX -->
-                                <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" fill="#FFFFFF" />
-                                <!-- Metade Direita da Ampulheta CLAEX (Destaque Escolar) -->
+                            <ellipse cx="110" cy="160" rx="64" ry="8" fill="#0A0A0B" />
+                            <path d="M 42,126 L 110,142 L 178,126 L 168,104 L 110,118 L 52,104 Z" fill="#232327" stroke="#3F3F46" stroke-width="1.4" />
+                            <path d="M 48,120 L 110,134 L 110,114 L 54,100 Z" fill="#EAEAE3" />
+                            <path d="M 172,120 L 110,134 L 110,114 L 166,100 Z" fill="#C8C8BE" />
+                            <g transform="translate(72, 20) scale(0.48)">
+                                <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" fill="#F5F5F0" />
                                 <path d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" class="lando-emblem-fill" />
                             </g>
                         </svg>
@@ -339,52 +310,41 @@
                     <div class="lando-card-copy">
                         <h3 class="popup-trigger-title">Direção &amp; Coordenação</h3>
                         <p class="popup-trigger-short">
-                            Gestão centralizada de salas, turnos e geração automática de grades com o Motor CLAEX.
+                            Gestão centralizada de salas, regras customizadas de IA e cálculo completo da grade sem choques.
                         </p>
                     </div>
                 </div>
 
-                <!-- Assinatura no Recorte Chanfrado Inferior Direito (Idêntico ao "Season 2025" do Lando Norris) -->
                 <div class="lando-cutout-label">
                     <span class="lando-cutout-name">Season</span>
                     <span class="lando-cutout-year">ADMIN 2026</span>
                 </div>
             </div>
 
-            <!-- CARD 2 (ESTILO LANDO NORRIS — COLUNA DESLOCADA): Corpo Docente -->
+            <!-- CARD 2: Corpo Docente -->
             <div class="lando-showcase-card popup-trigger-card lando-col-stagger" data-popup-role="professor" data-lando-col="even" role="button" tabindex="0">
                 <svg class="lando-frame-svg" viewBox="0 0 380 430" preserveAspectRatio="none" aria-hidden="true">
                     <path class="lando-frame-bg" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
                     <path class="lando-frame-border" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
-                    <path class="lando-frame-laser" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
                 </svg>
 
                 <div class="lando-card-inner">
                     <div class="popup-trigger-top">
-                        <span class="lando-serial-tag">#02 // DOCENTES</span>
-                        <span class="popup-trigger-badge">Ver telemetria ↗</span>
+                        <span class="lando-serial-tag" data-motion-scramble>#02 // DOCENTES</span>
+                        <span class="popup-trigger-badge">Inspecionar ↗</span>
                     </div>
 
-                    <!-- Peça 3D Central Flutuante: Livros Docentes Empilhados + Capa com Símbolo CLAEX -->
                     <div class="lando-3d-stage">
-                        <div class="lando-3d-glow"></div>
                         <svg class="lando-3d-object" viewBox="0 0 220 180" aria-hidden="true">
-                            <ellipse cx="110" cy="162" rx="68" ry="10" fill="rgba(0,0,0,0.65)" />
-                            <!-- Livro Inferior na Base (Isométrico) -->
-                            <path d="M 46,128 L 112,148 L 176,124 L 110,106 Z" fill="url(#claexBookCover)" stroke="rgba(255,255,255,0.22)" stroke-width="1.4" />
-                            <path d="M 46,128 L 112,148 L 112,158 L 46,138 Z" fill="#0F172A" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" />
-                            <path d="M 112,148 L 176,124 L 176,134 L 112,158 Z" fill="url(#claexBookPage)" />
-                            <!-- Livro Principal Docente Flutuando Acima com Gravura CLAEX -->
-                            <path d="M 52,86 L 114,108 L 172,82 L 110,62 Z" fill="url(#claexBookCover)" stroke="rgba(255,255,255,0.38)" stroke-width="1.6" />
-                            <!-- Lombada Esquerda com Destaque -->
-                            <path d="M 52,86 L 114,108 L 114,122 L 52,100 Z" class="lando-emblem-fill" opacity="0.88" />
-                            <!-- Corte das Páginas Direita -->
-                            <path d="M 114,108 L 172,82 L 172,96 L 114,122 Z" fill="url(#claexBookPage)" />
-                            <!-- Linhas de Folhas -->
-                            <path d="M 116,112 L 170,86 M 116,116 L 170,90" stroke="#475569" stroke-width="1" />
-                            <!-- Símbolo CLAEX Gravado Acima do Livro Docente -->
-                            <g transform="translate(86, 18) scale(0.32)">
-                                <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" fill="#FFFFFF" />
+                            <ellipse cx="110" cy="160" rx="64" ry="8" fill="#0A0A0B" />
+                            <path d="M 48,128 L 112,146 L 174,124 L 110,106 Z" fill="#232327" stroke="#3F3F46" stroke-width="1.3" />
+                            <path d="M 48,128 L 112,146 L 112,156 L 48,138 Z" fill="#18181A" />
+                            <path d="M 112,146 L 174,124 L 174,134 L 112,156 Z" fill="#D4D4CD" />
+                            <path d="M 52,86 L 114,106 L 170,82 L 108,62 Z" fill="#27272B" stroke="#F5F5F0" stroke-width="1.3" />
+                            <path d="M 52,86 L 114,106 L 114,120 L 52,100 Z" class="lando-emblem-fill" />
+                            <path d="M 114,106 L 170,82 L 170,96 L 114,120 Z" fill="#EAEAE3" />
+                            <g transform="translate(86, 16) scale(0.32)">
+                                <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" fill="#F5F5F0" />
                                 <path d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" class="lando-emblem-fill" />
                             </g>
                         </svg>
@@ -393,7 +353,7 @@
                     <div class="lando-card-copy">
                         <h3 class="popup-trigger-title">Corpo Docente</h3>
                         <p class="popup-trigger-short">
-                            Autonomia para cadastrar horários livres e proteção contra sobrecarga de aulas seguidas.
+                            Autonomia para definir dias disponíveis, compactar janelas e blindar a jornada contra sobrecargas.
                         </p>
                     </div>
                 </div>
@@ -404,36 +364,29 @@
                 </div>
             </div>
 
-            <!-- CARD 3 (ESTILO LANDO NORRIS): Estudantes & Turmas -->
+            <!-- CARD 3: Estudantes & Turmas -->
             <div class="lando-showcase-card popup-trigger-card" data-popup-role="aluno" data-lando-col="odd" role="button" tabindex="0">
                 <svg class="lando-frame-svg" viewBox="0 0 380 430" preserveAspectRatio="none" aria-hidden="true">
                     <path class="lando-frame-bg" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
                     <path class="lando-frame-border" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
-                    <path class="lando-frame-laser" d="M 16,1.5 L 364,1.5 Q 378.5,1.5 378.5,16 L 378.5,366 Q 378.5,380 364,380 L 196,380 Q 180,380 170,396 L 158,414 Q 150,428.5 134,428.5 L 16,428.5 Q 1.5,428.5 1.5,414 L 1.5,16 Q 1.5,1.5 16,1.5 Z" />
                 </svg>
 
                 <div class="lando-card-inner">
                     <div class="popup-trigger-top">
-                        <span class="lando-serial-tag">#03 // TURMAS</span>
-                        <span class="popup-trigger-badge">Ver telemetria ↗</span>
+                        <span class="lando-serial-tag" data-motion-scramble>#03 // ESTUDANTES</span>
+                        <span class="popup-trigger-badge">Inspecionar ↗</span>
                     </div>
 
-                    <!-- Peça 3D Central Flutuante: Livro Aberto 3D com Páginas Folheadas + Emblema CLAEX -->
                     <div class="lando-3d-stage">
-                        <div class="lando-3d-glow"></div>
                         <svg class="lando-3d-object" viewBox="0 0 220 180" aria-hidden="true">
-                            <ellipse cx="110" cy="162" rx="68" ry="10" fill="rgba(0,0,0,0.65)" />
-                            <!-- Capa Dura do Livro Aberto -->
+                            <ellipse cx="110" cy="160" rx="64" ry="8" fill="#0A0A0B" />
                             <path d="M 32,126 Q 70,116 110,134 Q 150,116 188,126 L 194,136 Q 150,126 110,146 Q 70,126 26,136 Z" class="lando-emblem-fill" />
-                            <!-- Páginas Abertas Esquerda e Direita em 3D -->
-                            <path d="M 36,122 Q 72,108 110,128 L 110,64 Q 74,46 42,60 Z" fill="url(#claexBookCover)" stroke="rgba(255,255,255,0.34)" stroke-width="1.5" />
-                            <path d="M 184,122 Q 148,108 110,128 L 110,64 Q 146,46 178,60 Z" fill="url(#claexBookCover)" stroke="rgba(255,255,255,0.34)" stroke-width="1.5" />
-                            <!-- Linhas Luminosas do Quadro Horário nas Páginas do Livro -->
-                            <path class="lando-topo-stroke" d="M 52,76 Q 78,68 98,78 M 50,92 Q 78,84 98,94 M 48,108 Q 76,100 98,110" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.85" />
-                            <path d="M 122,78 Q 144,68 168,76 M 122,94 Q 144,84 170,92 M 122,110 Q 144,100 172,108" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round" />
-                            <!-- Símbolo CLAEX Brilhante Emergindo do Livro Aberto -->
+                            <path d="M 36,122 Q 72,108 110,128 L 110,64 Q 74,46 42,60 Z" fill="#232327" stroke="#52525B" stroke-width="1.4" />
+                            <path d="M 184,122 Q 148,108 110,128 L 110,64 Q 146,46 178,60 Z" fill="#232327" stroke="#52525B" stroke-width="1.4" />
+                            <path class="lando-topo-stroke" d="M 52,76 Q 78,68 98,78 M 50,92 Q 78,84 98,94 M 48,108 Q 76,100 98,110" fill="none" stroke-width="2" stroke-linecap="round" />
+                            <path d="M 122,78 Q 144,68 168,76 M 122,94 Q 144,84 170,92 M 122,110 Q 144,100 172,108" fill="none" stroke="#9A9A96" stroke-width="2" stroke-linecap="round" />
                             <g transform="translate(88, 16) scale(0.28)">
-                                <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" fill="#FFFFFF" />
+                                <path d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z" fill="#F5F5F0" />
                                 <path d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z" class="lando-emblem-fill" />
                             </g>
                         </svg>
@@ -442,117 +395,114 @@
                     <div class="lando-card-copy">
                         <h3 class="popup-trigger-title">Estudantes &amp; Turmas</h3>
                         <p class="popup-trigger-short">
-                            Consulta rápida e organizada da matriz oficial de aulas, disciplinas e intervalos.
+                            Consulta clara e estruturada da matriz horária da turma com equilíbrio cognitivo entre turnos.
                         </p>
                     </div>
                 </div>
 
                 <div class="lando-cutout-label">
-                    <span class="lando-cutout-name">LN04 Spec</span>
+                    <span class="lando-cutout-name">Grid Spec</span>
                     <span class="lando-cutout-year">TURMA 2026</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- POP-UP MODAL DE EXPLICAÇÃO DOS PERFIS ESCOLARES -->
+    <!-- POP-UP MODAL DE PERFIS ESCOLARES -->
     <div class="claex-popup-overlay" id="claex-profile-popup" aria-hidden="true">
         <div class="claex-popup-modal" role="dialog" aria-modal="true" aria-labelledby="popup-modal-title">
-            <button type="button" class="claex-popup-close" id="claex-popup-close" aria-label="Fechar pop-up">✕</button>
+            <button type="button" class="claex-popup-close" id="claex-popup-close" aria-label="Fechar">✕</button>
             <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-                <div class="popup-trigger-icon" id="popup-modal-icon" style="width:54px;height:54px;font-size:1.5rem">🏫</div>
+                <div class="popup-trigger-icon" id="popup-modal-icon" style="width:48px;height:48px;font-family:var(--font-mono);font-weight:800;">01</div>
                 <div>
-                    <div class="telemetry-tag" id="popup-modal-tag" style="margin-bottom:4px">Perfil Escolar</div>
-                    <h3 id="popup-modal-title" style="font-size:1.5rem;color:#FFFFFF;margin:0">Direção &amp; Coordenação</h3>
+                    <div class="telemetry-tag" id="popup-modal-tag" style="margin-bottom:2px;color:var(--neon-lime)">PERFIL</div>
+                    <h3 id="popup-modal-title" style="font-size:1.4rem;color:#F5F5F0;margin:0">Direção &amp; Coordenação</h3>
                 </div>
             </div>
-            <p id="popup-modal-desc" style="font-size:0.94rem;line-height:1.65;color:#B0B5C3">
-                Explicação detalhada do perfil selecionado.
-            </p>
+            <p id="popup-modal-desc" style="font-size:0.92rem;line-height:1.65;color:#A1A1AA"></p>
             <ul class="claex-popup-list" id="popup-modal-list"></ul>
-            <div style="display:flex;justify-content:flex-end;gap:12px">
-                <button type="button" class="btn-ghost" id="claex-popup-cancel">Fechar</button>
+            <div style="display:flex;justify-content:flex-end;gap:10px">
+                <button type="button" class="btn-ghost" id="claex-popup-cancel" style="color:#F5F5F0;border-color:#2A2A2D">Fechar</button>
                 <a href="form_login.html" class="btn-neon" id="popup-modal-cta">Acessar Perfil →</a>
             </div>
         </div>
     </div>
 
-    <!-- SIMULADOR DE QUADRO PEDAGÓGICO E BENTO GRID (ON TRACK // MOTOR CLAEX + CLAUDE CODE CLI) -->
+    <!-- ON TRACK: SIMULADOR INTERATIVO + CLAUDE CODE MINIMALIST CLI -->
     <section class="section-wrapper" id="recursos" data-track-group="on-track">
         <div class="section-header">
             <div class="opticore-watermark" aria-hidden="true">ON TRACK</div>
-            <div class="telemetry-tag">LN04 // Pit-Wall &amp; Claude Code Engine</div>
-            <h2 class="section-title">Automação Motor CLAEX + Multi-Modelo IA</h2>
+            <div class="telemetry-tag">Motor CLAEX &amp; Claude Code</div>
+            <h2 class="section-title">Automação Solver NSGA-II + Terminal Agêntico</h2>
             <p class="section-subtitle">
-                Algoritmo Memético NSGA-II + Simulated Annealing combinado com comandos agênticos estilo Claude Code e Gemini 2.5 Pro.
+                Teste a resolução de choques diretamente na matriz e opere o terminal de engenharia com animações Motion UI.
             </p>
         </div>
 
         <div class="bento-grid" id="simulador-grade">
-            <!-- BENTO 1: Simulador Interativo -->
-            <div class="spotlight-card col-span-7 bento-card-featured" id="claex-interactive-simulator" data-tilt>
-                <div class="bento-card-accent"></div>
+            <!-- BENTO 1: Simulador ao vivo -->
+            <div class="spotlight-card col-span-7" id="claex-interactive-simulator">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-                    <div class="telemetry-tag" style="margin:0">On Track // Simulador ao Vivo</div>
-                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--neon-lime)">3º Ensino Médio · Sala 01</span>
+                    <div class="telemetry-tag" style="margin:0">Simulador ao Vivo</div>
+                    <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-secondary)">3º EM · Sala 01</span>
                 </div>
-                <h3 style="font-size:1.45rem;margin-bottom:8px">Teste a resolução de conflitos em ritmo de corrida</h3>
+                <h3 style="font-size:1.4rem;margin-bottom:8px">Resolução em Tempo Real de Colisões</h3>
                 <p style="font-size:.88rem;margin-bottom:16px">
-                    Clique em qualquer aula abaixo para simular um choque de horário ou acione a telemetria para corrigir:
+                    Clique em qualquer célula para alternar o estado ou execute o Solver para equilibrar os blocos:
                 </p>
 
                 <div class="sim-grid">
                     <div class="sim-slot conflict" data-day="Segunda" data-time="07:30" data-subject="Matemática">
                         <span class="slot-badge">CHOQUE</span>
                         Matemática
-                        <small style="display:block;font-size:.65rem;color:#fca5a5">Prof. Carlos (2 Escolas)</small>
+                        <small style="display:block;font-size:.66rem;color:#B91C1C">Prof. Carlos (2 Escolas)</small>
                     </div>
                     <div class="sim-slot resolved" data-day="Segunda" data-time="08:20" data-subject="Física">
                         <span class="slot-badge">OK</span>
                         Física
-                        <small style="display:block;font-size:.65rem;color:var(--text-secondary)">Profa. Helena</small>
+                        <small style="display:block;font-size:.66rem;color:var(--text-secondary)">Profa. Helena</small>
                     </div>
                     <div class="sim-slot" data-day="Terça" data-time="07:30" data-subject="Química">
                         <span class="slot-badge">LIVRE</span>
                         Química
-                        <small style="display:block;font-size:.65rem;color:var(--text-muted)">Prof. Roberto</small>
+                        <small style="display:block;font-size:.66rem;color:var(--text-muted)">Prof. Roberto</small>
                     </div>
                     <div class="sim-slot resolved" data-day="Terça" data-time="08:20" data-subject="História">
                         <span class="slot-badge">OK</span>
                         História
-                        <small style="display:block;font-size:.65rem;color:var(--text-secondary)">Prof. Lucas</small>
+                        <small style="display:block;font-size:.66rem;color:var(--text-secondary)">Prof. Lucas</small>
                     </div>
                     <div class="sim-slot conflict" data-day="Quarta" data-time="07:30" data-subject="Biologia">
                         <span class="slot-badge">CHOQUE</span>
                         Biologia
-                        <small style="display:block;font-size:.65rem;color:#fca5a5">>2 Aulas Seguidas</small>
+                        <small style="display:block;font-size:.66rem;color:#B91C1C">&gt;2 Aulas Seguidas</small>
                     </div>
                     <div class="sim-slot resolved" data-day="Quarta" data-time="08:20" data-subject="Português">
                         <span class="slot-badge">OK</span>
                         Português
-                        <small style="display:block;font-size:.65rem;color:var(--text-secondary)">Profa. Marina</small>
+                        <small style="display:block;font-size:.66rem;color:var(--text-secondary)">Profa. Marina</small>
                     </div>
                 </div>
 
                 <div class="sim-telemetry">
-                    <div id="sim-telemetry-status" style="font-weight:700;margin-bottom:4px">2 AJUSTES PEDAGÓGICOS PENDENTES</div>
-                    <div id="sim-telemetry-log" style="color:var(--text-secondary);font-size:.68rem">
-                        1 choque entre unidades e 1 bloqueio de mais de 2 aulas seguidas pelo Motor CLAEX.
+                    <div id="sim-telemetry-status" style="font-weight:700;margin-bottom:3px">2 AJUSTES PENDENTES</div>
+                    <div id="sim-telemetry-log" style="color:var(--text-secondary);font-size:.7rem">
+                        1 choque entre instituições e 1 bloqueio de sequência acima do limite.
                     </div>
                 </div>
 
-                <button id="sim-solve-btn" class="btn-neon" style="width:100%;font-size:.84rem;padding:12px" data-cursor-label="DRS OPTIMIZE">
-                    ⚡ Otimizar Grade com Motor CLAEX (NSGA-II + SA)
+                <button id="sim-solve-btn" class="btn-neon" style="width:100%;font-size:.82rem;padding:12px" data-cursor-label="OTIMIZAR">
+                    Otimizar Grade (NSGA-II + Simulated Annealing)
                 </button>
             </div>
 
-            <!-- BENTO 2: Métricas, RBAC & Terminal Agêntico Claude Code -->
-            <div class="spotlight-card col-span-5" style="display:flex;flex-direction:column;justify-content:space-between" data-tilt>
+            <!-- BENTO 2: RBAC & Terminal Claude Code Minimalista -->
+            <div class="spotlight-card col-span-5" style="display:flex;flex-direction:column;justify-content:space-between">
                 <div>
-                    <div class="telemetry-tag">Claude Code // Controle &amp; CLI</div>
-                    <h3 style="font-size:1.35rem;margin-bottom:8px">Permissões &amp; Terminal Agêntico</h3>
-                    <p style="font-size:.84rem">
-                        Alterne o nível escolar ou dispare comandos naturais inspirados no <code>anthropics/claude-code</code>:
+                    <div class="telemetry-tag">anthropics/claude-code // CLI</div>
+                    <h3 style="font-size:1.35rem;margin-bottom:8px">Controle RBAC &amp; CLI Agêntico</h3>
+                    <p style="font-size:.86rem">
+                        Inspecione permissões por perfil ou dispare comandos reais de engenharia no console:
                     </p>
 
                     <div class="rbac-preview-tabs" role="tablist">
@@ -562,55 +512,55 @@
                     </div>
 
                     <div class="rbac-status-output" id="rbac-live-output">
-                        [DIREÇÃO / PIT-WALL] Acesso total: cadastra salas, seleciona o modelo de IA (Gemini 2.5 Pro / Claude Sonnet 4 / o3-mini) e executa o otimizador Memético NSGA-II.
+                        [DIREÇÃO] Acesso completo: cadastra turmas, define regras de IA e executa o solver Memético NSGA-II + Simulated Annealing.
                     </div>
 
-                    <!-- Terminal Interativo Claude Code (anthropics/claude-code) -->
                     <div class="claude-code-terminal">
                         <div class="claude-code-bar">
                             <div class="claude-code-dots"><span></span><span></span><span></span></div>
-                            <span>claude-code // claex-telemetry-cli</span>
+                            <span>claude-code // claex-cli</span>
                         </div>
                         <div class="claude-code-body">
                             <div id="claude-cli-output">
-                                <span style="color:var(--neon-lime)">❯ claude</span> pronto para otimizar grades e pinturas OKLCH. Clique em um comando abaixo:
+                                <span style="color:var(--neon-lime)">❯ claude</span> pronto para otimizar e alternar superfície OKLCH:
                             </div>
                             <div class="claude-cmd-chips">
                                 <button type="button" class="claude-cmd-chip" data-claude-cmd="optimize">/optimize --nsga2</button>
                                 <button type="button" class="claude-cmd-chip" data-claude-cmd="audit">/audit --claude-4</button>
-                                <button type="button" class="claude-cmd-chip" data-claude-cmd="livery-lime">/livery --ln4-lime</button>
-                                <button type="button" class="claude-cmd-chip" data-claude-cmd="livery-papaya">/livery --papaya</button>
+                                <button type="button" class="claude-cmd-chip" data-claude-cmd="livery-lime">/livery --lime</button>
+                                <button type="button" class="claude-cmd-chip" data-claude-cmd="surface-toggle">/surface --toggle</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border-hairline);display:flex;justify-content:space-between;align-items:flex-end">
+                <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border-card);display:flex;justify-content:space-between;align-items:flex-end">
                     <div>
-                        <div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-mono)">Trava Rígida Motor CLAEX</div>
-                        <div class="metric-display" style="margin-top:6px">≤ 2<span class="metric-unit">Aulas Seguidas</span></div>
+                        <div style="font-size:.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-mono)">Trava Rígida CLAEX</div>
+                        <div class="metric-display" style="margin-top:4px">≤ 2<span class="metric-unit">Aulas Seguidas</span></div>
                     </div>
-                    <a href="grade.html?id=1" class="btn-ghost" style="font-size:.8rem;padding:8px 16px">Abrir Pit-Wall →</a>
+                    <a href="grade.html?id=1" class="btn-ghost" style="font-size:.8rem;padding:8px 15px">Abrir Pit-Wall →</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- EQUIPE // PARTICIPANTES -->
+    <!-- EQUIPE DE ENGENHARIA -->
     <section class="section-wrapper" id="equipe" data-track-group="off-track">
         <div class="section-header">
-            <div class="opticore-watermark" aria-hidden="true">EQUIPE</div>
-            <div class="telemetry-tag">Engenharia</div>
-            <h2 class="section-title">Desenvolvedores do CLAEX</h2>
+            <div class="opticore-watermark" aria-hidden="true">ENGENHARIA</div>
+            <div class="telemetry-tag">Desenvolvedores</div>
+            <h2 class="section-title">Arquitetura do Ecossistema CLAEX</h2>
             <p class="section-subtitle">
-                Arquitetura em Java + Spring Boot, algoritmo de otimização Motor CLAEX e integração com Gemini IA.
+                Persistência Java + Spring Boot, algoritmo híbrido NSGA-II + SA e auditoria semântica integrada.
             </p>
         </div>
 
         <div class="team-grid">
-            <article class="team-dossier spotlight-card" data-tilt>
+            <article class="team-dossier spotlight-card">
                 <div class="dossier-image-wrap">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQFvJd5dKxhTJQ/profile-displayphoto-shrink_200_200/B4DZYvrVA6G4AY-/0/1744556613033?e=2147483647&v=beta&t=vcfFsJG-aaz67lDVg82S-_WRuBQFVQYsU5vZ6jkMgZw" alt="Daniel">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQFvJd5dKxhTJQ/profile-displayphoto-shrink_200_200/B4DZYvrVA6G4AY-/0/1744556613033?e=2147483647&v=beta&t=vcfFsJG-aaz67lDVg82S-_WRuBQFVQYsU5vZ6jkMgZw" alt="Daniel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="dossier-monogram" style="display:none" aria-hidden="true">DSP</div>
                     <div class="dossier-badge">Back-End</div>
                     <div class="dossier-number">#01</div>
                 </div>
@@ -619,7 +569,7 @@
                         <h3 class="dossier-name">Daniel</h3>
                         <div class="dossier-role">Arquitetura &amp; Back-End</div>
                         <p class="dossier-desc">
-                            Modelagem de dados acadêmicos, persistência JPA/MySQL e APIs RESTful em Java + Spring Boot.
+                            Modelagem acadêmica, persistência JPA/MySQL e APIs RESTful em Java + Spring Boot.
                         </p>
                         <div class="dossier-tech-tags">
                             <span class="dossier-tech-tag">Java 17</span>
@@ -633,9 +583,10 @@
                 </div>
             </article>
 
-            <article class="team-dossier spotlight-card" data-tilt>
+            <article class="team-dossier spotlight-card">
                 <div class="dossier-image-wrap">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQE3d-M5KCrZ7w/profile-displayphoto-scale_200_200/B4DZu6Xd1tJsAY-/0/1768358273500?e=2147483647&v=beta&t=zH5JQG4Bs_e5jcaTZgcfZoSPCH6A9hv0Y8dwCVBVhKM" alt="Vinicius">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQE3d-M5KCrZ7w/profile-displayphoto-scale_200_200/B4DZu6Xd1tJsAY-/0/1768358273500?e=2147483647&v=beta&t=zH5JQG4Bs_e5jcaTZgcfZoSPCH6A9hv0Y8dwCVBVhKM" alt="Vini" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="dossier-monogram" style="display:none" aria-hidden="true">VC</div>
                     <div class="dossier-badge">Full-Stack &amp; IA</div>
                     <div class="dossier-number">#04</div>
                 </div>
@@ -644,12 +595,12 @@
                         <h3 class="dossier-name">Vini</h3>
                         <div class="dossier-role">Front-End, Back-End &amp; IA</div>
                         <p class="dossier-desc">
-                            Interface de alta performance, animações interativas, integração Gemini API e Motor CLAEX.
+                            Design System Editorial, Motion UI, integração Gemini API e Motor Memético CLAEX.
                         </p>
                         <div class="dossier-tech-tags">
-                            <span class="dossier-tech-tag">Full-Stack</span>
+                            <span class="dossier-tech-tag">Motion UI</span>
                             <span class="dossier-tech-tag">Gemini API</span>
-                            <span class="dossier-tech-tag">UI Design</span>
+                            <span class="dossier-tech-tag">Full-Stack</span>
                         </div>
                     </div>
                     <a href="https://br.linkedin.com/in/vinicius-castilho-39153b358" target="_blank" rel="noopener noreferrer" class="btn-linkedin">
@@ -658,9 +609,10 @@
                 </div>
             </article>
 
-            <article class="team-dossier spotlight-card" data-tilt>
+            <article class="team-dossier spotlight-card">
                 <div class="dossier-image-wrap">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQELYFLLYv5zvg/profile-displayphoto-shrink_200_200/B4DZZEmjjmHIAY-/0/1744907680442?e=2147483647&v=beta&t=vQNpdqaQsttS8XcYOIKfv_qqOFew6dLcWXFLRMyB3oA" alt="Samuel">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQELYFLLYv5zvg/profile-displayphoto-shrink_200_200/B4DZZEmjjmHIAY-/0/1744907680442?e=2147483647&v=beta&t=vQNpdqaQsttS8XcYOIKfv_qqOFew6dLcWXFLRMyB3oA" alt="Samuel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="dossier-monogram" style="display:none" aria-hidden="true">SAB</div>
                     <div class="dossier-badge">Full-Stack</div>
                     <div class="dossier-number">#81</div>
                 </div>
@@ -669,7 +621,7 @@
                         <h3 class="dossier-name">Samuel</h3>
                         <div class="dossier-role">Desenvolvedor Full-Stack</div>
                         <p class="dossier-desc">
-                            Fluxo de dados ponta a ponta, regras de negócio escolares e experiência de uso da plataforma.
+                            Fluxos de dados escolares ponta a ponta, regras de negócio e experiência do usuário.
                         </p>
                         <div class="dossier-tech-tags">
                             <span class="dossier-tech-tag">Spring Data</span>
@@ -687,66 +639,65 @@
 
     <!-- CTA -->
     <section class="cta-section">
-        <div class="cta-glow"></div>
         <div class="cta-inner">
-            <div class="opticore-pretitle"><span class="sparkle">✦</span> COMECE AGORA</div>
-            <h2 class="cta-title">Pronto para automatizar a grade da sua escola?</h2>
-            <p class="cta-sub">Entre como Administrador, Professor ou Aluno e experimente o Motor CLAEX + Gemini IA ao vivo.</p>
-            <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px">
-                <a href="form_cadastro.html" class="btn-opticore">
-                    <span class="btn-opticore-pill">Criar Conta Grátis</span>
-                </a>
-                <a href="form_login.html" class="btn-ghost" style="padding:12px 24px">Fazer Login</a>
+            <div class="opticore-pretitle"><span class="sparkle"></span> COMECE AGORA</div>
+            <h2 class="cta-title">Pronto para organizar as grades da sua escola sem excessos?</h2>
+            <p class="cta-sub">Entre como Administrador, Professor ou Aluno e experimente o Motor CLAEX com interface limpa de alta precisão.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+                <a href="form_cadastro.html" class="btn-neon">Criar Conta Grátis</a>
+                <a href="form_login.html" class="btn-ghost" style="padding:10px 22px">Fazer Login</a>
             </div>
         </div>
     </section>
 
 </main>
 
+<!-- FOOTER CONTIDO ESTILO LANDO NORRIS (PAINEL DARK MOLDURADO EM ACID LIME) -->
 <footer>
-    <div class="footer-content">
-        <div>
-            <div class="footer-brand">CLAEX<span>.</span></div>
-            <p style="font-size:.86rem;max-width:290px;margin-top:10px;color:var(--text-secondary)">
-                Automação inteligente de grades horárias para instituições de ensino, coordenadores e professores.
-            </p>
+    <div class="footer-panel-inner">
+        <div class="footer-content">
+            <div>
+                <div class="footer-brand">CLAEX<span>.</span></div>
+                <p style="font-size:.86rem;max-width:290px;margin-top:10px;color:var(--text-muted-on-dark)">
+                    Automação inteligente de grades horárias para instituições de ensino, coordenadores e professores.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Ambiente Escolar</h4>
+                    <a href="index.html">Início</a>
+                    <a href="listar_sala.html">Quadro de Salas</a>
+                    <a href="grade.html">Grade de Horários</a>
+                    <a href="painel_professor.html">Painel do Professor</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Acesso</h4>
+                    <a href="form_login.html">Login</a>
+                    <a href="form_cadastro.html">Cadastro</a>
+                    <a href="form_nova_sala.html">Nova Sala</a>
+                    <a href="tabela_cadastros.html">Professores</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Arquitetura</h4>
+                    <a href="#para-quem">Escolas e Docentes</a>
+                    <a href="#recursos">Motor CLAEX + CLI</a>
+                    <a href="#equipe">Desenvolvedores</a>
+                </div>
+            </div>
         </div>
 
-        <div class="footer-links">
-            <div class="footer-col">
-                <h4>Ambiente Escolar</h4>
-                <a href="index.html">Início</a>
-                <a href="listar_sala.html">Quadro de Salas</a>
-                <a href="grade.html">Grade de Horários</a>
-                <a href="painel_professor.html">Painel do Professor</a>
-            </div>
-            <div class="footer-col">
-                <h4>Acesso</h4>
-                <a href="form_login.html">Login</a>
-                <a href="form_cadastro.html">Cadastro</a>
-                <a href="form_nova_sala.html">Nova Sala</a>
-                <a href="tabela_cadastros.html">Professores</a>
-            </div>
-            <div class="footer-col">
-                <h4>Sobre</h4>
-                <a href="#para-quem">Escolas e Docentes</a>
-                <a href="#recursos">Motor CLAEX + IA</a>
-                <a href="#equipe">Desenvolvedores</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <div>© 2026 CLAEX Educação. Todos os direitos reservados.</div>
-        <div style="font-family:var(--font-mono);font-size:.73rem;color:var(--text-muted)">
-            Motor CLAEX · Java 17 · Spring Boot · Gemini API
+        <div class="footer-bottom">
+            <div>© 2026 CLAEX Educação. Todos os direitos reservados.</div>
+            <div class="footer-status">ONLINE // MOTION UI × OKLCH · JAVA 17 · SPRING BOOT</div>
         </div>
     </div>
 </footer>
 
 <script src="js/claex-notify.js"></script>
-    <script src="js/api.js"></script>
+<script src="js/api.js"></script>
 <script src="js/webgl-background.js"></script>
+<script src="js/motion-ui.js"></script>
 <script src="js/unlumen-effects.js"></script>
 <script src="js/gsap-animations.js"></script>
 </body>

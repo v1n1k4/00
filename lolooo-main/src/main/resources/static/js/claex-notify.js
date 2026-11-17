@@ -1,15 +1,6 @@
 /**
- * CLAEX NOTIFY — Notificações e Pop-ups no estilo visual do site
- * ---------------------------------------------------------------
- * - Substitui o alert() nativo do navegador ("localhost:8081 diz...")
- *   por notificações escuras com a Ampulheta CLAEX, barra de progresso e destaque azul.
- * - CLAEX.confirm(msg) => Promise<boolean> com pop-up modal no mesmo estilo do site.
- * - Notificações sobrevivem a redirecionamentos (ex.: "Sala criada" -> listar_sala.html).
- *
- * Uso:
- *   CLAEX.notify("Mensagem", { type: "success" | "error" | "warning" | "info", title, duration })
- *   CLAEX.success("..."); CLAEX.error("..."); CLAEX.warning("..."); CLAEX.info("...");
- *   if (await CLAEX.confirm("Deseja excluir?", { danger: true })) { ... }
+ * CLAEX NOTIFY — Clean Editorial & Charcoal Notifications (Zero Neon)
+ * Substitui alert() e confirm() mantendo persistência entre redirecionamentos.
  */
 (function () {
     'use strict';
@@ -32,136 +23,110 @@
         info:    { tag: 'MOTOR CLAEX // INFO',    title: 'Notificação',         icon: 'i' }
     };
 
-    // ── ESTILOS (injetados uma única vez, funcionam em qualquer página) ─────────
     const CSS = `
     .claex-toast-stack {
-        position: fixed; top: 86px; right: 22px; z-index: 100000;
-        display: flex; flex-direction: column; gap: 12px;
-        width: min(400px, calc(100vw - 32px)); pointer-events: none;
+        position: fixed; bottom: 24px; right: 24px; z-index: 100000;
+        display: flex; flex-direction: column; gap: 10px;
+        width: min(390px, calc(100vw - 32px)); pointer-events: none;
     }
     .claex-toast {
-        --claex-accent: var(--neon-bright, #3B82F6);
+        --claex-accent: var(--neon-lime, #D2FF00);
+        --claex-on-accent: var(--text-on-accent, #111112);
         position: relative; pointer-events: auto; overflow: hidden;
-        display: grid; grid-template-columns: 44px 1fr 26px; gap: 14px; align-items: start;
-        padding: 16px 16px 18px;
-        background: linear-gradient(180deg, rgba(23, 26, 36, 0.97) 0%, rgba(10, 12, 18, 0.98) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 18px;
-        box-shadow: 0 22px 50px rgba(0, 0, 0, 0.75), 0 0 34px rgba(59, 130, 246, 0.10),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.10);
-        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-        font-family: 'Plus Jakarta Sans', 'Space Grotesk', system-ui, sans-serif;
-        color: #E5E7EB;
-        transform: translateX(calc(100% + 40px)) scale(0.96); opacity: 0;
-        transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+        display: grid; grid-template-columns: 40px 1fr 26px; gap: 12px; align-items: start;
+        padding: 14px 14px 16px;
+        background: #111112;
+        border: 1px solid #2A2A2D;
+        border-radius: 14px;
+        box-shadow: 0 16px 36px rgba(17, 17, 18, 0.28);
+        font-family: 'Mona Sans', system-ui, sans-serif;
+        color: #EAEAE4;
+        transform: translateX(calc(100% + 40px)); opacity: 0;
+        transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
     }
-    .claex-toast.show { transform: translateX(0) scale(1); opacity: 1; }
-    .claex-toast.hide { transform: translateX(calc(100% + 40px)) scale(0.96); opacity: 0;
-        transition: transform 0.4s cubic-bezier(0.7, 0, 0.84, 0), opacity 0.35s ease; }
+    .claex-toast.show { transform: translateX(0); opacity: 1; }
+    .claex-toast.hide { transform: translateX(calc(100% + 40px)); opacity: 0; }
 
     .claex-toast::before {
-        content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px;
-        border-radius: 0 3px 3px 0; background: var(--claex-accent);
-        box-shadow: 0 0 12px var(--claex-accent);
+        content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+        background: var(--claex-accent);
     }
-    .claex-toast.type-error   { --claex-accent: #FF5A5F; }
-    .claex-toast.type-warning { --claex-accent: #F5B544; }
+    .claex-toast.type-error   { --claex-accent: #EF4444; --claex-on-accent: #FFFFFF; }
+    .claex-toast.type-warning { --claex-accent: #F59E0B; --claex-on-accent: #111112; }
 
     .claex-toast-icon {
-        position: relative; width: 44px; height: 44px; border-radius: 13px;
-        background: linear-gradient(180deg, #1A1E2A 0%, #0B0D13 100%);
-        border: 1px solid rgba(255, 255, 255, 0.14);
+        position: relative; width: 40px; height: 40px; border-radius: 10px;
+        background: #18181A; border: 1px solid #2A2A2D;
         display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 0 18px rgba(255, 255, 255, 0.05);
     }
-    .claex-toast-icon svg { width: 22px; height: 22px; fill: #FFFFFF;
-        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.35)); }
+    .claex-toast-icon svg { width: 20px; height: 20px; fill: #F5F5F0; }
     .claex-toast-icon .claex-status-dot {
-        position: absolute; right: -5px; bottom: -5px; width: 18px; height: 18px; border-radius: 50%;
-        background: var(--claex-accent); color: #050508;
-        font: 800 10px/18px 'JetBrains Mono', monospace; text-align: center;
-        border: 2px solid #0A0C12; box-shadow: 0 0 10px var(--claex-accent);
+        position: absolute; right: -4px; bottom: -4px; width: 17px; height: 17px; border-radius: 50%;
+        background: var(--claex-accent); color: var(--claex-on-accent);
+        font: 800 10px/17px 'JetBrains Mono', monospace; text-align: center;
+        border: 2px solid #111112;
     }
 
     .claex-toast-body { min-width: 0; }
     .claex-toast-tag {
         font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 700;
-        letter-spacing: 0.14em; text-transform: uppercase; color: var(--claex-accent);
-        margin-bottom: 4px;
+        letter-spacing: 0.1em; text-transform: uppercase; color: var(--claex-accent);
+        margin-bottom: 3px;
     }
-    .claex-toast-title { font-size: 0.96rem; font-weight: 700; color: #FFFFFF;
-        letter-spacing: -0.01em; line-height: 1.3; }
-    .claex-toast-msg { margin-top: 4px; font-size: 0.84rem; line-height: 1.5; color: #A1A7B5;
-        word-wrap: break-word; }
-    .claex-toast-list { list-style: none; margin: 10px 0 0; padding: 0;
-        display: flex; flex-direction: column; gap: 6px; }
+    .claex-toast-title { font-size: 0.92rem; font-weight: 700; color: #F5F5F0; line-height: 1.3; }
+    .claex-toast-msg { margin-top: 4px; font-size: 0.82rem; line-height: 1.5; color: #A1A1AA; word-wrap: break-word; }
+    .claex-toast-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
     .claex-toast-list li {
-        display: flex; align-items: flex-start; gap: 8px; font-size: 0.8rem; color: #D1D5DB;
-        padding: 7px 10px; border-radius: 10px;
-        background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.07);
+        display: flex; align-items: flex-start; gap: 8px; font-size: 0.78rem; color: #E5E7EB;
+        padding: 6px 8px; border-radius: 8px; background: #18181A; border: 1px solid #2A2A2D;
     }
     .claex-toast-list li .chk {
-        flex: 0 0 16px; height: 16px; border-radius: 5px; margin-top: 1px;
-        background: var(--claex-accent); color: #050508;
-        font: 800 10px/16px 'JetBrains Mono', monospace; text-align: center;
+        flex: 0 0 15px; height: 15px; border-radius: 4px; margin-top: 1px;
+        background: var(--claex-accent); color: var(--claex-on-accent);
+        font: 800 9px/15px 'JetBrains Mono', monospace; text-align: center;
     }
 
     .claex-toast-close {
-        width: 26px; height: 26px; border-radius: 8px; cursor: pointer;
-        background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.10);
-        color: #9CA3AF; font-size: 0.75rem; line-height: 1;
-        display: flex; align-items: center; justify-content: center;
-        transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        width: 24px; height: 24px; border-radius: 6px; cursor: pointer;
+        background: #18181A; border: 1px solid #2A2A2D; color: #A1A1AA;
+        font-size: 0.72rem; display: flex; align-items: center; justify-content: center;
     }
-    .claex-toast-close:hover { color: #FFFFFF; border-color: var(--claex-accent);
-        background: rgba(255, 255, 255, 0.08); }
+    .claex-toast-close:hover { color: #FFFFFF; border-color: #FFFFFF; }
 
     .claex-toast-progress {
-        position: absolute; left: 0; bottom: 0; height: 2.5px; width: 100%;
-        background: var(--claex-accent); box-shadow: 0 0 10px var(--claex-accent);
-        transform-origin: left center; transform: scaleX(1);
+        position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
+        background: var(--claex-accent); transform-origin: left center; transform: scaleX(1);
     }
 
-    /* ── POP-UP DE CONFIRMAÇÃO (substitui confirm()) ── */
     .claex-dialog-overlay {
         position: fixed; inset: 0; z-index: 100001;
-        background: rgba(3, 4, 7, 0.78);
-        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        background: rgba(17, 17, 18, 0.72);
         display: flex; align-items: center; justify-content: center; padding: 20px;
-        opacity: 0; transition: opacity 0.28s ease;
+        opacity: 0; transition: opacity 0.2s ease;
     }
     .claex-dialog-overlay.show { opacity: 1; }
     .claex-dialog {
-        --claex-accent: var(--neon-bright, #3B82F6);
-        position: relative; width: min(460px, 100%); padding: 28px 26px 22px;
-        background: linear-gradient(180deg, #171A24 0%, #0A0C12 100%);
-        border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 22px;
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(59, 130, 246, 0.12),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        font-family: 'Plus Jakarta Sans', 'Space Grotesk', system-ui, sans-serif; color: #E5E7EB;
-        transform: translateY(18px) scale(0.96);
-        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        --claex-accent: var(--neon-lime, #D2FF00);
+        --claex-on-accent: var(--text-on-accent, #111112);
+        position: relative; width: min(440px, 100%); padding: 26px;
+        background: #111112; border: 1px solid #2A2A2D; border-radius: 18px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+        font-family: 'Mona Sans', system-ui, sans-serif; color: #EAEAE4;
+        transform: translateY(12px); transition: transform 0.25s ease;
     }
-    .claex-dialog.danger { --claex-accent: #FF5A5F; }
-    .claex-dialog-overlay.show .claex-dialog { transform: translateY(0) scale(1); }
-    .claex-dialog-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-    .claex-dialog-head .claex-toast-icon { width: 52px; height: 52px; border-radius: 15px; }
-    .claex-dialog-head .claex-toast-icon svg { width: 26px; height: 26px; }
-    .claex-dialog-title { font-size: 1.25rem; font-weight: 700; color: #FFFFFF; margin: 0; }
-    .claex-dialog-msg { font-size: 0.92rem; line-height: 1.65; color: #B0B5C3; margin: 0 0 22px; }
+    .claex-dialog.danger { --claex-accent: #EF4444; --claex-on-accent: #FFFFFF; }
+    .claex-dialog-overlay.show .claex-dialog { transform: translateY(0); }
+    .claex-dialog-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .claex-dialog-title { font-size: 1.2rem; font-weight: 700; color: #F5F5F0; margin: 0; }
+    .claex-dialog-msg { font-size: 0.9rem; line-height: 1.6; color: #A1A1AA; margin: 0 0 20px; }
     .claex-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
     .claex-dialog-btn {
-        font-family: inherit; font-size: 0.84rem; font-weight: 700; letter-spacing: 0.02em;
-        padding: 11px 20px; border-radius: 999px; cursor: pointer;
-        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        font-family: inherit; font-size: 0.82rem; font-weight: 700;
+        padding: 10px 18px; border-radius: 999px; cursor: pointer;
     }
-    .claex-dialog-btn:hover { transform: translateY(-1px); }
-    .claex-dialog-btn.ghost { background: rgba(255, 255, 255, 0.05); color: #D1D5DB;
-        border: 1px solid rgba(255, 255, 255, 0.14); }
-    .claex-dialog-btn.ghost:hover { border-color: rgba(255, 255, 255, 0.3); color: #FFFFFF; }
-    .claex-dialog-btn.primary { background: var(--claex-accent); color: #FFFFFF;
-        border: 1px solid var(--claex-accent); box-shadow: 0 0 22px var(--claex-accent); }
-    .claex-dialog-btn.primary:hover { box-shadow: 0 0 32px var(--claex-accent); }
+    .claex-dialog-btn.ghost { background: #18181A; color: #EAEAE4; border: 1px solid #2A2A2D; }
+    .claex-dialog-btn.ghost:hover { border-color: #FFFFFF; }
+    .claex-dialog-btn.primary { background: var(--claex-accent); color: var(--claex-on-accent); border: 1px solid #111112; }
 
     @media (max-width: 600px) {
         .claex-toast-stack { top: auto; bottom: 16px; right: 16px; left: 16px; width: auto; }
@@ -187,7 +152,6 @@
             .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
-    // Detecta o tipo da notificação pelo texto da mensagem
     function detectType(msg) {
         const t = String(msg || '').toLowerCase();
         if (/(erro|falha|não foi possível|nao foi possivel|inválid|invalid)/.test(t)) return 'error';
@@ -196,7 +160,6 @@
         return 'info';
     }
 
-    // Separa a mensagem: 1ª linha = título, linhas com ✅/✔/- viram checklist, o resto = texto
     function parseMessage(raw) {
         const lines = String(raw == null ? '' : raw).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
         const bullets = [];
@@ -248,7 +211,6 @@
             : Math.min(9000, 4200 + String(message || '').length * 35);
 
         const record = { message: String(message == null ? '' : message), type, title: opts.title || null, duration };
-        // Registra já, para sobreviver a um redirecionamento imediato (alert + location.href)
         active.add(record);
 
         const run = () => {
@@ -287,7 +249,7 @@
                 active.delete(record);
                 el.classList.remove('show');
                 el.classList.add('hide');
-                setTimeout(() => el.remove(), 420);
+                setTimeout(() => el.remove(), 340);
             }
 
             function startTimer() {
@@ -302,9 +264,8 @@
                 if (duration <= 0 || closed) return;
                 clearTimeout(timer);
                 remaining = Math.max(0, remaining - (performance.now() - startedAt));
-                const ratio = remaining / duration;
                 progress.style.transition = 'none';
-                progress.style.transform = 'scaleX(' + ratio + ')';
+                progress.style.transform = 'scaleX(' + (remaining / duration) + ')';
             }
 
             el.querySelector('.claex-toast-close').addEventListener('click', close);
@@ -316,7 +277,6 @@
                 requestAnimationFrame(startTimer);
             });
 
-            // Limita a pilha a 4 notificações visíveis
             const toasts = getStack().querySelectorAll('.claex-toast:not(.hide)');
             if (toasts.length > 4) toasts[0].querySelector('.claex-toast-close').click();
         };
@@ -325,7 +285,6 @@
         else document.addEventListener('DOMContentLoaded', run, { once: true });
     }
 
-    // ── POP-UP DE CONFIRMAÇÃO ESTILO CLAEX (Promise<boolean>) ────────────────
     function confirmDialog(message, opts) {
         opts = opts || {};
         return new Promise(resolve => {
@@ -362,7 +321,7 @@
                 function finish(value) {
                     document.removeEventListener('keydown', onKey, true);
                     overlay.classList.remove('show');
-                    setTimeout(() => overlay.remove(), 300);
+                    setTimeout(() => overlay.remove(), 220);
                     if (prevFocus && prevFocus.focus) prevFocus.focus();
                     resolve(value);
                 }
@@ -392,13 +351,12 @@
         });
     }
 
-    // ── PERSISTÊNCIA ENTRE PÁGINAS (alert + redirect) ────────────────────────
     function savePending() {
         if (!active.size) return;
         try {
             const items = Array.from(active).map(r => ({ message: r.message, type: r.type, title: r.title }));
             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-        } catch (e) { /* storage indisponível */ }
+        } catch (e) {}
     }
 
     function restorePending() {
@@ -407,9 +365,9 @@
             if (!raw) return;
             sessionStorage.removeItem(STORAGE_KEY);
             JSON.parse(raw).forEach((n, i) => {
-                setTimeout(() => notify(n.message, { type: n.type, title: n.title || undefined }), 250 + i * 140);
+                setTimeout(() => notify(n.message, { type: n.type, title: n.title || undefined }), 220 + i * 120);
             });
-        } catch (e) { /* ignora */ }
+        } catch (e) {}
     }
 
     window.addEventListener('pagehide', savePending);
@@ -421,7 +379,6 @@
         restorePending();
     }
 
-    // ── API PÚBLICA ──────────────────────────────────────────────────────────
     window.CLAEX = Object.assign(window.CLAEX || {}, {
         __notifyReady: true,
         notify,
@@ -433,7 +390,6 @@
         nativeAlert
     });
 
-    // Substitui o alert() nativo ("localhost:8081 diz...") pela notificação CLAEX
     window.alert = function (message) {
         notify(message);
     };

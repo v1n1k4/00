@@ -7,37 +7,46 @@ tags:
   - claex/v10
   - moc
   - frontend/claude-design-toolkit
+  - landonorris-editorial
+  - motion-ui
   - oklch
   - algoritmos/nsga-ii
   - algoritmos/simulated-annealing
   - ia/multi-modelo
-created: 2026-04-20
+updated: 2026-11-17
 status: concluído
 repo: "https://github.com/v1n1k4/00"
 toolkit_ref: "https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit"
+cli_ref: "https://github.com/anthropics/claude-code"
+aesthetic_ref: "https://landonorris.com/"
+motion_ref: "https://github.com/motiondivision/motion"
 ---
 
-# 🧭 00 — Mapa de Conteúdo (MOC): Modernização CLAEX v10
+# 🧭 00 — Mapa de Conteúdo (MOC): Arquitetura CLAEX v10 (Zero-Neon Editorial × Motion UI)
 
 > [!abstract] Resumo Executivo
-> Este cofre Obsidian documenta a modernização completa do **Motor Inteligente de Grades Escolares CLAEX (v10)** no repositório `v1n1k4/00`. A atualização une os fundamentos visuais do [**wilwaldon/Claude-Code-Frontend-Design-Toolkit**](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit) com uma nova arquitetura algorítmica **Memética NSGA-II + Simulated Annealing + Kempe-Chain 2-Opt** e **Orquestração Multi-Modelo de IA** (`gemini-2.5-pro`, `gemini-2.5-flash`, `claude-sonnet-4-20250514`, `o3-mini` e fallback Neuro-Simbólico).
+> Este cofre Obsidian documenta o ecossistema completo do **Motor Inteligente de Grades Escolares CLAEX (v10)** no repositório `v1n1k4/00`. Na evolução mais recente do front-end, todo o **excesso de neon luminescentes (`box-shadow: 0 0 ...`, feixes `.edge-light-*`, blobs borrados e overrides roxos)** foi substituído por uma arquitetura **Editorial Zero-Neon** guiada por quatro pilares:
+> 1. **[Lando Norris (`landonorris.com`)](https://landonorris.com/)** — papel off-white (`#F5F5F0`), contraste binário em carvão `#111112`, cards com recorte chanfrado SVG e footer emoldurado em Acid Lime (`#D2FF00`).
+> 2. **[`anthropics/claude-code`](https://github.com/anthropics/claude-code)** — minimalismo tipográfico, terminal agêntico CLAEX CLI e comandos `/optimize`, `/audit`, `/livery`, `/surface`.
+> 3. **[`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit)** — variável raiz `--brand-hue` em espaço perceptual `OKLCH`, zero AI slop e pipeline em 3 etapas (`baseline-ui` → `fixing-accessibility` → `fixing-motion-performance`).
+> 4. **[Motion & Motion UI (`motiondivision/motion` + `ibelick/motion-primitives`)](https://motion.dev/magazine/introducing-motion-ui)** — motor físico modular em [`motion-ui.js`](../lolooo-main/src/main/resources/static/js/motion-ui.js) sem alterar nenhuma linha do back-end Java/Python ou de `api.js`.
 
 ---
 
 ## 🗂️ Índice de Notas Atômicas (WikiLinks)
 
 1. 🎨 **[[01 - Modernização Frontend (Claude Code Design Toolkit)]]**
-   - Aplicação prática dos *CLAUDE.md Theme Blocks*, *Bencium Controlled UX*, anti-patterns evitados ("AI Slop") e arquitetura visual **Opticore Precision Studio**.
+   - Remoção integral de neon em excesso, contrato visual **Editorial Light (`#F5F5F0`) + Charcoal Contrast Band (`#111112`)** e referências de design aplicadas nas 9 telas do CLAEX.
 2. 🌈 **[[02 - Design Tokens OKLCH e Theme Studio]]**
-   - Como uma única variável raiz `--brand-hue` governa toda a paleta cromática em espaço perceptual `oklch(L C H)`, mais o funcionamento do **Theme Studio ao Vivo** com 5 presets e slider `0°–360°`.
+   - Polaridade dupla (`data-surface="editorial"` padrão vs. `data-surface="carbon"`), contraste seguro WCAG (`--accent-ink` e `--text-on-accent`), 5 liveries F1 em `--brand-hue` e **Theme Studio** ao vivo.
 3. 🧬 **[[03 - Otimizador Híbrido (Memético NSGA-II + Simulated Annealing)]]**
-   - Formulação matemática da função de aptidão (*Fitness Function*), recozimento simulado com critério de Metropolis, busca local 2-Opt e métricas de carga cognitiva e janelas docentes.
+   - Formulação matemática da função de aptidão (*Fitness Function*), recozimento simulado com critério de Metropolis, busca local 2-Opt e métricas de carga cognitiva.
 4. 🧠 **[[04 - Orquestração Multi-Modelo IA (Gemini 2.5 Pro, Claude Sonnet 4, o3-mini)]]**
-   - Arquitetura de roteamento entre LLMs de raciocínio avançado, persistência de regras aprendidas (`RegraIaGrade`) e motor Neuro-Simbólico determinístico para operação resiliente offline.
-5. ♿ **[[05 - Pipeline de Qualidade (Baseline UI, Acessibilidade WCAG e Motion)]]**
-   - Sequência de auditoria em 3 fases (`baseline-ui` → `fixing-accessibility` → `fixing-motion-performance`), tipografia `tabular-nums`, contraste WCAG AA e respeito a `prefers-reduced-motion`.
+   - Arquitetura de roteamento entre LLMs de raciocínio avançado, persistência de regras aprendidas (`RegraIaGrade`) e motor Neuro-Simbólico determinístico.
+5. ⚡ **[[05 - Pipeline de Qualidade (Baseline UI, Acessibilidade WCAG e Motion)]]**
+   - Migração de efeitos pesados para **Motion UI (`motion@11.15.0`)** + **`motion-primitives`** (`TextScramble`, `SlidingNumber`, `InView`, `Scroll` docking), acessibilidade WCAG AA em temas claro/escuro e `prefers-reduced-motion`.
 6. 🗺️ **[[CLAEX-v10-Architecture.canvas|Quadro Visual de Arquitetura (Obsidian Canvas)]]**
-   - Mapa mental interativo conectando Frontend OKLCH, Solver Meta-Heurístico e Orquestrador Multi-Modelo.
+   - Mapa mental interativo conectando Frontend Editorial Zero-Neon, Motion UI, Solver Meta-Heurístico e Orquestrador Multi-Modelo.
 
 ---
 
@@ -45,13 +54,14 @@ toolkit_ref: "https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit"
 
 ```mermaid
 flowchart TB
-    subgraph UI["🎨 Frontend — Claude Code Design Toolkit"]
-        Tokens["design-tokens-oklch.css<br/>Single --brand-hue (0°–360°)"]
-        ThemeStudio["unlumen-effects.js<br/>Live OKLCH Theme Studio + Topbar"]
-        GradeUI["grade.html<br/>KPIs de Telemetria + Seletor Multi-Modelo"]
+    subgraph UI["🎨 Frontend Editorial Zero-Neon — Lando × Claude Code × Motion UI"]
+        Tokens["design-tokens-oklch.css<br/>Single --brand-hue + Editorial/Carbon"]
+        Motion["motion-ui.js + motion@11.15.0<br/>MotionTheme (snap/ui/gentle/lively) & Primitives"]
+        ThemeStudio["unlumen-effects.js<br/>Live Theme Studio + Claude CLI + CAD Canvas"]
+        GradeUI["grade.html (9 Páginas Unificadas)<br/>KPIs de Telemetria + Matriz Semanal"]
     end
 
-    subgraph Engine["🧬 Motor Meta-Heurístico Híbrido (Java & Python)"]
+    subgraph Engine["🧬 Motor Meta-Heurístico Híbrido (Java & Python — Intocados)"]
         NSGA["População NSGA-II / Memético<br/>(Elitismo + Torneio + Crossover)"]
         SA["Simulated Annealing<br/>P = exp(ΔE / T)"]
         Kempe["2-Opt Kempe-Chain Repair<br/>Compactação de Janelas & Geminadas"]
@@ -59,14 +69,15 @@ flowchart TB
 
     subgraph AI["🧠 Orquestrador Multi-Modelo IA"]
         Router["GeminiScheduleAdvisorService"]
-        G25Pro["Gemini 2.5 Pro<br/>(Deep Reasoning)"]
-        G25Flash["Gemini 2.5 Flash<br/>(Low-Latency)"]
-        Claude4["Claude Sonnet 4<br/>(Ergonomia Pedagógica)"]
-        O3Mini["OpenAI o3-mini<br/>(Formal CSP)"]
-        Neuro["Motor Neuro-Simbólico v10<br/>(Fallback Determinístico)"]
+        G25Pro["Gemini 2.5 Pro"]
+        G25Flash["Gemini 2.5 Flash"]
+        Claude4["Claude Sonnet 4"]
+        O3Mini["OpenAI o3-mini"]
+        Neuro["Motor Neuro-Simbólico v10"]
     end
 
     Tokens --> ThemeStudio --> GradeUI
+    Motion --> GradeUI
     GradeUI -->|POST /grade/gerargrade/{id}?estrategia=...| NSGA
     NSGA --> SA --> Kempe
     GradeUI -->|GET /grade/ia/analisar/{id}?modelo=...| Router
@@ -75,20 +86,14 @@ flowchart TB
 
 ---
 
-## 📁 Mapa de Arquivos Modificados no Repositório
+## 📁 Mapa de Arquivos do Repositório
 
-| Camada | Caminho no Repositório | Papel na Modernização v10 |
+| Camada | Caminho no Repositório | Papel na Arquitetura Atual |
 | :--- | :--- | :--- |
-| **Governança UI** | `CLAUDE.md` / `DESIGN.md` | Diretrizes do *Claude-Code-Frontend-Design-Toolkit*, Theme Blocks e tokens OKLCH |
-| **Tokens CSS** | `lolooo-main/src/main/resources/static/css/design-tokens-oklch.css` | Sistema cromático perceptual baseado em `--brand-hue` e escala tipográfica fluida |
-| **Theme Studio** | `lolooo-main/src/main/resources/static/js/unlumen-effects.js` | Popover interativo OKLCH, injeção de topbar global e skip-link WCAG |
-| **Cliente API** | `lolooo-main/src/main/resources/static/js/api.js` | Suporte a parâmetros de `estrategia` e `modelo` nos endpoints de grade e IA |
-| **Painel de Grade** | `lolooo-main/src/main/resources/static/grade.html` | Barra de Orquestração IA + 4 KPIs de telemetria + badges de carga cognitiva |
-| **Solver Java** | `lolooo-main/src/main/java/com/claex/crud/Service/GradeService.java` | Algoritmo Memético NSGA-II + Simulated Annealing + Kempe-Chain 2-Opt |
-| **Advisor IA Java** | `lolooo-main/src/main/java/com/claex/crud/Service/GeminiScheduleAdvisorService.java` | Roteamento Multi-Modelo (`gemini-2.5-pro`, `claude-sonnet-4`, `o3-mini`) + Neuro-Simbólico |
-| **Backend Python** | `backend_python/main.py` | Paridade 100% com o backend Java em FastAPI + SQLAlchemy + auto-seed de demonstração |
-
-> [!tip] Como abrir este cofre no seu computador
-> 1. Abra o **Obsidian** → **Open folder as vault** (Abrir pasta como cofre).
-> 2. Selecione a pasta `obsidian-vault/` dentro do seu repositório `00`.
-> 3. Clique em `CLAEX-v10-Architecture.canvas` ou abra o **Graph View (`Ctrl/Cmd + G`)** para visualizar todas as conexões entre as notas!
+| **Governança UI** | `CLAUDE.md` / `DESIGN.md` | Diretrizes Zero-Neon, Lando Norris + *Claude-Code-Frontend-Design-Toolkit* + Motion UI |
+| **Tokens CSS** | `lolooo-main/src/main/resources/static/css/design-tokens-oklch.css` | Polaridade Editorial (`#F5F5F0`) / Carbon (`#111112`) + `--brand-hue` WCAG |
+| **Estilos Base & Lando Layout** | `lolooo-main/src/main/resources/static/css/style.css` & `style-v5-extensions.css` | Cápsula editorial, hero `1:2`, galeria escura chanfrada, CLI terminal & footer `#D2FF00` |
+| **Motor Motion UI** | `lolooo-main/src/main/resources/static/js/motion-ui.js` | `MotionTheme` presets, `textScramble`, `slidingNumber`, `inView`, docking da ampulheta via `Motion.scroll` |
+| **Theme Studio & CAD** | `lolooo-main/src/main/resources/static/js/unlumen-effects.js`, `webgl-background.js`, `claex-notify.js` | Alternância Editorial/Carbon, topografia CAD matte e notificações limpas zero-neon |
+| **Páginas Unificadas (9 HTML)** | `lolooo-main/src/main/resources/static/*.html` | Front-end completo mantendo 100% dos IDs DOM, RBAC e `js/api.js` originais |
+| **Back-end Java / Python** | `lolooo-main/src/main/java/**`, `backend_python/main.py` | **Intocados** (regras de negócio, solver NSGA-II + SA e contratos REST preservados) |

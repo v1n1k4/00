@@ -1,95 +1,93 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-surface="editorial" data-accent="lime">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLAEX // Acesso ao Sistema</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.15.0/dist/motion.js"></script>
     <style>
         #msg-erro {
             display: none;
-            background: rgba(255, 59, 48, 0.15);
-            color: #ff9999;
-            border: 1px solid var(--neon-red);
+            background: rgba(220, 38, 38, 0.08);
+            color: #B91C1C;
+            border: 1px solid rgba(220, 38, 38, 0.35);
             border-radius: var(--radius-sm);
             padding: 12px 16px;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             text-align: center;
             margin-top: 4px;
             font-family: var(--font-mono);
         }
+        html[data-surface="carbon"] #msg-erro {
+            color: #FCA5A5;
+        }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            20%       { transform: translateX(-8px); }
-            40%       { transform: translateX(8px); }
-            60%       { transform: translateX(-5px); }
-            80%       { transform: translateX(5px); }
+            20%       { transform: translateX(-6px); }
+            40%       { transform: translateX(6px); }
+            60%       { transform: translateX(-4px); }
+            80%       { transform: translateX(4px); }
         }
-        .shake { animation: shake 0.4s ease; }
+        .shake { animation: shake 0.35s ease; }
     </style>
 </head>
-
 <body>
-    <!-- Floating Dock Header -->
-    <header>
-        <div class="brand-container">
-            <div class="bars" id="menuToggle" aria-label="Abrir Menu">
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
+    <header id="main-header">
+        <div class="header-inner">
+            <div class="brand-container">
+                <div class="bars" id="menuToggle" aria-label="Abrir Menu">
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                </div>
+                <a href="index.html" class="brand-logo">CLAEX<span>.</span></a>
+                <span class="brand-telemetry">[ACESSO // SEGURANÇA]</span>
             </div>
-            <a href="index.html" class="brand-logo">
-                CLAEX<span>.</span>
-            </a>
-            <span class="brand-telemetry">[ACESSO // SEGURANÇA]</span>
-        </div>
 
-        <nav class="dock-links">
-            <a href="index.html" class="dock-link">Início</a>
-            <a href="listar_sala.html" class="dock-link">Salas</a>
-            <a href="grade.html" class="dock-link">Grade</a>
-            <a href="tabela_cadastros.html" class="dock-link">Professores</a>
-        </nav>
+            <nav class="dock-links" aria-label="Navegação Principal">
+                <a href="index.html" class="dock-link">Início</a>
+                <a href="listar_sala.html" class="dock-link">Salas</a>
+                <a href="grade.html" class="dock-link">Grade</a>
+                <a href="tabela_cadastros.html" class="dock-link">Professores</a>
+            </nav>
 
-        <div class="header-actions">
-            <a href="form_cadastro.html" class="btn-neon">Cadastre-se</a>
+            <div class="header-actions">
+                <a href="form_cadastro.html" class="btn-neon">Cadastre-se</a>
+            </div>
         </div>
     </header>
 
-    <!-- Side Drawer Menu -->
-    <aside id="side-menu">
+    <aside id="side-menu" aria-label="Menu Lateral">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <div class="brand-logo">CLAEX<span>.</span></div>
-            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;">✕</button>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1rem;" aria-label="Fechar Menu">✕</button>
         </div>
         <div class="telemetry-tag">Navegação Rápida</div>
-        <a href="index.html" class="side-link">🏠 Início</a>
-        <a href="form_login.html?tipo=entrar" class="side-link">🔑 Acesso / Login</a>
-        <a href="listar_sala.html" class="side-link">📚 Salas & Turmas</a>
-        <a href="form_nova_sala.html" class="side-link">➕ Criar Nova Sala</a>
-        <a href="config_sala.html" class="side-link">⚙️ Configurações de Sala</a>
-        <a href="tabela_cadastros.html" class="side-link">👥 Painel de Professores</a>
+        <a href="index.html" class="side-link">01 // Início</a>
+        <a href="form_login.html?tipo=entrar" class="side-link">02 // Acesso / Login</a>
+        <a href="listar_sala.html" class="side-link">03 // Salas &amp; Turmas</a>
+        <a href="form_nova_sala.html" class="side-link">04 // Criar Nova Sala</a>
+        <a href="config_sala.html" class="side-link">05 // Configurações de Sala</a>
+        <a href="tabela_cadastros.html" class="side-link">06 // Painel de Professores</a>
     </aside>
-    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+    <div class="menu-overlay"></div>
 
-    <main>
+    <main id="main-content">
         <section id="sect_login">
             <article class="flex_colunm">
                 <div class="telemetry-tag">[AUTENTICAÇÃO CENTRAL]</div>
-                <h1 id="sumir" style="font-size: 2.8rem; line-height: 1.1; margin-bottom: 16px;">
-                    Bem-vindo à <span style="color: var(--neon-lime);">CLAEX</span>
+                <h1 id="sumir" style="font-size: 3rem; line-height: 1.05; margin-bottom: 12px;">
+                    Bem-vindo à <span class="editorial-serif-em">CLAEX</span>
                 </h1>
-                <p style="color: var(--text-secondary); max-width: 380px; margin-bottom: 24px;">
+                <p style="color: var(--text-secondary); max-width: 390px; margin-bottom: 20px;">
                     Acesse sua conta para gerenciar horários, disponibilidade de docentes e otimizar salas em tempo real.
                 </p>
-                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
-                    
-                </div>
             </article>
 
             <article class="flex_colunm spotlight-card">
-                <div class="telemetry-tag" style="margin-bottom: 10px;">PORTAL DO USUÁRIO</div>
-                <h2 style="font-size: 1.8rem; margin-bottom: 20px;">Entrar no Sistema</h2>
+                <div class="telemetry-tag" style="margin-bottom: 8px;">PORTAL DO USUÁRIO</div>
+                <h2 style="font-size: 1.75rem; margin-bottom: 16px;">Entrar no Sistema</h2>
 
                 <div id="formulario_login">
                     <div>
@@ -101,20 +99,18 @@
                         <input type="password" id="senha" placeholder="Sua senha de acesso">
                     </div>
 
-                    <!-- Mensagem de erro dinâmica -->
                     <div id="msg-erro"></div>
 
                     <button type="button" class="submit" id="btnEntrar">Entrar no Sistema</button>
                 </div>
 
-                <p style="text-align: center; margin-top: 10px; font-size: 0.88rem;">
-                    Não possui uma conta? <a href="form_cadastro.html" style="color: var(--neon-lime); font-weight: 600;">Cadastre-se aqui</a>
+                <p style="text-align: center; margin-top: 10px; font-size: 0.86rem;">
+                    Não possui uma conta? <a href="form_cadastro.html" style="color: var(--accent-ink); font-weight: 700;">Cadastre-se aqui</a>
                 </p>
             </article>
         </section>
     </main>
 
-    <!-- Core Scripts -->
     <script src="js/claex-notify.js"></script>
     <script src="js/api.js"></script>
     <script>
@@ -131,7 +127,7 @@
         });
 
         function mostrarErro(texto) {
-            msgErro.textContent   = "❌ " + texto;
+            msgErro.textContent   = texto;
             msgErro.style.display = "block";
 
             const form = document.getElementById("formulario_login");
@@ -154,11 +150,10 @@
             msgErro.style.display = "none";
 
             try {
-                // Chama LoginController: /login/entrar do repositório v1n1k4/lolooo
                 const result = await window.API.login(loginDigitado, senhaDigitada);
 
                 if (result.ok) {
-                    btnEntrar.textContent = "✔ Acesso Autorizado...";
+                    btnEntrar.textContent = "Acesso Autorizado...";
                     const tipoLogado = (result.data && result.data.tipo ? result.data.tipo : "").toLowerCase();
                     if (tipoLogado === "professor") {
                         window.location.href = "painel_professor.html";
@@ -174,7 +169,7 @@
                 }
             } catch (error) {
                 console.error("Falha no login:", error);
-                mostrarErro("Erro de comunicação com o servidor Spring Boot! Verifique se a API está online.");
+                mostrarErro("Erro de comunicação com o servidor! Verifique se a API está online.");
             } finally {
                 if (document.getElementById("btnEntrar")) {
                     btnEntrar.disabled    = false;
@@ -184,6 +179,7 @@
         });
     </script>
     <script src="js/webgl-background.js"></script>
+    <script src="js/motion-ui.js"></script>
     <script src="js/unlumen-effects.js"></script>
 </body>
 </html>

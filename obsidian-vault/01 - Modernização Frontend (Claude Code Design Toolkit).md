@@ -2,69 +2,59 @@
 title: "01 - Modernização Frontend (Claude Code Design Toolkit)"
 aliases:
   - "Frontend Design Toolkit"
-  - "Opticore Precision Studio"
+  - "Zero-Neon Editorial Lando Norris"
 tags:
   - claex/v10
   - frontend/claude-design-toolkit
+  - landonorris-editorial
+  - motion-ui
   - design-system
   - ui-ux
-created: 2026-04-20
+updated: 2026-11-17
 related:
   - "[[00 - MOC (Mapa de Conteúdo CLAEX v10)]]"
   - "[[02 - Design Tokens OKLCH e Theme Studio]]"
   - "[[05 - Pipeline de Qualidade (Baseline UI, Acessibilidade WCAG e Motion)]]"
 ---
 
-# 🎨 01 — Modernização Frontend (`Claude-Code-Frontend-Design-Toolkit`)
+# 🎨 01 — Redesign Editorial Zero-Neon (`landonorris.com` × `claude-code` × `Motion UI`)
 
 ⬅️ Voltar para **[[00 - MOC (Mapa de Conteúdo CLAEX v10)]]**
 
-> [!info] Referência Base
-> A modernização da interface do CLAEX v10 aplica diretamente as metodologias do repositório [**wilwaldon/Claude-Code-Frontend-Design-Toolkit**](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit):
-> - **CLAUDE.md Theme Blocks** & `DESIGN.md` vivo na raiz do repositório.
-> - **Design Tokens em espaço `OKLCH`** controlados por uma única variável `--brand-hue`.
-> - **Bencium Controlled UX** (hierarquia tipográfica intencional, superfícies de carbono com tinta sutil de matiz e zero "AI Slop").
-> - **Pipeline de Revisão em 3 Estágios**: `baseline-ui` → `fixing-accessibility` → `fixing-motion-performance`.
+> [!info] Referências Arquiteturais
+> O redesign integral do front-end (`lolooo-main/src/main/resources/static/`) manteve intacto todo o back-end (`*.java`, `*.py`, `js/api.js`) e substituiu a estética escura carregada de neon por:
+> - **[McLaren F1 — Lando Norris (`landonorris.com`)](https://landonorris.com/)**: superfície principal **Editorial Off-White (`#F5F5F0`)**, hero assimétrico `1:2`, tipografia `Instrument Serif` + `Syne`, faixa divisória ticker e galeria escura contrastante em carvão `#111112`.
+> - **[`anthropics/claude-code`](https://github.com/anthropics/claude-code)**: minimalismo de alta legibilidade, console interativo `.claude-code-terminal` e comandos `/optimize`, `/audit`, `/livery`, `/surface`.
+> - **[`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit)**: variável única `--brand-hue` em `OKLCH`, zero AI slop e pipeline em 3 fases.
+> - **[`motiondivision/motion`](https://github.com/motiondivision/motion) & [`ibelick/motion-primitives`](https://github.com/ibelick/motion-primitives)**: animações físicas e de scroll dirigidas por [`motion-ui.js`](../lolooo-main/src/main/resources/static/js/motion-ui.js).
 
 ---
 
-## 1. Diagnóstico do Estado Anterior vs. Arquitetura v10
+## 1. Remoção Integral de Excesso de Neon ("Zero-Neon Audit")
 
-| Aspecto Visual | Antes (Legado) | Agora (CLAEX v10 — Design Toolkit) |
+| Elemento Removido (Passado) | Substituição Arquitetural (Atual) | Ganho Real |
 | :--- | :--- | :--- |
-| **Sistema de Cores** | Mistura inconsistente de `#d2ff00` (lime fixo) em páginas internas (`tabela_cadastros.html`, `listar_sala.html`) com azul hexadecimal em `index.html`. | **100% unificado em `OKLCH`** via `design-tokens-oklch.css` derivado de `--brand-hue` (veja **[[02 - Design Tokens OKLCH e Theme Studio]]**). |
-| **Troca de Tema** | Limitada a 2 cores estáticas e presente apenas na home page. | **Theme Studio OKLCH ao Vivo** em *todas* as páginas com **5 Presets** + **Slider Contínuo `0°–360°`**. |
-| **Navegação Global** | Links quebrados (`<a href="painel_professor.html">mat</a>`) e falta de barra de anúncio nas páginas internas. | Cápsula flutuante **Opticore** padronizada + injeção automática da Topbar e Skip-Link WCAG em todas as páginas via `unlumen-effects.js`. |
-| **Painel de Grade (`grade.html`)** | Apenas botão de gerar grade sem visibilidade das métricas matemáticas ou escolha de modelo de IA. | **Orquestrador Multi-Modelo IA**, seletor de estratégia do solver, **4 KPIs de Telemetria em Tempo Real** e badges de carga cognitiva por aula. |
+| **`box-shadow: 0 0 ...` fluorescentes** em botões, badges, painéis e toast | Bordas nítidas matte `1px solid var(--border-card)` e sombras neutras sutis | Acabamento editorial limpo de engenharia suíça sem brilho borrado |
+| **Feixes verticais `.edge-light-*` e blobs gigantes** (`filter: blur(...)`) | Linhas topográficas CAD finíssimas (`0.06` opacidade) em `webgl-background.js` | Zero poluição visual atrás de textos e formulários |
+| **Overrides roxos (`#5f33ff`, `#7033ff`, `98, 0, 255`)** | 100% governado por `OKLCH` via `--brand-hue` + Acid Lime `#D2FF00` cirúrgico | Consistência absoluta em todas as 9 páginas HTML |
+| **Cursor glowing dot + anel** | `.ln4-cursor-pill` minimalista estilo Lando Norris narrando rótulos `[INICIAR]`, `[SALAS]` | Interação narrativa sem distrações luminosas |
 
 ---
 
-## 2. Regras de Ouro ("Anti-AI-Slop") Implementadas em `CLAUDE.md`
+## 2. Estrutura Visual das 9 Páginas Unificadas
 
-Seguindo a seção **CLAUDE.md Theme Blocks** do toolkit de `wilwaldon`:
+Todas as 9 páginas (`index.html`, `grade.html`, `listar_sala.html`, `painel_professor.html`, `tabela_cadastros.html`, `form_login.html`, `form_cadastro.html`, `form_nova_sala.html`, `config_sala.html`) compartilham:
 
-1. **Proibição de Fundos Cinzas Puros (`#000000` / `#1a1a1a` dessaturados)**:
-   - Todas as superfícies escuras recebem uma micro-saturação (`chroma: 0.015` a `0.024`) tingida pela matiz ativa (`var(--brand-hue)`):
-   ```css
-   --surface-canvas:   oklch(11% 0.015 var(--brand-hue));
-   --surface-elevated: oklch(15% 0.020 var(--brand-hue));
-   --surface-card:     oklch(18% 0.024 var(--brand-hue));
-   ```
-2. **Hierarquia Tipográfica Tripla Intencional**:
-   - **Display / Headings**: `'Space Grotesk'` com `letter-spacing: -0.03em` e `text-wrap: balance`.
-   - **Corpo & Leitura Densa**: `'Plus Jakarta Sans'` com `text-wrap: pretty`.
-   - **Telemetria, Horários e KPIs**: `'JetBrains Mono'` com `font-variant-numeric: tabular-nums` para alinhamento vertical perfeito de dígitos.
-3. **Bordas Hairline Luminosas**:
-   - Em vez de sombras pesadas e borradas, os cartões utilizam bordas de `1px solid oklch(95% 0.01 var(--brand-hue) / 0.08)` combinadas com destaque direcional quando selecionados.
-
----
-
-## 3. Telemetria Pedagógica na Interface (`grade.html`)
-
-Na página de geração de horários (`grade.html`), adicionamos o **Grid de Telemetria Multi-Objetivo** com 4 indicadores numéricos em tempo real:
-- **Fitness Score Global**: Pontuação calculada pelo solver (ex.: `118.4 pts`) + estratégia executada (`MEMETIC_NSGA2_SA`).
-- **Equilíbrio Cognitivo**: Percentual de balanceamento mental da turma (`0%–100%`) com barra de progresso dinâmica.
-- **Eficiência de Janelas Docentes**: Contagem de buracos ociosos entre aulas do mesmo professor no dia (`0 janelas` = ideal).
-- **Aulas Geminadas Alinhadas**: Pares consecutivos da mesma disciplina preservados sem quebra pelo recreio.
+1. **Topbar de Telemetria (`36px`) + Header Cápsula Flutuante**: logotipo `CLAEX` com ampulheta geométrica, links em cápsula central e botão rápido de superfície (`Editorial` / `Carbon`) no **Theme Studio**.
+2. **Quarteto Tipográfico Intencional**:
+   - **`Instrument Serif` (itálico)** destacado por barra matte Acid Lime (`respeita`, `a precisão com que cada horário se encaixa`, `CLAEX`).
+   - **`Syne` (`-0.04em`)** em títulos monumentais e cabeçalhos.
+   - **`Mona Sans` + `Space Grotesk`** em labels, formulários e tabelas.
+   - **`JetBrains Mono` (`tabular-nums`)** em horários (`07:30`), fitness scores e saída do terminal `claude-code`.
+3. **Galeria Dark Charcoal (`#para-quem`) + Footer Contido Lando Norris**:
+   - Cards com recorte chanfrado em SVG (`.lando-frame-svg`), coluna central escalonada (`.lando-col-stagger`) e objetos geométricos interativos no hover via `MotionUI`.
+   - Painel final `footer` em `#111112` emoldurado por borda perimetral limpa de `4px` em `var(--neon-lime)`.
+4. **Resiliência Sem Imagens Quebradas**:
+   - `#painel` (`grade.html` e `listar_sala.html`) usa escudo arquitetônico SVG inline (`CPS // SP`), e os cartões da equipe (`Daniel`, `Vini`, `Samuel`) incluem monogramas tipográficos `DSP`, `VC`, `SAB` em caso de indisponibilidade de avatar externo.
 
 ➡️ Próxima leitura: **[[02 - Design Tokens OKLCH e Theme Studio]]**

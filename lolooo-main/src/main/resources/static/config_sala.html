@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-surface="editorial" data-accent="lime">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLAEX // Configurações da Sala</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.15.0/dist/motion.js"></script>
     <style>
         .form-grid {
             display: grid;
@@ -14,91 +15,53 @@
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
         }
-        .aulas {
-            background: var(--bg-carbon);
-            border: 1px solid var(--border-glass);
-            border-radius: var(--radius-sm);
-            padding: 18px;
-            margin-top: 12px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        @media (max-width: 600px) {
-            .aulas { grid-template-columns: 1fr; }
-        }
-        .btn-add-materia {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(210, 255, 0, 0.1);
-            color: var(--neon-lime);
-            border: 1px solid var(--border-lime);
-            padding: 10px 20px;
-            border-radius: 999px;
-            font-size: 0.88rem;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: all 0.2s ease;
-            margin-top: 10px;
-        }
-        .btn-add-materia:hover {
-            background: var(--neon-lime);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-glow);
-        }
     </style>
 </head>
-
 <body>
-    <!-- Floating Dock Header -->
-    <header>
-        <div class="brand-container">
-            <div class="bars" id="menuToggle" aria-label="Abrir Menu">
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
-                <div class="menu-bar"></div>
+    <header id="main-header">
+        <div class="header-inner">
+            <div class="brand-container">
+                <div class="bars" id="menuToggle" aria-label="Abrir Menu">
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                </div>
+                <a href="index.html" class="brand-logo">CLAEX<span>.</span></a>
+                <span class="brand-telemetry">[SALA // CONFIGURAÇÕES]</span>
             </div>
-            <a href="index.html" class="brand-logo">
-                CLAEX<span>.</span>
-            </a>
-            <span class="brand-telemetry">[SALA // CONFIGURAÇÕES]</span>
-        </div>
 
-        <nav class="dock-links">
-            <a href="index.html" class="dock-link">Início</a>
-            <a href="listar_sala.html" class="dock-link active">Salas</a>
-            <a href="grade.html" class="dock-link">Grade</a>
-            <a href="tabela_cadastros.html" class="dock-link">Professores</a>
-        </nav>
+            <nav class="dock-links" aria-label="Navegação Principal">
+                <a href="index.html" class="dock-link">Início</a>
+                <a href="listar_sala.html" class="dock-link active">Salas</a>
+                <a href="grade.html" class="dock-link">Grade</a>
+                <a href="tabela_cadastros.html" class="dock-link">Professores</a>
+            </nav>
 
-        <div class="header-actions">
-            <a href="listar_sala.html" class="btn-ghost">Voltar às Salas</a>
+            <div class="header-actions">
+                <a href="listar_sala.html" class="btn-ghost">Voltar às Salas</a>
+            </div>
         </div>
     </header>
 
-    <!-- Side Drawer Menu -->
-    <aside id="side-menu">
+    <aside id="side-menu" aria-label="Menu Lateral">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <div class="brand-logo">CLAEX<span>.</span></div>
-            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1.2rem;">✕</button>
+            <button class="close-menu btn-ghost" style="padding: 6px 12px; font-size: 1rem;" aria-label="Fechar Menu">✕</button>
         </div>
         <div class="telemetry-tag">Navegação Rápida</div>
-        <a href="index.html" class="side-link">🏠 Início</a>
-        <a href="form_login.html?tipo=entrar" class="side-link">🔑 Acesso / Login</a>
-        <a href="listar_sala.html" class="side-link">📚 Salas & Turmas</a>
-        <a href="form_nova_sala.html" class="side-link">➕ Criar Nova Sala</a>
-        <a href="config_sala.html" class="side-link">⚙️ Configurações de Sala</a>
-        <a href="tabela_cadastros.html" class="side-link">👥 Painel de Professores</a>
+        <a href="index.html" class="side-link">01 // Início</a>
+        <a href="form_login.html?tipo=entrar" class="side-link">02 // Acesso / Login</a>
+        <a href="listar_sala.html" class="side-link">03 // Salas &amp; Turmas</a>
+        <a href="form_nova_sala.html" class="side-link">04 // Criar Nova Sala</a>
+        <a href="config_sala.html" class="side-link">05 // Configurações de Sala</a>
+        <a href="tabela_cadastros.html" class="side-link">06 // Painel de Professores</a>
     </aside>
-    <div class="menu-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;"></div>
+    <div class="menu-overlay"></div>
 
-    <main style="padding: 30px 20px 80px;">
+    <main id="main-content" style="padding: 30px 20px 80px;">
         <form id="form_nova_sala" class="spotlight-card">
-            <div class="telemetry-tag">[AJUSTE DE PARÂMETROS // REPO v1n1k4/lolooo]</div>
-            <h1 style="font-size: 2.2rem; margin-bottom: 8px;">Configuração da Sala</h1>
+            <div class="telemetry-tag">[AJUSTE DE PARÂMETROS // BANCO DE DADOS]</div>
+            <h1 style="font-size: 2.1rem; margin-bottom: 8px;">Configuração da Sala</h1>
             <p style="margin-bottom: 28px; color: var(--text-secondary);">
                 Altere os horários, intervalos e regras de temporização desta turma no banco de dados.
             </p>
@@ -132,39 +95,39 @@
             </article>
 
             <button type="submit" class="submit" style="margin-top: 32px;">
-                ⚡ Atualizar Dados no Banco de Dados
+                Atualizar Dados no Banco de Dados
             </button>
         </form>
     </main>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-brand">CLAEX<span>.</span></div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Navegação</h4>
-                    <a href="index.html">Início</a>
-                    <a href="listar_sala.html">Salas</a>
-                    <a href="grade.html">Grade de Horários</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Legal</h4>
-                    <a href="#">Termos de Uso</a>
-                    <a href="#">Política de Privacidade</a>
+        <div class="footer-panel-inner">
+            <div class="footer-content">
+                <div class="footer-brand">CLAEX<span>.</span></div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Navegação</h4>
+                        <a href="index.html">Início</a>
+                        <a href="listar_sala.html">Salas</a>
+                        <a href="grade.html">Grade de Horários</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Política de Privacidade</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div>&copy; 2026 CLAEX. Todos os direitos reservados.</div>
-            <div class="footer-status">ONLINE // DATABASE CONNECTED</div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 CLAEX. Todos os direitos reservados.</div>
+                <div class="footer-status">ONLINE // DATABASE CONNECTED</div>
+            </div>
         </div>
     </footer>
 
-    <!-- Core Scripts -->
     <script src="js/claex-notify.js"></script>
     <script src="js/api.js"></script>
     <script>
-        // 🔒 Trava de segurança: impede que Alunos ou Professores vejam o formulário
         window.API.protegerPagina(['escola', 'administrador']);
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
@@ -183,9 +146,7 @@
             }
 
             try {
-                // Busca no banco através de SalaController: /salas/{id}
                 salaCarregada = await window.API.salas.buscarPorId(id);
-                
                 if (salaCarregada) {
                     document.getElementById("nome").value = salaCarregada.nome_sala || "";
                     document.getElementById("duracao_aula").value = salaCarregada.duracao_aula || 50;
@@ -201,7 +162,6 @@
 
         document.getElementById("form_nova_sala").addEventListener("submit", async function(e) {
             e.preventDefault();
-
             if (!id) return;
 
             const submitBtn = document.querySelector("#form_nova_sala .submit");
@@ -209,9 +169,7 @@
             submitBtn.textContent = "Atualizando no Banco de Dados...";
 
             let inicio = document.getElementById("inicio_aula").value;
-            if (inicio && inicio.length === 5) {
-                inicio += ":00";
-            }
+            if (inicio && inicio.length === 5) inicio += ":00";
 
             const salaAtualizada = {
                 nome_sala: document.getElementById("nome").value.trim(),
@@ -221,13 +179,11 @@
                 quant_aula: parseInt(document.getElementById("quant_aulas").value, 10)
             };
 
-            // Preserva escola se já existia
             if (salaCarregada && salaCarregada.escola) {
                 salaAtualizada.escola = salaCarregada.escola;
             }
 
             try {
-                // Envia PUT /salas/{id} para SalaController em v1n1k4/lolooo
                 await window.API.salas.atualizar(id, salaAtualizada);
                 alert("Sala atualizada com sucesso no banco de dados!");
                 window.location.href = "listar_sala.html";
@@ -235,14 +191,14 @@
                 alert("Erro ao atualizar sala no servidor: " + error.message);
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = "⚡ Atualizar Dados no Banco de Dados";
+                submitBtn.textContent = "Atualizar Dados no Banco de Dados";
             }
         });
 
         carregarDadosSala();
     </script>
-
     <script src="js/webgl-background.js"></script>
+    <script src="js/motion-ui.js"></script>
     <script src="js/unlumen-effects.js"></script>
 </body>
 </html>

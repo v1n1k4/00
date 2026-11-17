@@ -1,82 +1,70 @@
-# DESIGN.md — CLAEX Design System & UX Specification (LN04 × Claude Code Edition)
+# DESIGN.md — CLAEX Zero-Neon Editorial Design System (Lando Norris × Claude Code × Motion UI)
 
-> Baseado na tríade:
-> 1. **[McLaren Formula 1 Driver — Lando Norris (`landonorris.com`)](https://landonorris.com/)** (*Awwwards Site of the Year 2025 — OFF+BRAND*)
-> 2. **[`anthropics/claude-code`](https://github.com/anthropics/claude-code)** (*Agentic Terminal & Telemetry HUD*)
-> 3. **[`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit)** (*OKLCH Design System Architect, Bencium Controlled/Innovative UX & 3-Stage Quality Pipeline*)
-
----
-
-## 1. Direção Estética (Aesthetic Direction — LN04 Pit-Wall Edition)
-
-- **Arquétipo Primário**: **Lando Norris LN04 Motorsport Editorial** (`#D2FF00` Acid Lime + `#111112` Track Asphalt + `#F4F4F0` Ivory Off-White) + **Claude Code Agentic Terminal**.
-- **Contrato Cromático de Dois Tokens (Two-Token Livery Contract)**:
-  - **Asfalto de Pista (`#111112` / `#0B0C0E`)**: Fundo escuro de alta densidade com linhas de contorno topográfico orgânicas inspiradas no capacete LN4 Blob (`LandoTopographicCanvas`).
-  - **LN4 Acid Lime (`#D2FF00` / `--brand-hue: 112`)**: Acento de altíssima visibilidade (`--brand-lightness: 0.91`, `--brand-chroma: 0.23`) com contraste invertido automático (`--text-on-accent: #0B0C0E`) em botões e faixas de marquee.
-- **Componentes Assinatura (`landonorris.com` + `anthropics/claude-code`)**:
-  - **The Cursor as Narrator (`.ln4-cursor-pill`)**: Pílula de telemetria em fonte monoespaçada que persegue o cursor com interpolação física (`lerp`) e narra a ação contextual (`[INSPECIONAR]`, `[SIMULAR SLOT]`, `[EXECUTAR CLI]`, `[LIVERY]`).
-  - **Alternador `ON TRACK` / `OFF TRACK` (`.ln4-mode-bar`)**: Permite alternar entre a visão completa, o modo de corrida (`ON TRACK · MOTOR & SIMULADOR`) e os bastidores (`OFF TRACK · PERFIS & EQUIPE`).
-  - **Faixa Marquee Infinita (`#D2FF00`)**: Ticker editorial em diagonal sutil com telemetria do solver e status dos modelos de IA.
-  - **Citação Editorial & Assinatura Neon Autodesenhada**: Tipografia monumental `Syne` 800 uppercase com palavras grifadas em `#D2FF00` e assinatura vetorial animada no scroll.
-  - **Claude Code Agentic Terminal (`.claude-code-terminal`)**: Console interativo inspirado em `anthropics/claude-code` com chips clicáveis (`/optimize --nsga2`, `/audit --claude-4`, `/livery --ln4-lime`, `/livery --papaya`).
+> Referências arquiteturais unificadas:
+> 1. **[McLaren Formula 1 Driver — Lando Norris (`landonorris.com`)](https://landonorris.com/)** — *Off-white editorial paper, stark charcoal contrast gallery, hairline wireframe cards, serif/sans typographic juxtaposition & framed lime footer.*
+> 2. **[`anthropics/claude-code`](https://github.com/anthropics/claude-code)** — *Minimalist agentic engineering CLI, clean slash commands & high-craft monochrome legibility.*
+> 3. **[`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit)** — *Single-hue `OKLCH` tokens, `baseline-ui` → `fixing-accessibility` → `fixing-motion-performance`, Zero AI Slop.*
+> 4. **[Motion & Motion UI (`motiondivision/motion` + `ibelick/motion-primitives`)](https://motion.dev/magazine/introducing-motion-ui)** — *Curated physics presets (`snap`, `ui`, `gentle`, `lively`), `TextScramble`, `SlidingNumber`, `InView` & scroll docking.*
 
 ---
 
-## 2. Sistema de Tokens em Espaço Perceptual OKLCH
+## 1. Política Zero-Neon & Polaridade Editorial
 
-Todo o sistema de cores deriva de `--brand-hue` (`0°` a `360°`), `--brand-lightness` e `--brand-chroma`:
+A interface elimina integralmente excessos visuais luminescente ("cyberpunk glow / AI slop"):
+- **Removido**: todos os `box-shadow: 0 0 ...` coloridos, blobs borrados, feixes verticais `.edge-light-*` e overrides roxos `#5f33ff` / `#7033ff`.
+- **Substituído por Contraste Editorial Preciso**:
+  - **Superfície Padrão (`data-surface="editorial"`)**: Papel editorial matte `#F5F5F0` + cartões `#FFFFFF` + bordas finas `1px solid #DEDED6` + tinta primária `#111112` + acento cirúrgico `#D2FF00` (preto sobre verde-limão).
+  - **Faixas de Contraste Binário (`#111112`)**:
+    - `.ln4-marquee-strip`: faixa ticker limpa com separadores `///` em `var(--neon-lime)`.
+    - `.dark-gallery-band` (`#para-quem`): galeria em carvão profundo com 3 cards escalonados estilo Lando Norris Hall of Fame e recorte chanfrado SVG inferior direito.
+    - `footer`: painel escuro `#111112` envolvido por moldura perimetral limpa de `4px` em `#D2FF00`.
+  - **Superfície Alternativa (`data-surface="carbon"`)**: Paddock escuro matte `#111112` / `#18181A`, ativável em tempo real no **Theme Studio** ou pelo comando `/surface --toggle` no terminal Claude Code.
+
+---
+
+## 2. Componentes Assinatura Implementados
+
+| Componente | Inspirações | Implementação |
+| :--- | :--- | :--- |
+| **Hero Assimétrico `1:2` + Rail de Telemetria** | `landonorris.com` | `.ln4-hero-split` + `.ln4-hero-rail` com seletor `FULL` / `ON TRACK` / `OFF TRACK` e métricas tabulares em tempo real |
+| **Circuit Hub CAD + Socket da Ampulheta** | Engenharia / F1 | `.edge-hub-stage` com trilhas ortogonais matte, pulso minimalista `#111112`, inspetor interativo e acoplamento de `#logo-ampulheta` no scroll |
+| **Citação Editorial & Assinatura Vetorial** | `landonorris.com` | `Instrument Serif` + destaque matte `#D2FF00` + botões de troca rápida de Livery `OKLCH` + assinatura vetorial |
+| **Galeria Carvão `#111112` (3 Perfis Escolares)** | `landonorris.com` | `.dark-gallery-band` + `.lando-showcase-grid` com coluna central escalonada (`.lando-col-stagger`), moldura SVG chanfrada e objetos 3D vetoriais |
+| **Cursor Narrador Minimalista** | `landonorris.com` | `.ln4-cursor-pill` sem ponto ou anel luminoso — pílula de texto discreta que narra alvos com `[data-cursor-label]` |
+| **Claude Code CLI + RBAC Inspector** | `anthropics/claude-code` | `.claude-code-terminal` minimalista com comandos `/optimize --nsga2`, `/audit --claude-4`, `/livery --lime`, `/surface --toggle` e `MotionUI.textScramble` |
+| **Fundo CAD Topográfico Matte** | Lando Blob Topographic | `webgl-background.js` — linhas vetoriais finas em `#111112` (claro) ou `#F5F5F0` (carbon) em `0.06` opacidade |
+
+---
+
+## 3. Tipografia & Tokens Perceptuais `OKLCH`
 
 ```css
 :root {
-  --brand-hue: 112;        /* LN4 Acid Lime (#D2FF00) por padrão */
-  --brand-lightness: 0.91;
-  --brand-chroma: 0.23;
-  --text-on-accent: #0B0C0E;
-  --surface-canvas: oklch(11% 0.012 var(--brand-hue));
-  --surface-elevated: oklch(14.5% 0.016 var(--brand-hue));
-  --surface-card: oklch(17.5% 0.020 var(--brand-hue));
-  --accent-primary: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue));
+  --brand-hue: 112;
+  --neon-lime: oklch(0.92 0.22 var(--brand-hue));          /* #D2FF00 default */
+  --accent-ink: oklch(0.36 0.13 var(--brand-hue));         /* Contraste AA sobre claro */
+  --text-on-accent: #111112;                               /* Preto ink sobre botões #D2FF00 */
+  --bg-obsidian: #F5F5F0;                                  /* Papel editorial matte */
+  --bg-surface: #FFFFFF;                                   /* Cartões limpos */
+  --surface-dark: #111112;                                 /* Painéis contrastantes */
 }
 ```
 
-### 5 F1 Helmet Liveries Disponíveis no Theme Studio
-1. **LN4 Acid Lime (`--brand-hue: 112`, `#D2FF00`)**: Pintura oficial do capacete Lando Norris LN04 (padrão).
-2. **McLaren Papaya (`--brand-hue: 52`, `#FF8000`)**: Laranja corrida histórico da McLaren F1 Team.
-3. **Silverstone Aero (`--brand-hue: 195`, `#00F0FF`)**: Ciano aerodinâmico de túnel de vento e telemetria CFD.
-4. **Dark Glitter GP (`--brand-hue: 292`, `#A855F7`)**: Roxo metálico de corrida noturna (Singapura / Las Vegas GP) + Claude Code.
-5. **Monaco Porcelain (`--brand-hue: 255`, `#3B82F6`)**: Azul cobalto da edição especial do GP de Mônaco.
+- **Display (`--font-display`)**: `'Syne', sans-serif` (`-0.04em` tracking, peso `800`)
+- **Serif Editorial (`--font-serif`)**: `'Instrument Serif', Georgia, serif` (*italic accents*)
+- **Interface (`--font-heading` / `--font-body`)**: `'Mona Sans', 'Space Grotesk', system-ui`
+- **Telemetria (`--font-mono`)**: `'JetBrains Mono', monospace` (`font-variant-numeric: tabular-nums`)
 
 ---
 
-## 3. Tipografia & Escala Fluida
+## 4. Motor de Animação (`js/motion-ui.js` — Motion × Motion Primitives)
 
-- **Display (`--font-display`)**: `'Syne', 'Space Grotesk', sans-serif` — Títulos monumentais e marcas d'água vazadas.
-- **Heading (`--font-heading`)**: `'Space Grotesk', sans-serif` — Cabeçalhos de seções, modais e cards (`letter-spacing: -0.025em`).
-- **Body (`--font-body`)**: `'Plus Jakarta Sans', sans-serif` — Textos corridos, formulários e células de disciplinas.
-- **Telemetry / Mono (`--font-mono`)**: `'JetBrains Mono', monospace` (`font-variant-numeric: tabular-nums`) — Horários (`07:30`), contadores de conflito, fitness score e logs da IA.
-
----
-
-## 4. Especificação de Acessibilidade (WCAG 2.1 AA — Bencium Controlled Mode)
-
-1. **Navegação por Teclado**:
-   - Link `Pular para o conteúdo principal` (`.skip-to-content`) visível no foco (`Tab`).
-   - Todos os cards interativos possuem `role="button"`, `tabindex="0"` e suporte a `Enter` / `Space`.
-   - Modais e gavetas fecham com a tecla `Escape` e restauram o foco.
-2. **Semântica & Leitores de Tela**:
-   - Regiões dinâmicas da matriz horária e pareceres da IA utilizam `aria-live="polite"`.
-   - Ícones decorativos e SVGs de circuito utilizam `aria-hidden="true"`.
-3. **Contraste & Foco**:
-   - Anel de foco `:focus-visible` nítido com `2px solid var(--neon-bright)` e `outline-offset: 3px`.
-
----
-
-## 5. Especificação de Movimento & Performance (Motion Principles)
-
-1. **Animações Baseadas em Scroll (GSAP + ScrollTrigger)**:
-   - A logo monumental `CLAEX` no Hero recolhe as letras `C L A E` durante o scroll enquanto a **Ampulheta (`X`)** desce e acopla no núcleo do circuito central (`#hub-center-target`).
-2. **Micro-Interações**:
-   - **Spotlight Radial**: Cards reagem à proximidade do cursor via variáveis CSS `--mouse-x` e `--mouse-y` (listener `passive: true`).
-   - **Botões Magnéticos**: Deslocamento elástico suave (`power2.out` / `elastic.out`).
-3. **Orçamento de Performance & Reduced Motion**:
-   - Canvas de partículas pausa automaticamente quando a aba fica oculta (`document.hidden`) ou quando `prefers-reduced-motion: reduce` está ativo.
+Carrega `https://cdn.jsdelivr.net/npm/motion@11.15.0/dist/motion.js` (`window.Motion`) com fallbacks seguros e `prefers-reduced-motion: reduce`:
+- **`MotionTheme`**: `snap` (`0.28s`), `ui` (`0.42s`), `gentle` (`0.65s`), `lively` (`0.50s` com overshoot controlado), `reducedMotion: 'calm'`.
+- **Primitivas**:
+  - `MotionUI.textScramble(el, text, ms)` — decodificação técnica em terminal e eyebrows.
+  - `MotionUI.slidingNumber(el, num, suffix, ms)` — contagem tabular fluida ao otimizar grade no simulador.
+  - `initHeroMotion()` — entrada sequenciada (`Motion.stagger(0.06)`).
+  - `initInViewReveals()` — revela apenas blocos abaixo da dobra via `Motion.inView` sem jamais travar seções em `opacity: 0`.
+  - `initScrollMechanics()` — barra de progresso e acoplamento da Ampulheta CLAEX dirigidos por `Motion.scroll`.
+  - `initMagneticButtons()` & `initGalleryInteractiveObjects()` — micro-deslocamento tátil discreto sem distorção excessiva.
