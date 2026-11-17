@@ -1,43 +1,50 @@
-# DESIGN.md — CLAEX Design System & UX Specification
+# DESIGN.md — CLAEX Design System & UX Specification (LN04 × Claude Code Edition)
 
-> Baseado no **Claude Code Frontend Design Toolkit** (`wilwaldon/Claude-Code-Frontend-Design-Toolkit`), combinando **Design System Architect (OKLCH)**, **Bencium Controlled/Innovative UX Designer** e **Addy Osmani Web Quality Skills**.
+> Baseado na tríade:
+> 1. **[McLaren Formula 1 Driver — Lando Norris (`landonorris.com`)](https://landonorris.com/)** (*Awwwards Site of the Year 2025 — OFF+BRAND*)
+> 2. **[`anthropics/claude-code`](https://github.com/anthropics/claude-code)** (*Agentic Terminal & Telemetry HUD*)
+> 3. **[`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit)** (*OKLCH Design System Architect, Bencium Controlled/Innovative UX & 3-Stage Quality Pipeline*)
 
 ---
 
-## 1. Direção Estética (Aesthetic Direction)
+## 1. Direção Estética (Aesthetic Direction — LN04 Pit-Wall Edition)
 
-- **Arquétipo Primário**: **Dark OLED Luxury (#10)** + **Swiss Minimalism Grids (#1)** + **Precision Telemetry**.
-- **Filosofia Visual**:
-  - Superfícies em preto absoluto e carbono (`#040508` → `#0D1017`) para reduzir fadiga visual de coordenadores e professores durante o planejamento escolar.
-  - Foco em **uma única matiz ativa (`--brand-hue`)** derivada matematicamente no espaço perceptual **OKLCH**, evitando poluição cromática.
-  - Hierarquia tipográfica clara para leitura rápida de matrizes de horários (5 dias × $N$ períodos), diagnósticos de IA e indicadores de conformidade pedagógica.
+- **Arquétipo Primário**: **Lando Norris LN04 Motorsport Editorial** (`#D2FF00` Acid Lime + `#111112` Track Asphalt + `#F4F4F0` Ivory Off-White) + **Claude Code Agentic Terminal**.
+- **Contrato Cromático de Dois Tokens (Two-Token Livery Contract)**:
+  - **Asfalto de Pista (`#111112` / `#0B0C0E`)**: Fundo escuro de alta densidade com linhas de contorno topográfico orgânicas inspiradas no capacete LN4 Blob (`LandoTopographicCanvas`).
+  - **LN4 Acid Lime (`#D2FF00` / `--brand-hue: 112`)**: Acento de altíssima visibilidade (`--brand-lightness: 0.91`, `--brand-chroma: 0.23`) com contraste invertido automático (`--text-on-accent: #0B0C0E`) em botões e faixas de marquee.
+- **Componentes Assinatura (`landonorris.com` + `anthropics/claude-code`)**:
+  - **The Cursor as Narrator (`.ln4-cursor-pill`)**: Pílula de telemetria em fonte monoespaçada que persegue o cursor com interpolação física (`lerp`) e narra a ação contextual (`[INSPECIONAR]`, `[SIMULAR SLOT]`, `[EXECUTAR CLI]`, `[LIVERY]`).
+  - **Alternador `ON TRACK` / `OFF TRACK` (`.ln4-mode-bar`)**: Permite alternar entre a visão completa, o modo de corrida (`ON TRACK · MOTOR & SIMULADOR`) e os bastidores (`OFF TRACK · PERFIS & EQUIPE`).
+  - **Faixa Marquee Infinita (`#D2FF00`)**: Ticker editorial em diagonal sutil com telemetria do solver e status dos modelos de IA.
+  - **Citação Editorial & Assinatura Neon Autodesenhada**: Tipografia monumental `Syne` 800 uppercase com palavras grifadas em `#D2FF00` e assinatura vetorial animada no scroll.
+  - **Claude Code Agentic Terminal (`.claude-code-terminal`)**: Console interativo inspirado em `anthropics/claude-code` com chips clicáveis (`/optimize --nsga2`, `/audit --claude-4`, `/livery --ln4-lime`, `/livery --papaya`).
 
 ---
 
 ## 2. Sistema de Tokens em Espaço Perceptual OKLCH
 
-Todo o sistema de cores deriva de `--brand-hue` (0 a 360):
+Todo o sistema de cores deriva de `--brand-hue` (`0°` a `360°`), `--brand-lightness` e `--brand-chroma`:
 
 ```css
 :root {
-  --brand-hue: 255; /* Safira Acadêmico por padrão */
-  --color-primary: oklch(0.62 0.21 var(--brand-hue));
-  --color-primary-bright: oklch(0.74 0.18 var(--brand-hue));
-  --color-primary-hover: oklch(0.55 0.22 var(--brand-hue));
-  --color-surface-obsidian: oklch(0.11 0.015 var(--brand-hue));
-  --color-surface-carbon: oklch(0.14 0.018 var(--brand-hue));
-  --color-surface-elevated: oklch(0.18 0.022 var(--brand-hue));
-  --color-border-hairline: oklch(0.98 0.01 var(--brand-hue) / 0.08);
-  --color-border-accent: oklch(0.68 0.19 var(--brand-hue) / 0.42);
+  --brand-hue: 112;        /* LN4 Acid Lime (#D2FF00) por padrão */
+  --brand-lightness: 0.91;
+  --brand-chroma: 0.23;
+  --text-on-accent: #0B0C0E;
+  --surface-canvas: oklch(11% 0.012 var(--brand-hue));
+  --surface-elevated: oklch(14.5% 0.016 var(--brand-hue));
+  --surface-card: oklch(17.5% 0.020 var(--brand-hue));
+  --accent-primary: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue));
 }
 ```
 
-### Presets Estéticos Disponíveis no Theme Studio
-1. **Safira OLED (`--brand-hue: 255`)**: Azul institucional profundo com brilho platinado.
-2. **Violeta Opticore (`--brand-hue: 285`)**: Estética futurista de alta precisão.
-3. **Âmbar Telemetria (`--brand-hue: 38`)**: Inspirado em telemetria automobilística (Lando Norris / McLaren).
-4. **Esmeralda Solarpunk (`--brand-hue: 155`)**: Harmonia orgânica de alta legibilidade.
-5. **Rubi Editorial (`--brand-hue: 15`)**: Contraste suíço dramático para auditoria.
+### 5 F1 Helmet Liveries Disponíveis no Theme Studio
+1. **LN4 Acid Lime (`--brand-hue: 112`, `#D2FF00`)**: Pintura oficial do capacete Lando Norris LN04 (padrão).
+2. **McLaren Papaya (`--brand-hue: 52`, `#FF8000`)**: Laranja corrida histórico da McLaren F1 Team.
+3. **Silverstone Aero (`--brand-hue: 195`, `#00F0FF`)**: Ciano aerodinâmico de túnel de vento e telemetria CFD.
+4. **Dark Glitter GP (`--brand-hue: 292`, `#A855F7`)**: Roxo metálico de corrida noturna (Singapura / Las Vegas GP) + Claude Code.
+5. **Monaco Porcelain (`--brand-hue: 255`, `#3B82F6`)**: Azul cobalto da edição especial do GP de Mônaco.
 
 ---
 

@@ -1,75 +1,114 @@
 /* ==========================================================================
-   CLAEX v10 — OKLCH DESIGN TOKENS & FRONTEND DESIGN TOOLKIT SYSTEM
-   Based on wilwaldon/Claude-Code-Frontend-Design-Toolkit:
-   - Single --brand-hue variable deriving entire palette via OKLCH math
-   - Named Aesthetic Presets (Dark OLED Luxury, Opticore Violet, Edge Telemetry,
-     Solarpunk Emerald, Swiss Editorial Crimson) + Live Hue Slider (0°-360°)
-   - Baseline UI + Fixing Accessibility (WCAG 2.1 AA) + Fixing Motion Performance
+   CLAEX v10 — LANDO NORRIS (LN4 F1 TELEMETRY) × CLAUDE CODE DESIGN TOOLKIT
+   References:
+   - https://landonorris.com/ (Awwwards Site of the Year 2025 — OFF+BRAND)
+   - https://github.com/anthropics/claude-code
+   - https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit
+   Architecture:
+   - Two-Token Livery Contract: Acid Lime #D2FF00 (--brand-hue: 112) on Carbon Asphalt #111112
+   - Dynamic --text-on-accent (#0B0C0E on high-luminance liveries, #FFFFFF on deep liveries)
+   - 5 Helmet Liveries + Live 0°–360° OKLCH Hue Engine
+   - Baseline UI + WCAG 2.1 AA Focus/Skip-Links + Reduced Motion Guard
    ========================================================================== */
 
 :root {
-    --brand-hue: 255;
-    --brand-chroma: 0.20;
+    /* DEFAULT LIVERY: LN4 ACID LIME (#D2FF00 — landonorris.com signature) */
+    --brand-hue: 112;
+    --brand-chroma: 0.23;
+    --brand-lightness: 0.91;
+    --text-on-accent: #0B0C0E;
 
-    /* Fallbacks & Perceptual OKLCH Tokens */
-    --neon-lime: oklch(0.62 var(--brand-chroma) var(--brand-hue));
-    --neon-lime-hover: oklch(0.55 calc(var(--brand-chroma) + 0.02) var(--brand-hue));
-    --neon-bright: oklch(0.75 calc(var(--brand-chroma) - 0.02) var(--brand-hue));
-    --neon-cyan: oklch(0.70 var(--brand-chroma) var(--brand-hue));
-    --neon-glow: oklch(0.62 var(--brand-chroma) var(--brand-hue) / 0.46);
-    --neon-glow-soft: oklch(0.62 var(--brand-chroma) var(--brand-hue) / 0.16);
-    --border-lime: oklch(0.68 var(--brand-chroma) var(--brand-hue) / 0.45);
+    /* Perceptual OKLCH Accent Tokens + Hex Fallbacks */
+    --neon-lime: #D2FF00;
+    --neon-lime: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue));
+    --neon-lime-hover: oklch(calc(var(--brand-lightness) - 0.06) calc(var(--brand-chroma) + 0.01) var(--brand-hue));
+    --neon-bright: oklch(calc(var(--brand-lightness) + 0.03) var(--brand-chroma) var(--brand-hue));
+    --neon-cyan: oklch(0.84 0.19 var(--brand-hue));
+    --neon-glow: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.42);
+    --neon-glow-soft: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.13);
+    --neon-subtle: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.10);
+    --border-lime: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.48);
+    --border-accent: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.42);
 
-    /* True OLED Luxury Surfaces (Tinted subtly by --brand-hue) */
-    --bg-obsidian: oklch(0.11 0.012 var(--brand-hue));
-    --bg-carbon: oklch(0.14 0.015 var(--brand-hue));
-    --bg-surface: oklch(0.17 0.018 var(--brand-hue));
-    --bg-card: oklch(0.18 0.020 var(--brand-hue) / 0.88);
-    --bg-card-hover: oklch(0.22 0.024 var(--brand-hue) / 0.96);
-    --bg-glass: oklch(0.15 0.016 var(--brand-hue) / 0.82);
+    /* Lando Norris Track Asphalt Surfaces (#111112 base with subtle livery tint) */
+    --bg-obsidian: #0B0C0E;
+    --bg-obsidian: oklch(0.11 0.008 var(--brand-hue));
+    --bg-carbon: #111112;
+    --bg-carbon: oklch(0.14 0.010 var(--brand-hue));
+    --bg-surface: #16171A;
+    --bg-surface: oklch(0.17 0.012 var(--brand-hue));
+    --bg-card: oklch(0.16 0.012 var(--brand-hue) / 0.90);
+    --bg-card-hover: oklch(0.20 0.016 var(--brand-hue) / 0.96);
+    --bg-glass: oklch(0.13 0.010 var(--brand-hue) / 0.84);
 
-    /* Semantic Status Tokens */
-    --status-ok: oklch(0.72 0.17 155);
-    --status-warn: oklch(0.78 0.16 75);
-    --status-danger: oklch(0.65 0.21 25);
+    /* Editorial Off-White & Telemetry Neutral Text */
+    --text-pure: #F4F4F0;
+    --text-primary: #EAEAE4;
+    --text-secondary: #9A9EAB;
+    --text-muted: #5E6270;
 
-    /* Tabular numerals for telemetry & schedule matrices */
+    /* Semantic Pit-Wall Status Tokens */
+    --status-ok: oklch(0.82 0.20 142);
+    --status-warn: oklch(0.82 0.18 75);
+    --status-danger: oklch(0.65 0.22 25);
+
+    /* Tabular numerals for F1 telemetry & schedule matrices */
     --font-num-feature: "tnum" 1, "zero" 1;
 }
 
-/* Aesthetic Preset 1: Safira OLED (Default, --brand-hue: 255) */
+/* Livery 1: LN4 Acid Lime (Default — landonorris.com #D2FF00) */
+html[data-accent="lime"],
+body[data-accent="lime"] {
+    --brand-hue: 112;
+    --brand-chroma: 0.23;
+    --brand-lightness: 0.91;
+    --text-on-accent: #0B0C0E;
+}
+
+/* Livery 2: McLaren Papaya (#FF8000 — Constructors Orange) */
+html[data-accent="amber"],
+body[data-accent="amber"] {
+    --brand-hue: 52;
+    --brand-chroma: 0.21;
+    --brand-lightness: 0.74;
+    --text-on-accent: #0B0C0E;
+}
+
+/* Livery 3: Silverstone Chrome (#00F0FF — Aero Telemetry Cyan) */
+html[data-accent="cyan"],
+body[data-accent="cyan"] {
+    --brand-hue: 198;
+    --brand-chroma: 0.19;
+    --brand-lightness: 0.84;
+    --text-on-accent: #0B0C0E;
+}
+
+/* Livery 4: Dark Glitter Violet (#A855F7 — Night GP) */
+html[data-accent="violet"],
+body[data-accent="violet"] {
+    --brand-hue: 288;
+    --brand-chroma: 0.22;
+    --brand-lightness: 0.68;
+    --text-on-accent: #FFFFFF;
+}
+
+/* Livery 5: Monaco Porcelain (#3B82F6 — Classic Telemetry Blue) */
 html[data-accent="blue"],
 body[data-accent="blue"] {
     --brand-hue: 255;
     --brand-chroma: 0.20;
+    --brand-lightness: 0.65;
+    --text-on-accent: #FFFFFF;
 }
 
-/* Aesthetic Preset 2: Violeta Opticore (--brand-hue: 285) */
-html[data-accent="violet"],
-body[data-accent="violet"] {
-    --brand-hue: 285;
-    --brand-chroma: 0.22;
-}
-
-/* Aesthetic Preset 3: Âmbar Telemetria (--brand-hue: 38) */
-html[data-accent="amber"],
-body[data-accent="amber"] {
-    --brand-hue: 38;
-    --brand-chroma: 0.21;
-}
-
-/* Aesthetic Preset 4: Esmeralda Solarpunk (--brand-hue: 155) */
-html[data-accent="emerald"],
-body[data-accent="emerald"] {
-    --brand-hue: 155;
-    --brand-chroma: 0.19;
-}
-
-/* Aesthetic Preset 5: Rubi Editorial (--brand-hue: 15) */
-html[data-accent="crimson"],
-body[data-accent="crimson"] {
-    --brand-hue: 15;
-    --brand-chroma: 0.21;
+/* Ensure buttons using --neon-lime always have razor-sharp contrast */
+.btn-neon,
+.submit,
+.btn-opticore-pill,
+.tab-btn.active,
+.btn-salvar {
+    color: var(--text-on-accent) !important;
+    font-weight: 800 !important;
 }
 
 /* ── ACCESSIBILITY: SKIP TO CONTENT & FOCUS VISIBLE (WCAG 2.1 AA) ── */
@@ -79,13 +118,15 @@ body[data-accent="crimson"] {
     left: 24px;
     z-index: 100005;
     background: var(--neon-lime);
-    color: #FFFFFF;
+    color: var(--text-on-accent);
     font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 0.85rem;
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     padding: 10px 18px;
     border-radius: 999px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
     text-decoration: none;
     transition: top 0.2s ease;
 }
@@ -106,12 +147,359 @@ body[data-accent="crimson"] {
 .metric-display,
 #tabela_grade td:first-child,
 .id-cell,
-.claex-telemetry-val {
+.claex-telemetry-val,
+.ln4-sector-val,
+.ln4-driver-num {
     font-variant-numeric: tabular-nums;
     font-feature-settings: var(--font-num-feature);
 }
 
-/* ── LIVE OKLCH THEME STUDIO POPOVER ── */
+/* ── LANDO NORRIS (LN04) TOPOGRAPHIC CONTOUR OVERLAY & CORNER CROSSHAIRS ── */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.045;
+    background-image:
+        radial-gradient(circle at 20% 25%, transparent 45%, var(--neon-lime) 45.5%, transparent 46%),
+        radial-gradient(circle at 80% 70%, transparent 38%, var(--neon-lime) 38.5%, transparent 39%),
+        repeating-radial-gradient(
+            circle at 50% 18%,
+            transparent 0,
+            transparent 38px,
+            var(--neon-lime) 38.5px,
+            transparent 39.5px
+        );
+    background-size: 1100px 1100px, 900px 900px, 1400px 1400px;
+}
+
+/* ── THE CURSOR AS NARRATOR (LANDO NORRIS SOTY 2025 INTERACTION) ── */
+.ln4-cursor-pill {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--neon-lime);
+    color: var(--text-on-accent);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transform: translate3d(-200px, -200px, 0) scale(0.75);
+    opacity: 0;
+    transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
+    white-space: nowrap;
+}
+
+.ln4-cursor-pill.visible {
+    opacity: 1;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+    .ln4-cursor-pill {
+        display: none !important;
+    }
+}
+
+/* ── LANDO NORRIS KINETIC MARQUEE RIBBON (.ln4-marquee-strip) ── */
+.ln4-marquee-strip {
+    width: 100%;
+    overflow: hidden;
+    background: var(--neon-lime);
+    color: var(--text-on-accent);
+    padding: 10px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 15;
+    user-select: none;
+}
+
+.ln4-marquee-track {
+    display: flex;
+    width: max-content;
+    gap: 36px;
+    animation: ln4MarqueeScroll 26s linear infinite;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    align-items: center;
+}
+
+.ln4-marquee-strip:hover .ln4-marquee-track {
+    animation-play-state: paused;
+}
+
+.ln4-marquee-sep {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-weight: 800;
+    opacity: 0.55;
+}
+
+@keyframes ln4MarqueeScroll {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ── ON TRACK / OFF TRACK SWITCHER (LANDONORRIS.COM SIGNATURE TOGGLE) ── */
+.ln4-mode-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+    background: rgba(17, 17, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    margin: 18px auto 8px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+.ln4-mode-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.ln4-mode-btn:hover {
+    color: var(--text-pure);
+}
+
+.ln4-mode-btn.active {
+    background: var(--neon-lime);
+    color: var(--text-on-accent);
+    box-shadow: 0 0 20px var(--neon-glow);
+}
+
+/* ── F1 SECTOR TELEMETRY HUD STRIP (HERO TOP RIGHT / LEFT) ── */
+.ln4-telemetry-hud {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(135px, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 960px;
+    margin: 18px auto 6px;
+    padding: 12px 16px;
+    background: rgba(17, 17, 18, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-left: 3px solid var(--neon-lime);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .ln4-telemetry-hud {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.ln4-sector-box {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-right: 10px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ln4-sector-box:last-child {
+    border-right: none;
+}
+
+.ln4-sector-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.ln4-sector-val {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-pure);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ln4-sector-val .purple-sector {
+    color: var(--neon-lime);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+}
+
+/* ── LANDO NORRIS EDITORIAL QUOTE & SELF-DRAWING NEON SIGNATURE ── */
+.ln4-quote-section {
+    max-width: 1120px;
+    margin: 28px auto 12px;
+    padding: 42px 32px;
+    position: relative;
+    background: linear-gradient(135deg, rgba(22, 23, 26, 0.92) 0%, rgba(11, 12, 14, 0.96) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 22px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 32px;
+    align-items: center;
+}
+
+@media (max-width: 860px) {
+    .ln4-quote-section {
+        grid-template-columns: 1fr;
+        padding: 28px 22px;
+    }
+}
+
+.ln4-quote-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--neon-lime);
+    margin-bottom: 10px;
+}
+
+.ln4-quote-text {
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 2.7vw, 2.3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text-pure);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+.ln4-quote-text span {
+    color: var(--neon-lime);
+}
+
+.ln4-signature-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+}
+
+.ln4-signature-svg {
+    width: 240px;
+    height: 76px;
+    overflow: visible;
+}
+
+.ln4-signature-path {
+    fill: none;
+    stroke: var(--neon-lime);
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 12px var(--neon-glow));
+    stroke-dasharray: 620;
+    stroke-dashoffset: 0;
+    animation: ln4SignPulse 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes ln4SignPulse {
+    0%   { stroke-dashoffset: 180; opacity: 0.75; }
+    100% { stroke-dashoffset: 0;   opacity: 1; }
+}
+
+/* ── CLAUDE CODE AGENTIC TERMINAL WIDGET (anthropics/claude-code) ── */
+.claude-code-terminal {
+    margin-top: 18px;
+    background: #090A0D;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 34px rgba(0, 0, 0, 0.55);
+}
+
+.claude-code-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+}
+
+.claude-code-dots {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.claude-code-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.claude-code-dots span:first-child {
+    background: var(--neon-lime);
+    box-shadow: 0 0 8px var(--neon-lime);
+}
+
+.claude-code-body {
+    padding: 14px 16px;
+    font-size: 0.74rem;
+    line-height: 1.65;
+    color: #D1D5DB;
+}
+
+.claude-cmd-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.claude-cmd-chip {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--neon-lime);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.claude-cmd-chip:hover {
+    background: var(--neon-lime);
+    color: var(--text-on-accent);
+    border-color: var(--neon-lime);
+}
+
+/* ── LIVE OKLCH LIVERY / HELMET STUDIO POPOVER ── */
 .theme-studio-wrapper {
     position: relative;
     display: inline-flex;
@@ -123,12 +511,13 @@ body[data-accent="crimson"] {
     position: fixed;
     top: 46px;
     right: 28px;
-    width: 310px;
-    background: linear-gradient(180deg, rgba(18, 21, 32, 0.98) 0%, rgba(9, 11, 17, 0.99) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    width: 325px;
+    background: linear-gradient(180deg, rgba(20, 21, 25, 0.98) 0%, rgba(10, 11, 13, 0.99) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 2px solid var(--neon-lime);
     border-radius: 18px;
     padding: 16px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 40px var(--neon-glow-soft);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px var(--neon-glow-soft);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: 10002;
@@ -156,10 +545,10 @@ body[data-accent="crimson"] {
 .theme-studio-title {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--neon-bright);
+    color: var(--neon-lime);
 }
 
 .theme-preset-grid {
@@ -173,13 +562,13 @@ body[data-accent="crimson"] {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 10px;
+    padding: 8px 10px;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.09);
     color: #D1D5DB;
-    font-size: 0.73rem;
-    font-weight: 600;
+    font-size: 0.72rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.18s ease;
     text-align: left;
@@ -187,7 +576,7 @@ body[data-accent="crimson"] {
 
 .theme-preset-chip:hover,
 .theme-preset-chip.active {
-    border-color: var(--neon-bright);
+    border-color: var(--neon-lime);
     background: var(--neon-glow-soft);
     color: #FFFFFF;
 }
@@ -223,13 +612,13 @@ body[data-accent="crimson"] {
     -webkit-appearance: none;
     background: linear-gradient(
         to right,
-        oklch(0.65 0.2 0),
-        oklch(0.65 0.2 60),
-        oklch(0.65 0.2 120),
-        oklch(0.65 0.2 180),
-        oklch(0.65 0.2 240),
-        oklch(0.65 0.2 300),
-        oklch(0.65 0.2 360)
+        oklch(0.75 0.22 0),
+        oklch(0.82 0.22 60),
+        oklch(0.91 0.23 112),
+        oklch(0.80 0.20 180),
+        oklch(0.68 0.20 240),
+        oklch(0.68 0.22 300),
+        oklch(0.75 0.22 360)
     );
     outline: none;
     cursor: pointer;
@@ -242,9 +631,9 @@ body[data-accent="crimson"] {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: #FFFFFF;
-    border: 2px solid var(--neon-lime);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    background: #111112;
+    border: 2.5px solid var(--neon-lime);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
     cursor: pointer;
 }
 
@@ -257,9 +646,9 @@ body[data-accent="crimson"] {
     justify-content: space-between;
     padding: 16px 20px;
     margin-bottom: 20px;
-    background: linear-gradient(180deg, rgba(16, 19, 29, 0.92) 0%, rgba(10, 12, 18, 0.96) 100%);
+    background: linear-gradient(180deg, rgba(22, 23, 27, 0.95) 0%, rgba(12, 13, 15, 0.98) 100%);
     border: 1px solid var(--border-card);
-    border-left: 3px solid var(--neon-bright);
+    border-left: 3.5px solid var(--neon-lime);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-card);
 }
@@ -308,8 +697,19 @@ body[data-accent="crimson"] {
     transition: border-color 0.25s ease, transform 0.25s ease;
 }
 
+.claex-telemetry-kpi-card::after {
+    content: '+';
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--neon-lime);
+    opacity: 0.45;
+}
+
 .claex-telemetry-kpi-card:hover {
-    border-color: var(--neon-bright);
+    border-color: var(--neon-lime);
     transform: translateY(-2px);
 }
 
@@ -324,15 +724,15 @@ body[data-accent="crimson"] {
 
 .claex-telemetry-val {
     font-family: var(--font-heading);
-    font-size: 1.75rem;
+    font-size: 1.85rem;
     font-weight: 800;
-    color: #FFFFFF;
+    color: var(--text-pure);
     line-height: 1.1;
 }
 
 .claex-telemetry-sub {
     font-size: 0.74rem;
-    color: var(--neon-bright);
+    color: var(--neon-lime);
     margin-top: 4px;
     font-family: var(--font-mono);
 }
@@ -348,7 +748,7 @@ body[data-accent="crimson"] {
 
 .claex-kpi-progress-bar {
     height: 100%;
-    background: var(--neon-bright);
+    background: var(--neon-lime);
     box-shadow: 0 0 10px var(--neon-lime);
     border-radius: 999px;
     transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -367,8 +767,8 @@ body[data-accent="crimson"] {
     text-transform: uppercase;
 }
 .cog-badge.cog-high {
-    background: rgba(59, 130, 246, 0.14);
-    color: var(--neon-bright);
+    background: var(--neon-glow-soft);
+    color: var(--neon-lime);
     border: 1px solid var(--border-lime);
 }
 .cog-badge.cog-med {

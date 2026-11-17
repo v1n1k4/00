@@ -29,36 +29,38 @@ No arquivo `lolooo-main/src/main/resources/static/css/design-tokens-oklch.css`, 
 
 ```css
 :root {
-    /* Semente única de matiz (0 a 360) */
-    --brand-hue: 255;       /* Padrão: Azul Escolar (255°) */
-    --brand-chroma: 0.20;
+    /* Semente única de matiz (0 a 360) — Padrão: LN4 Acid Lime (#D2FF00) */
+    --brand-hue: 112;
+    --brand-lightness: 0.91;
+    --brand-chroma: 0.23;
+    --text-on-accent: #0B0C0E;
 
-    /* Superfícies de Carbono com Tinta Atmosférica */
-    --surface-canvas:   oklch(11% 0.015 var(--brand-hue));
-    --surface-elevated: oklch(15% 0.020 var(--brand-hue));
-    --surface-card:     oklch(18% 0.024 var(--brand-hue));
+    /* Superfícies de Asfalto de Pista (#111112) com Tinta Atmosférica */
+    --surface-canvas:   oklch(11% 0.012 var(--brand-hue));
+    --surface-elevated: oklch(14.5% 0.016 var(--brand-hue));
+    --surface-card:     oklch(17.5% 0.020 var(--brand-hue));
 
     /* Acentos Principais Perceptualmente Uniformes */
-    --accent-primary:   oklch(62% var(--brand-chroma) var(--brand-hue));
-    --accent-bright:    oklch(74% calc(var(--brand-chroma) * 0.92) var(--brand-hue));
-    --accent-deep:      oklch(48% calc(var(--brand-chroma) * 1.05) var(--brand-hue));
-    --accent-glow:      oklch(62% var(--brand-chroma) var(--brand-hue) / 0.34);
+    --accent-primary:   oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue));
+    --accent-bright:    oklch(94% calc(var(--brand-chroma) * 0.92) var(--brand-hue));
+    --accent-deep:      oklch(72% calc(var(--brand-chroma) * 1.05) var(--brand-hue));
+    --accent-glow:      oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.36);
 }
 ```
 
 ---
 
-## 2. Os 5 Presets Oficiais do Theme Studio
+## 2. Os 5 Capacetes / Liveries Oficiais do Theme Studio (`landonorris.com` Edition)
 
-O controlador interativo em `unlumen-effects.js` (`window.CLAEXThemeStudio`) disponibiliza 5 temas calibrados mais o **Slider Contínuo (`0°–360°`)**:
+O controlador interativo em `unlumen-effects.js` (`window.CLAEXThemeStudio`) disponibiliza 5 pinturas inspiradas nos capacetes de Lando Norris na Fórmula 1 mais o **Slider Contínuo (`0°–360°`)**:
 
-| ID do Tema (`data-accent`) | Nome no Studio | Matiz (`--brand-hue`) | Equivalente Sólido | Contexto Recomendado |
+| ID do Tema (`data-accent`) | Livery no Studio | Matiz (`--brand-hue`) | Equivalente Sólido | Contexto Recomendado |
 | :--- | :--- | :---: | :---: | :--- |
-| `blue` *(default)* | **Azul Escolar** | `255°` | `#3B82F6` | Uso institucional padrão e apresentações |
-| `emerald` | **Esmeralda Docente** | `162°` | `#10B981` | Foco em validação de grades e disponibilidade docente |
-| `violet` | **Violeta IA** | `282°` | `#8B5CF6` | Auditoria com modelos de raciocínio profundo (`Claude 4` / `Gemini 2.5 Pro`) |
-| `amber` | **Âmbar Solar** | `68°` | `#F59E0B` | Inspeção de alertas de carga cognitiva e alto contraste |
-| `cyan` | **Ciano Telemetria** | `202°` | `#06B6D4` | Monitoramento de métricas NSGA-II e janelas docentes |
+| `lime` *(default)* | **LN4 Acid Lime** | `112°` | `#D2FF00` | Assinatura oficial `landonorris.com` sobre asfalto `#111112` |
+| `papaya` | **McLaren Papaya** | `52°` | `#FF8000` | Laranja corrida McLaren F1 Team e alertas de telemetria |
+| `aero` | **Silverstone Aero** | `195°` | `#00F0FF` | Ciano aerodinâmico para inspeção de métricas NSGA-II |
+| `violet` | **Dark Glitter GP** | `292°` | `#A855F7` | Auditoria com `anthropics/claude-code` e `Claude Sonnet 4` |
+| `monaco` | **Monaco Porcelain** | `255°` | `#3B82F6` | Edição especial GP de Mônaco / modo institucional clássico |
 
 ---
 

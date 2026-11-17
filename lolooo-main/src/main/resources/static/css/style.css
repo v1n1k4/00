@@ -6,42 +6,52 @@
     ==========================================================================
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&family=Syne:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&family=Syne:wght@700;800;900&display=swap');
 @import url('style-v5-extensions.css');
 @import url('design-tokens-oklch.css');
 
 /* ==========================================================================
-   DESIGN TOKENS & VARIABLES
+   DESIGN TOKENS & VARIABLES (LANDO NORRIS LN04 × CLAUDE CODE DESIGN TOOLKIT)
    ========================================================================== */
 :root {
-    /* Paleta Monocromática Profunda + Cor Única Escolar (Sem Mistura de Cores) */
-    --bg-obsidian: #050608;
-    --bg-carbon: #090B10;
-    --bg-surface: #0D1017;
-    --bg-card: rgba(14, 17, 24, 0.88);
-    --bg-card-hover: rgba(20, 24, 34, 0.96);
-    --bg-glass: rgba(9, 11, 16, 0.82);
+    --brand-hue: 112;
+    --brand-chroma: 0.23;
+    --brand-lightness: 0.91;
+    --text-on-accent: #0B0C0E;
+
+    /* Lando Norris Track Asphalt Surfaces (#111112) */
+    --bg-obsidian: #0B0C0E;
+    --bg-obsidian: oklch(0.11 0.008 var(--brand-hue));
+    --bg-carbon: #111112;
+    --bg-carbon: oklch(0.14 0.010 var(--brand-hue));
+    --bg-surface: #16171A;
+    --bg-surface: oklch(0.17 0.012 var(--brand-hue));
+    --bg-card: rgba(20, 21, 25, 0.90);
+    --bg-card-hover: rgba(26, 28, 34, 0.96);
+    --bg-glass: rgba(14, 15, 18, 0.84);
  
-    /* Cor Única de Destaque Escolar (Azul Institucional Puro) */
-    --neon-lime: #2563EB;
-    --neon-lime-hover: #1D4ED8;
-    --neon-glow: rgba(37, 99, 235, 0.42);
-    --neon-glow-soft: rgba(37, 99, 235, 0.14);
-    --neon-cyan: #3B82F6;
-    --neon-cyan-glow: rgba(59, 130, 246, 0.3);
-    --neon-orange: #2563EB;
+    /* Cor Principal Livery LN4 Acid Lime (#D2FF00) + Derivados OKLCH */
+    --neon-lime: #D2FF00;
+    --neon-lime: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue));
+    --neon-lime-hover: oklch(calc(var(--brand-lightness) - 0.06) calc(var(--brand-chroma) + 0.01) var(--brand-hue));
+    --neon-bright: oklch(calc(var(--brand-lightness) + 0.03) var(--brand-chroma) var(--brand-hue));
+    --neon-glow: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.42);
+    --neon-glow-soft: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.14);
+    --neon-cyan: oklch(0.84 0.19 var(--brand-hue));
+    --neon-cyan-glow: oklch(0.84 0.19 var(--brand-hue) / 0.30);
+    --neon-orange: #FF8000;
     --neon-red: #EF4444;
  
-    /* Text Colors (Branco Puro & Cinza Neutro Editorial) */
-    --text-pure: #FFFFFF;
-    --text-primary: #F3F4F6;
-    --text-secondary: #8E929F;
-    --text-muted: #525665;
+    /* Text Colors (Ivory Off-White & Neutral Telemetry) */
+    --text-pure: #F4F4F0;
+    --text-primary: #EAEAE4;
+    --text-secondary: #9A9EAB;
+    --text-muted: #5E6270;
  
-    /* Borders & Glass (Sutis e Monocromáticas) */
-    --border-glass: rgba(255, 255, 255, 0.08);
-    --border-card: rgba(255, 255, 255, 0.08);
-    --border-lime: rgba(37, 99, 235, 0.45);
+    /* Borders & Glass */
+    --border-glass: rgba(255, 255, 255, 0.09);
+    --border-card: rgba(255, 255, 255, 0.10);
+    --border-lime: oklch(var(--brand-lightness) var(--brand-chroma) var(--brand-hue) / 0.48);
  
     /* Typography */
     --font-display: 'Syne', sans-serif;
@@ -55,7 +65,7 @@
     --radius-md: 14px;
     --radius-lg: 20px;
     --radius-xl: 30px;
-    --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 14px 36px -10px rgba(0, 0, 0, 0.65);
     --shadow-glow: 0 0 25px var(--neon-glow);
 }
  
@@ -90,54 +100,54 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     background: var(--neon-lime);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    box-shadow: 0 0 10px var(--neon-lime);
+    box-shadow: 0 0 12px var(--neon-lime);
     transform: translate3d(-100px, -100px, 0);
-    margin: -3px 0 0 -3px;
+    margin: -3.5px 0 0 -3.5px;
 }
  
 .telemetry-cursor-ring {
     position: fixed;
     top: 0;
     left: 0;
-    width: 32px;
-    height: 32px;
-    border: 1.5px solid rgba(119, 0, 255, 0.5);
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid var(--border-lime);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9998;
     transform: translate3d(-100px, -100px, 0);
-    margin: -16px 0 0 -16px;
+    margin: -17px 0 0 -17px;
     transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
  
 .telemetry-cursor-ring.active {
-    width: 48px;
-    height: 48px;
-    margin: -24px 0 0 -24px;
+    width: 52px;
+    height: 52px;
+    margin: -26px 0 0 -26px;
     border-color: var(--neon-lime);
-    background-color: rgba(59, 130, 246, 0.08);
+    background-color: var(--neon-glow-soft);
 }
  
-/* Telemetry Badge Tag (e.g. [SYS // 01]) */
+/* Telemetry Badge Tag (e.g. [LN04 // TELEMETRY]) */
 .telemetry-tag {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     color: var(--neon-lime);
     text-transform: uppercase;
-    background: rgba(59, 130, 246, 0.08);
-    border: 1px solid rgba(59, 130, 246, 0.25);
-    padding: 4px 10px;
+    background: var(--neon-glow-soft);
+    border: 1px solid var(--border-lime);
+    padding: 4px 12px;
     border-radius: 999px;
     margin-bottom: 12px;
     width: fit-content;

@@ -8,49 +8,30 @@
    ========================================================================== */
 
 :root {
-    --bg-obsidian: #050508;
-    --bg-carbon: #090A10;
-    --bg-surface: #0E1018;
-    --bg-card: rgba(15, 17, 26, 0.88);
-    --bg-card-hover: rgba(22, 25, 38, 0.96);
-    --bg-glass: rgba(12, 14, 22, 0.78);
+    --bg-obsidian: #0B0C0E;
+    --bg-carbon: #111112;
+    --bg-surface: #16171A;
+    --bg-card: rgba(20, 21, 25, 0.90);
+    --bg-card-hover: rgba(26, 28, 34, 0.96);
+    --bg-glass: rgba(14, 15, 18, 0.84);
 
-    /* Cor Única Escolar/Acadêmica (Azul Royal/Violeta Profundo estilo Opticore/Gcore, sem mistura) */
-    --neon-lime: #3B82F6;
-    --neon-lime-hover: #2563EB;
-    --neon-bright: #60A5FA;
-    --neon-glow: rgba(59, 130, 246, 0.48);
-    --neon-glow-soft: rgba(59, 130, 246, 0.16);
-    --neon-cyan: #3B82F6;
+    /* Pintura Padrão Lando Norris LN04 Acid Lime (#D2FF00 sobre #111112) */
+    --neon-lime: #D2FF00;
+    --neon-lime-hover: #BDE600;
+    --neon-bright: #D2FF00;
+    --neon-glow: rgba(210, 255, 0, 0.42);
+    --neon-glow-soft: rgba(210, 255, 0, 0.14);
+    --neon-cyan: #D2FF00;
+    --text-on-accent: #0B0C0E;
 
-    --text-pure: #FFFFFF;
-    --text-primary: #F3F4F6;
-    --text-secondary: #94A3B8;
-    --text-muted: #525866;
+    --text-pure: #F4F4F0;
+    --text-primary: #EAEAE4;
+    --text-secondary: #9A9EAB;
+    --text-muted: #5E6270;
 
-    --border-hairline: rgba(255, 255, 255, 0.07);
-    --border-card: rgba(255, 255, 255, 0.09);
-    --border-specular: rgba(255, 255, 255, 0.16);
-}
-
-html[data-accent="amber"],
-body[data-accent="amber"] {
-    --neon-lime: #FF5500;
-    --neon-lime-hover: #FF6B1A;
-    --neon-bright: #FF8533;
-    --neon-glow: rgba(255, 85, 0, 0.48);
-    --neon-glow-soft: rgba(255, 85, 0, 0.16);
-    --neon-cyan: #FF5500;
-}
-
-html[data-accent="violet"],
-body[data-accent="violet"] {
-    --neon-lime: #7C3AED;
-    --neon-lime-hover: #6D28D9;
-    --neon-bright: #A78BFA;
-    --neon-glow: rgba(124, 58, 237, 0.50);
-    --neon-glow-soft: rgba(124, 58, 237, 0.18);
-    --neon-cyan: #7C3AED;
+    --border-hairline: rgba(255, 255, 255, 0.08);
+    --border-card: rgba(255, 255, 255, 0.10);
+    --border-specular: rgba(255, 255, 255, 0.18);
 }
 
 /* ── TOP ANNOUNCEMENT BAR ── */
@@ -777,7 +758,7 @@ header#main-header {
 
 .lando-showcase-card:hover .popup-trigger-badge {
     background: var(--neon-lime);
-    color: #FFFFFF;
+    color: var(--text-on-accent);
     border-color: var(--neon-bright);
     transform: translateX(2px);
 }
@@ -1018,42 +999,42 @@ header#main-header {
 .spotlight-card > * { position: relative; z-index: 1; }
 
 .section-title {
-    font-family: var(--font-body) !important;
-    font-weight: 600 !important;
-    text-transform: none !important;
-    letter-spacing: -0.03em !important;
-    background: linear-gradient(180deg, #FFFFFF 30%, rgba(255, 255, 255, 0.7) 100%);
+    font-family: var(--font-display) !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.02em !important;
+    background: linear-gradient(180deg, #F4F4F0 40%, rgba(244, 244, 240, 0.72) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .telemetry-tag {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.11) !important;
-    color: #D1D5DB !important;
-    font-family: var(--font-body) !important;
-    font-weight: 500 !important;
-    text-transform: none !important;
-    letter-spacing: 0.01em !important;
+    background: var(--neon-glow-soft) !important;
+    border: 1px solid var(--border-lime) !important;
+    color: var(--neon-lime) !important;
+    font-family: var(--font-mono) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.12em !important;
 }
 
 .telemetry-tag::before {
-    background-color: var(--neon-bright) !important;
+    background-color: var(--neon-lime) !important;
     box-shadow: 0 0 8px var(--neon-lime) !important;
 }
 
 .bento-card-accent {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 2px;
-    background: linear-gradient(90deg, var(--neon-lime), transparent 80%);
+    top: 0; left: 0; width: 100%; height: 2.5px;
+    background: linear-gradient(90deg, var(--neon-lime), transparent 85%);
 }
 
 .metric-display {
-    font-family: var(--font-body);
+    font-family: var(--font-display);
     font-size: 3.2rem;
-    font-weight: 700;
-    color: #FFFFFF;
+    font-weight: 900;
+    color: var(--text-pure);
     letter-spacing: -.04em;
     margin-top: 24px;
     line-height: 1;
@@ -1063,7 +1044,9 @@ header#main-header {
 }
 .metric-unit {
     font-size: .75rem;
-    color: var(--neon-bright);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    color: var(--neon-lime);
     margin-bottom: 6px;
 }
 
@@ -1078,7 +1061,10 @@ header#main-header {
     flex-wrap: wrap;
 }
 .rbac-tab {
-    font-size: 0.76rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     padding: 7px 16px;
     border-radius: 999px;
     border: none;
@@ -1089,8 +1075,8 @@ header#main-header {
 }
 .rbac-tab.active {
     background: var(--neon-lime);
-    color: #FFFFFF;
-    font-weight: 600;
+    color: var(--text-on-accent) !important;
+    font-weight: 800;
 }
 .rbac-status-output {
     margin-top: 12px;
