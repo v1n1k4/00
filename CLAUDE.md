@@ -1,3 +1,22 @@
+# Projeto Calex — Redesign Brutalista (v12, camada ativa)
+
+> Camada final `css/brutalist.css` (após `minimal.css`) aplicada às 9 páginas. Substitui o visual minimalista; `calex-ui.js` (abas, reveals) continua.
+
+**Linguagem:** bordas pretas de 3px, sombras duras sem blur (`6px 6px 0`), cantos retos, tipografia pesada em caixa alta (Archivo Black / Space Grotesk / Space Mono), fundo papel `#F4F1E8` com grade, acento azul `#1F3DFF` + destaque amarelo `#FFE600`, rodapé preto. Sem neon/glow.
+
+**O que cada repositório trouxe**
+- `ui-ux-pro-max-skill`: estilo "Brutalism" + checklist (contraste ≥4.5:1, foco visível, `prefers-reduced-motion`, responsivo, texto sem clipping).
+- `anthropics/skills` (frontend-design): assumir uma direção ousada e consistente em vez de layout genérico.
+- `vercel-labs/agent-skills` (web-design-guidelines): `:focus-visible` forte (amarelo + preto), tabs ARIA/teclado, `tabular-nums` em tabelas, sem `transition: all`.
+- `Claude-Code-Frontend-Design-Toolkit`: tokens por variável (`--ink`, `--blue`, `--yellow`) e pipeline de qualidade.
+- `claude-code`: honestidade de terminal — mono em rótulos e botões.
+- `landonorris.com`: tipografia gigante e contraste forte.
+- Motion UI: movimento por passos (`steps()`), hover que "levanta" o bloco, clique que "afunda".
+
+Escopo: nenhum backend (`*.java`, `*.py`, `js/api.js`) alterado.
+
+---
+
 # Projeto Calex — Redesign Minimalista (v11, camada ativa)
 
 > Esta seção **substitui** o tema editorial/lime descrito abaixo para o front-end. O código vive em `css/minimal.css` (carregado por último em todas as páginas) e `js/calex-ui.js`.
