@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto Calex — Automação inteligente de grades horárias</title>
+    <title>CLAEX — Automação inteligente de grades horárias</title>
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/minimal.css">
@@ -34,15 +34,15 @@
                         <path d="M54,6 L92,6 L63,50 L92,94 L54,94 Z" fill="var(--neon-lime)" stroke="#111112" stroke-width="3" />
                     </svg>
                 </span>
-                Projeto Calex
+                CLAEX
             </a>
         </div>
 
         <nav class="dock-links" id="floating-dock" aria-label="Navegação Principal">
             <a href="index.html" class="dock-link active">Início</a>
+            <a href="#como" class="dock-link">Como funciona</a>
+            <a href="#exemplo" class="dock-link">Exemplo</a>
             <a href="#perfis" class="dock-link">Perfis</a>
-            <a href="#para-quem" class="dock-link">Como funciona</a>
-            <a href="#recursos" class="dock-link">Recursos</a>
             <a href="listar_sala.html" class="dock-link">Salas</a>
             <a href="#equipe" class="dock-link">Equipe</a>
         </nav>
@@ -56,7 +56,7 @@
 
 <aside id="side-menu" aria-label="Menu Lateral">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-        <div class="brand-logo">Projeto Calex</div>
+        <div class="brand-logo">CLAEX</div>
         <button class="close-menu btn-ghost" style="padding:6px 12px;font-size:1rem" aria-label="Fechar Menu">✕</button>
     </div>
     <div class="telemetry-tag">Navegação</div>
@@ -67,43 +67,109 @@
     <a href="form_nova_sala.html" class="side-link">05 // Nova Sala</a>
     <a href="tabela_cadastros.html" class="side-link">06 // Cadastros</a>
     <div style="margin-top:auto;padding-top:20px;border-top:1px solid var(--border-card)">
-        <p style="font-size:.72rem;color:var(--text-muted);font-family:var(--font-mono)">PROJETO CALEX · 2026</p>
+        <p style="font-size:.72rem;color:var(--text-muted);font-family:var(--font-mono)">CLAEX · 2026</p>
     </div>
 </aside>
 <div class="menu-overlay"></div>
 
 <main class="landing-main" id="main-content">
 
-    <section id="capa_index" class="cx-hero">
-        <div class="cx-wrap">
-            <span class="cx-eyebrow">Gestão de grade escolar</span>
-            <h1>A grade da escola, <em>clara</em> para todos.</h1>
-            <p class="cx-lead">Administração, professores e alunos acompanham o mesmo horário: sem conflitos de sala, sem planilhas e sempre atualizado.</p>
-            <div class="cx-cta-row">
-                <a href="form_cadastro.html" class="btn-neon">Começar agora</a>
-                <a href="grade.html?id=1" class="btn-ghost">Ver demonstração</a>
-            </div>
+    <!-- 01 · ABERTURA: tela preta → X (ampulheta) → "CLAE" sai de dentro do X para a esquerda → CLAEX centralizado -->
+    <section id="capa_index" class="cx-intro" aria-label="Abertura">
+        <h1 class="cx-sr">CLAEX — motor inteligente de grades escolares</h1>
+        <span class="cx-corner cx-corner-l">[01] ABERTURA</span>
+        <span class="cx-corner cx-corner-r">GESTÃO DE GRADE ESCOLAR</span>
+        <div class="cx-lockup" aria-hidden="true">
+            <div class="cx-word"><div class="cx-word-in"><svg class="cx-clae" viewBox="0 0 632 160"><path d="M 82,6 C 36,6 2,40 2,80 C 2,120 36,154 82,154 C 122,154 152,128 158,90 L 82,90 C 72,90 65,86 65,80 C 65,74 72,70 82,70 L 158,70 C 152,32 122,6 82,6 Z"/><path d="M 184,8 L 242,8 L 242,102 L 296,102 L 296,152 L 184,152 Z"/><path d="M 366,8 L 418,8 L 474,152 L 408,152 L 392,98 L 376,152 L 310,152 Z"/><path d="M 498,8 L 626,8 L 626,48 L 558,48 L 558,60 L 610,60 L 610,100 L 558,100 L 558,112 L 626,112 L 626,152 L 498,152 Z"/></svg></div></div>
+            <svg class="cx-x" viewBox="0 0 160 160"><path class="l" d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z"/><path class="r" d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z"/></svg>
+        </div>
+        <p class="cx-intro-sub">Motor inteligente de grades escolares</p>
+        <a href="#como" class="cx-scroll">Role para baixo <span aria-hidden="true">↓</span></a>
+    </section>
 
-            <div class="cx-mock" aria-label="Pré-visualização abstrata da grade">
-                <div class="cx-cal">
-                    <div class="cx-cal-head"><strong>Semana 12</strong><span class="cx-dots"><i></i><i></i><i></i></span></div>
-                    <div class="cx-grid">
-                        <span></span><span class="cx-day">Seg</span><span class="cx-day">Ter</span><span class="cx-day">Qua</span><span class="cx-day">Qui</span><span class="cx-day">Sex</span>
-                        <span class="cx-hr">08h</span><div class="cx-ev b">Matemática</div><div class="cx-slot"></div><div class="cx-ev l">Física</div><div class="cx-slot"></div><div class="cx-ev ">Artes</div>
-                        <span class="cx-hr">09h</span><div class="cx-ev b">Matemática</div><div class="cx-ev l">História</div><div class="cx-slot"></div><div class="cx-ev b">Química</div><div class="cx-ev ">Artes</div>
-                        <span class="cx-hr">10h</span><div class="cx-ev l">Inglês</div><div class="cx-slot"></div><div class="cx-ev b">Biologia</div><div class="cx-slot"></div><div class="cx-ev ">Educ. Física</div>
-                        <span class="cx-hr">11h</span><div class="cx-slot"></div><div class="cx-ev ">Geografia</div><div class="cx-ev b">Biologia</div><div class="cx-ev l">Português</div><div class="cx-slot"></div>
+    <!-- 02 · COMO FUNCIONA: rede neural em volta do motor, uma explicação por parte (rolagem) -->
+    <section id="como" class="cx-story" data-steps="6" aria-labelledby="como-t">
+        <div class="cx-story-pin">
+            <div class="cx-wrap cx-story-grid">
+                <div class="cx-story-head">
+                    <span class="cx-eyebrow">02 / Como funciona</span>
+                    <h2 id="como-t">Tudo se liga no motor.</h2>
+                    <div class="cx-card cx-stepcard" aria-live="polite">
+                        <div class="cx-stepnum"><b id="stepNum">01</b><span>/ 06</span></div>
+                        <h3 id="stepTitle">Professores</h3>
+                        <p id="stepText">Cada professor informa quando pode dar aula. O motor respeita as janelas de disponibilidade e a carga semanal.</p>
+                        <div class="cx-bar" aria-hidden="true"><i id="stepBar" style="width:16%"></i></div>
+                    </div>
+                    <ol class="cx-steps-list">
+<li><b>01 · Professores</b> Cada professor informa quando pode dar aula. O motor respeita as janelas de disponibilidade e a carga semanal.</li>
+<li><b>02 · Salas</b> Salas e laboratórios entram com capacidade e horários livres. Regra simples: uma sala, uma turma por horário.</li>
+<li><b>03 · Turmas</b> Cada turma traz suas matérias e a quantidade de aulas por dia, sem buracos no meio da grade.</li>
+<li><b>04 · Regras</b> As restrições viram regras: no máximo 2 aulas seguidas, janelas compactas e equilíbrio entre exatas e humanas.</li>
+<li><b>05 · Otimizador</b> NSGA-II + Simulated Annealing testam milhares de combinações e ficam só com as melhores.</li>
+<li><b>06 · Grade final</b> Resultado: uma grade sem conflitos, que administração, professores e alunos consultam em qualquer lugar.</li>
+                    </ol>
+                </div>
+                <div class="cx-net-wrap">
+<svg class="cx-net" viewBox="0 0 1000 640" role="img" aria-label="Diagrama: professores, salas, turmas e regras alimentam o motor CLAEX, que otimiza e entrega a grade final">
+<g class="net-mesh">
+<path d="M150 115 Q320 53 500 50"/>
+<path d="M500 50 Q680 53 850 115"/>
+<path d="M850 115 Q880 320 850 525"/>
+<path d="M850 525 Q681 589 500 595"/>
+<path d="M500 595 Q319 589 150 525"/>
+<path d="M150 525 Q120 320 150 115"/>
+<path d="M500 50 Q530 322 500 595"/>
+<path d="M150 115 Q500 85 850 115"/>
+<path d="M150 525 Q500 495 850 525"/>
+</g>
+<g class="net-link" data-i="0"><path id="lk0" class="net-line" d="M150 115 Q302 257 500 320"/><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#lk0"/></animateMotion></circle><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#lk0"/></animateMotion></circle></g>
+<g class="net-link" data-i="1"><path id="lk1" class="net-line" d="M150 525 Q348 462 500 320"/><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#lk1"/></animateMotion></circle><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#lk1"/></animateMotion></circle></g>
+<g class="net-link" data-i="2"><path id="lk2" class="net-line" d="M500 50 Q454 185 500 320"/><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#lk2"/></animateMotion></circle><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#lk2"/></animateMotion></circle></g>
+<g class="net-link" data-i="3"><path id="lk3" class="net-line" d="M850 115 Q652 178 500 320"/><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#lk3"/></animateMotion></circle><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#lk3"/></animateMotion></circle></g>
+<g class="net-link" data-i="4"><path id="lk4" class="net-line" d="M850 525 Q698 383 500 320"/><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#lk4"/></animateMotion></circle><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#lk4"/></animateMotion></circle></g>
+<g class="net-link" data-i="5"><path id="lk5" class="net-line" d="M500 320 Q454 458 500 595"/><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#lk5"/></animateMotion></circle><circle r="7" class="net-dot"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#lk5"/></animateMotion></circle></g>
+<g class="net-node" data-i="0" tabindex="0" role="button" aria-label="Passo 01: Professores" transform="translate(55 83)"><rect class="sh" x="6" y="6" width="190" height="64"/><rect class="bx" width="190" height="64"/><text class="n" x="14" y="24">01</text><text class="t" x="14" y="52">PROFESSORES</text></g>
+<g class="net-node" data-i="1" tabindex="0" role="button" aria-label="Passo 02: Salas" transform="translate(55 493)"><rect class="sh" x="6" y="6" width="190" height="64"/><rect class="bx" width="190" height="64"/><text class="n" x="14" y="24">02</text><text class="t" x="14" y="52">SALAS</text></g>
+<g class="net-node" data-i="2" tabindex="0" role="button" aria-label="Passo 03: Turmas" transform="translate(405 18)"><rect class="sh" x="6" y="6" width="190" height="64"/><rect class="bx" width="190" height="64"/><text class="n" x="14" y="24">03</text><text class="t" x="14" y="52">TURMAS</text></g>
+<g class="net-node" data-i="3" tabindex="0" role="button" aria-label="Passo 04: Regras" transform="translate(755 83)"><rect class="sh" x="6" y="6" width="190" height="64"/><rect class="bx" width="190" height="64"/><text class="n" x="14" y="24">04</text><text class="t" x="14" y="52">REGRAS</text></g>
+<g class="net-node" data-i="4" tabindex="0" role="button" aria-label="Passo 05: Otimizador" transform="translate(755 493)"><rect class="sh" x="6" y="6" width="190" height="64"/><rect class="bx" width="190" height="64"/><text class="n" x="14" y="24">05</text><text class="t" x="14" y="52">OTIMIZADOR</text></g>
+<g class="net-node" data-i="5" tabindex="0" role="button" aria-label="Passo 06: Grade final" transform="translate(405 563)"><rect class="sh" x="6" y="6" width="190" height="64"/><rect class="bx" width="190" height="64"/><text class="n" x="14" y="24">06</text><text class="t" x="14" y="52">GRADE FINAL</text></g>
+<g class="net-core" transform="translate(425 245)"><rect class="sh" x="9" y="9" width="150" height="150"/><rect class="bx" width="150" height="150"/><g transform="translate(32 30) scale(.55)"><path class="l" d="M 10,8 L 75,8 L 75,152 L 10,152 L 54,80 L 22,26 L 32,23 Z"/><path class="r" d="M 85,8 L 150,8 L 106,80 L 150,152 L 85,152 Z"/></g><text x="75" y="142" text-anchor="middle" class="ct">MOTOR</text></g>
+</svg>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="application/json" id="storySteps">[{"n": "Professores", "t": "Cada professor informa quando pode dar aula. O motor respeita as janelas de disponibilidade e a carga semanal."}, {"n": "Salas", "t": "Salas e laboratórios entram com capacidade e horários livres. Regra simples: uma sala, uma turma por horário."}, {"n": "Turmas", "t": "Cada turma traz suas matérias e a quantidade de aulas por dia, sem buracos no meio da grade."}, {"n": "Regras", "t": "As restrições viram regras: no máximo 2 aulas seguidas, janelas compactas e equilíbrio entre exatas e humanas."}, {"n": "Otimizador", "t": "NSGA-II + Simulated Annealing testam milhares de combinações e ficam só com as melhores."}, {"n": "Grade final", "t": "Resultado: uma grade sem conflitos, que administração, professores e alunos consultam em qualquer lugar."}]</script>
+
+    <!-- 03 · EXEMPLO: do caos à grade sem conflitos -->
+    <section id="exemplo" class="cx-story cx-story-ex" data-steps="4" aria-labelledby="ex-t">
+        <div class="cx-story-pin">
+            <div class="cx-wrap cx-story-grid">
+                <div class="cx-story-head">
+                    <span class="cx-eyebrow">03 / Exemplo</span>
+                    <h2 id="ex-t">Do caos à grade em 4 passos.</h2>
+                    <ol class="cx-ex-steps" aria-live="polite">
+                        <li data-s="0"><b>01</b> Requisitos entram</li>
+                        <li data-s="1"><b>02</b> Conflitos aparecem</li>
+                        <li data-s="2"><b>03</b> O motor otimiza</li>
+                        <li data-s="3"><b>04</b> Grade pronta</li>
+                    </ol>
+                    <div class="cx-ex-meter">
+                        <div class="cx-card"><small>Conflitos</small><div class="cx-ex-conf" id="exConf">0</div></div>
+                        <div class="cx-card"><small>Qualidade</small><div class="cx-ex-q" id="exQ">0%</div><div class="cx-bar" aria-hidden="true"><i id="exBar" style="width:0%"></i></div></div>
                     </div>
                 </div>
-                <div class="cx-side">
-                    <div class="cx-panel">
-                        <small>Grade inteligente</small>
-                        <div class="cx-metric">94%</div>
-                        <div class="cx-bar"><i></i></div>
-                    </div>
-                    <div class="cx-panel">
-                        <small>Hoje</small>
-                        <ul class="cx-list"><li>0 conflitos de sala</li><li>12 professores alocados</li><li>Grade pronta em segundos</li></ul>
+                <div class="cx-mock cx-ex">
+                    <div class="cx-cal" style="grid-column:1/-1">
+                        <div class="cx-cal-head"><strong>3º Ensino Médio A · Semana 12</strong><span class="cx-dots"><i></i><i></i><i></i></span></div>
+                        <div class="cx-grid cx-ex-grid">
+                    <span></span><span class="cx-day">Seg</span><span class="cx-day">Ter</span><span class="cx-day">Qua</span><span class="cx-day">Qui</span><span class="cx-day">Sex</span>
+                    <span class="cx-hr">08h</span><div class="cx-ev b" data-cls="b" data-c="1">Matemática</div><div class="cx-slot"></div><div class="cx-ev l" data-cls="l" data-c="2">Física</div><div class="cx-slot"></div><div class="cx-ev " data-cls="">Artes</div>
+                    <span class="cx-hr">09h</span><div class="cx-ev b" data-cls="b">Matemática</div><div class="cx-ev l" data-cls="l" data-c="3">História</div><div class="cx-slot"></div><div class="cx-ev b" data-cls="b" data-c="4">Química</div><div class="cx-ev " data-cls="">Artes</div>
+                    <span class="cx-hr">10h</span><div class="cx-ev l" data-cls="l">Inglês</div><div class="cx-slot"></div><div class="cx-ev b" data-cls="b" data-c="5">Biologia</div><div class="cx-slot"></div><div class="cx-ev " data-cls="">Educ. Física</div>
+                    <span class="cx-hr">11h</span><div class="cx-slot"></div><div class="cx-ev " data-cls="" data-c="6">Geografia</div><div class="cx-ev b" data-cls="b">Biologia</div><div class="cx-ev l" data-cls="l" data-c="7">Português</div><div class="cx-slot"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,7 +179,7 @@
     <section id="perfis" class="cx-section">
         <div class="cx-wrap">
             <h2>Cada perfil enxerga o que importa.</h2>
-            <p>Escolha um perfil para ver como o Projeto Calex ajuda no dia a dia.</p>
+            <p>Escolha um perfil para ver como o CLAEX ajuda no dia a dia.</p>
             <div class="cx-tabs" role="tablist" aria-label="Perfis de uso">
                 <button class="cx-tab" role="tab" id="tab-adm" aria-selected="true" aria-controls="panel-adm" type="button">Administração</button>
                 <button class="cx-tab" role="tab" id="tab-prof" aria-selected="false" aria-controls="panel-prof" tabindex="-1" type="button">Professores</button>
@@ -140,48 +206,40 @@
         </div>
     </section>
 
-    <section id="recursos" class="cx-section">
-        <div class="cx-wrap">
-            <h2>Menos planilhas. Mais clareza.</h2>
-            <p>Tudo o que a coordenação precisa, em uma interface que sai do caminho.</p>
-            <div class="cx-features">
-                <article class="cx-feature">
-                    <div class="cx-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-                    <h3>Agendamento inteligente</h3>
-                    <p>Algoritmo evolutivo (NSGA-II + Simulated Annealing) que elimina conflitos e equilibra a carga de cada professor.</p>
-                </article>
-                <article class="cx-feature">
-                    <div class="cx-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg></div>
-                    <h3>Salas e turmas</h3>
-                    <p>Cadastre salas, turmas e docentes em poucos cliques, com permissões por perfil: administrador, professor e aluno.</p>
-                </article>
-                <article class="cx-feature">
-                    <div class="cx-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
-                    <h3>Insights de desempenho</h3>
-                    <p>Veja a qualidade da grade em tempo real e ajuste restrições com resultados imediatos.</p>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <section id="para-quem" class="cx-section">
-        <div class="cx-wrap">
-            <h2>Como funciona.</h2>
-            <div class="cx-steps">
-                <div class="cx-step"><span>01</span><h3>Cadastre</h3><p>Informe salas, turmas e disponibilidade dos professores.</p></div>
-                <div class="cx-step"><span>02</span><h3>Otimize</h3><p>O motor gera a melhor grade respeitando todas as restrições.</p></div>
-                <div class="cx-step"><span>03</span><h3>Publique</h3><p>Professores e alunos consultam a grade atualizada em qualquer lugar.</p></div>
-            </div>
-        </div>
-    </section>
-
+    <!-- 05 · EQUIPE -->
     <section id="equipe" class="cx-section">
         <div class="cx-wrap">
-            <h2>Feito por quem usa.</h2>
-            <p>Equipe de desenvolvimento do projeto.</p>
-            <div class="cx-team">
-                <div class="cx-person"><b>V</b><div>Vinícius<small>Desenvolvimento</small></div></div>
-                <div class="cx-person"><b>P</b><div>Equipe Calex<small>Produto &amp; Design</small></div></div>
+            <span class="cx-eyebrow">05 / Integrantes</span>
+            <h2>Quem construiu.</h2>
+            <p>Equipe de desenvolvimento do projeto CLAEX.</p>
+            <div class="cx-team-grid">
+                <article class="cx-member">
+                    <div class="cx-mono" aria-hidden="true">DSP</div>
+                    <span class="telemetry-tag">#01</span>
+                    <h3>Daniel</h3>
+                    <div class="cx-role">Arquitetura &amp; Back-End</div>
+                    <p>Modelagem acadêmica, persistência JPA/MySQL e APIs RESTful em Java + Spring Boot.</p>
+                    <div class="cx-tags"><span>Java 17</span><span>Spring Boot</span><span>MySQL</span></div>
+                    <a href="https://br.linkedin.com/in/daniel-da-silva-pereira-2ab525352" target="_blank" rel="noopener noreferrer" class="btn-ghost">LinkedIn ↗</a>
+                </article>
+                <article class="cx-member">
+                    <div class="cx-mono" aria-hidden="true">VC</div>
+                    <span class="telemetry-tag">#02</span>
+                    <h3>Vini</h3>
+                    <div class="cx-role">Front-End, Back-End &amp; IA</div>
+                    <p>Design system, Motion UI, integração Gemini API e o motor memético CLAEX.</p>
+                    <div class="cx-tags"><span>Motion UI</span><span>Gemini API</span><span>Full-Stack</span></div>
+                    <a href="https://br.linkedin.com/in/vinicius-castilho-39153b358" target="_blank" rel="noopener noreferrer" class="btn-ghost">LinkedIn ↗</a>
+                </article>
+                <article class="cx-member">
+                    <div class="cx-mono" aria-hidden="true">SAB</div>
+                    <span class="telemetry-tag">#03</span>
+                    <h3>Samuel</h3>
+                    <div class="cx-role">Desenvolvedor Full-Stack</div>
+                    <p>Fluxos de dados escolares ponta a ponta, regras de negócio e experiência do usuário.</p>
+                    <div class="cx-tags"><span>Spring Data</span><span>JavaScript</span><span>UX Flow</span></div>
+                    <a href="https://br.linkedin.com/in/samuel-arthur-barbosa-50ba37359" target="_blank" rel="noopener noreferrer" class="btn-ghost">LinkedIn ↗</a>
+                </article>
             </div>
         </div>
     </section>
@@ -200,7 +258,7 @@
     <div class="footer-panel-inner">
         <div class="footer-content">
             <div>
-                <div class="footer-brand">Projeto Calex</div>
+                <div class="footer-brand">CLAEX</div>
                 <p style="font-size:.88rem;max-width:280px;margin-top:10px">Automação inteligente de grades horárias para escolas, coordenadores e professores.</p>
             </div>
             <div class="footer-links">
@@ -208,7 +266,7 @@
                 <div class="footer-col"><h4>Acesso</h4><a href="form_login.html">Login</a><a href="form_cadastro.html">Cadastro</a><a href="form_nova_sala.html">Nova sala</a><a href="tabela_cadastros.html">Professores</a></div>
             </div>
         </div>
-        <div class="footer-bottom"><div>© 2026 Projeto Calex. Todos os direitos reservados.</div></div>
+        <div class="footer-bottom"><div>© 2026 CLAEX. Todos os direitos reservados.</div></div>
     </div>
 </footer>
 
@@ -219,5 +277,6 @@
 <script src="js/unlumen-effects.js"></script>
 <script src="js/gsap-animations.js"></script>
 <script src="js/calex-ui.js"></script>
+<script src="js/calex-story.js"></script>
 </body>
 </html>

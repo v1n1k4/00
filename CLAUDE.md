@@ -1,3 +1,16 @@
+# CLAEX — Landing narrativa (v13, camada ativa na `index.html`)
+
+Roteiro pedido pelo time (áudio transcrito): **abertura com a logo → CLAEX → explicação em rede neural → exemplo → integrantes**. Implementado em `index.html` + `js/calex-story.js` + bloco "STORYTELLING" de `css/brutalist.css`.
+
+1. **Abertura** (`#capa_index`): tela preta; o **X** (ampulheta) aparece no centro; a palavra **CLAE** sai de dentro do X para a esquerda e o conjunto fica centralizado como nome do projeto (**CLAEX**).
+2. **Como funciona** (`#como`): ao rolar, uma rede neural em volta do motor acende uma parte por vez (Professores, Salas, Turmas, Regras, Otimizador, Grade final). Cada parte tem sua explicação, dois pulsos correm para o centro e há caminhos extras entre os nós. Os nós são clicáveis/teclado.
+3. **Exemplo** (`#exemplo`): grade de uma turma; conflitos (vermelho) aparecem e são resolvidos conforme a rolagem — contador 7 → 0 e qualidade 0 → 94%.
+4. **Perfis** (abas Administração/Professores/Alunos) e **Equipe** (Daniel, Vini, Samuel).
+
+Acessibilidade: `prefers-reduced-motion` mostra o estado final estático; nós com `role="button"`/`tabindex`; `aria-live` nos painéis. Nome da marca: **CLAEX** em todas as páginas. Nenhum backend alterado.
+
+---
+
 # Projeto Calex — Redesign Brutalista (v12, camada ativa)
 
 > Camada final `css/brutalist.css` (após `minimal.css`) aplicada às 9 páginas. Substitui o visual minimalista; `calex-ui.js` (abas, reveals) continua.

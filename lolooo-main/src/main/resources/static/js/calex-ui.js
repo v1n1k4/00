@@ -54,11 +54,11 @@
     }
 
     /* Hero calendar: staggered entrance + animated metric */
-    var cal = document.querySelector('.cx-grid');
+    var cal = document.querySelector('.cx-hero .cx-grid');
     if (cal && !reduce) {
         cal.querySelectorAll('.cx-ev, .cx-slot').forEach(function (el, i) { el.style.setProperty('--i', i); el.classList.add('cx-pop'); });
         animateBars(document.querySelector('.cx-side') || document);
-        var m = document.querySelector('.cx-metric');
+        var m = document.querySelector('.cx-hero .cx-metric');
         if (m) {
             var t0 = performance.now(), to = parseInt(m.textContent, 10) || 0;
             (function tick(t) { var p = Math.min(1, (t - t0) / 1100); m.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + '%'; if (p < 1) requestAnimationFrame(tick); })(t0);
