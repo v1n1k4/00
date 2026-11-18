@@ -1,3 +1,24 @@
+# Projeto Calex — Redesign Minimalista (v11, camada ativa)
+
+> Esta seção **substitui** o tema editorial/lime descrito abaixo para o front-end. O código vive em `css/minimal.css` (carregado por último em todas as páginas) e `js/calex-ui.js`.
+
+**Público:** administração, professores e alunos de uma escola — a prioridade é compreensão imediata.
+
+**Referências aplicadas**
+- [`nextlevelbuilder/ui-ux-pro-max-skill`](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): checklist de entrega (ícones SVG, contraste 4.5:1, foco visível, `prefers-reduced-motion`, responsivo 375/768/1024/1440, texto sem clipping).
+- [`anthropics/skills`](https://github.com/anthropics/skills) (frontend-design): direção estética clara e intencional, sem layout genérico.
+- [`vercel-labs/agent-skills` web-design-guidelines](https://github.com/vercel-labs/agent-skills/blob/main/skills/web-design-guidelines/SKILL.md): `:focus-visible`, `touch-action`, `text-wrap: balance`, `tabular-nums`, tabs com ARIA/teclado, nada de `transition: all`.
+- Anteriores: Claude-Code-Frontend-Design-Toolkit (tokens OKLCH `--brand-hue`, agora 258° azul), claude-code (minimalismo), landonorris.com (espaço negativo), Motion UI (reveals sutis).
+
+**Regras**
+- Paleta neutra: `#FAFAFA` / `#FFFFFF` / bordas `#E8E8EC`; acento único azul elétrico `oklch(0.55 0.2 258)` só em botões, links e dados.
+- Tipografia: Inter, títulos 700–800, tracking -0.04em. Zero neon/glow, sem faixas escuras.
+- Animações sutis: reveal on scroll (`.cx-reveal`), calendário do hero em cascata (`.cx-pop`), barras e métrica animadas, troca de abas por perfil. Tudo desativado com `prefers-reduced-motion`.
+- Landing por perfil: abas Administração / Professores / Alunos com ação direta para cada área.
+- Escopo: nenhum backend (`*.java`, `*.py`, `js/api.js`) foi alterado.
+
+---
+
 # CLAEX — Claude Code Frontend Design Toolkit & Editorial Spec
 
 Este projeto integra as metodologias do **[`wilwaldon/Claude-Code-Frontend-Design-Toolkit`](https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit)**, o minimalismo técnico de **[`anthropics/claude-code`](https://github.com/anthropics/claude-code)**, a direção editorial de **[McLaren F1 — Lando Norris (`landonorris.com`)](https://landonorris.com/)** e animações físicas de **[Motion / Motion UI (`motiondivision/motion` + `ibelick/motion-primitives`)](https://motion.dev/)** sobre o **Motor Híbrido CLAEX (NSGA-II Memético + Simulated Annealing + Multi-Model IA)**.
