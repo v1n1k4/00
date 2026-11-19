@@ -1,3 +1,15 @@
+# CLAEX — Paleta Institucional (v14, ativa em `css/brutalist.css`)
+
+Troca o amarelo ácido e o preto puro por uma paleta acadêmica/institucional, mantendo a estrutura brutalista e a narrativa da landing:
+- Tinta / bordas / sombras / abertura / rodapé: marinho escuro `#0F172A`
+- Fundo: ardósia clara `#F1F5F9` · superfícies: `#FFFFFF`
+- Acento primário: azul institucional `#1E3A8A` (hover `#172554`)
+- Destaque secundário (chips, abas ativas, blocos do calendário): azul gelo `#DBEAFE` (sobre marinho escuro: `#93C5FD`)
+- Estado (conflitos / sucesso): bordô `#B91C1C` / verde-petróleo `#0F766E`
+- Rótulos retos (sem inclinação).
+
+---
+
 # CLAEX — Landing narrativa (v13, camada ativa na `index.html`)
 
 Roteiro pedido pelo time (áudio transcrito): **abertura com a logo → CLAEX → explicação em rede neural → exemplo → integrantes**. Implementado em `index.html` + `js/calex-story.js` + bloco "STORYTELLING" de `css/brutalist.css`.
