@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { C, st } from '../theme/tokens';
+import { C, st } from '../styles/styles';
 import { PAGES } from '../data/mockData';
 
 export default function Header({ page, go, drawerOpen, setDrawerOpen }) {

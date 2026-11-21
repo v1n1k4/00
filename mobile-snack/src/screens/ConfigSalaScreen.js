@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { st } from '../theme/tokens';
+import { st } from '../styles/styles';
 
 export default function ConfigSalaScreen({ room, notify, go }) {
   const [inicio, setInicio] = useState(room.inicio);

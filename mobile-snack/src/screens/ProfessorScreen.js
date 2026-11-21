@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { C, st } from '../theme/tokens';
+import { C, st } from '../styles/styles';
 
 export default function ProfessorScreen({ notify }) {
   const days = ['SEG', 'TER', 'QUA', 'QUI', 'SEX'];

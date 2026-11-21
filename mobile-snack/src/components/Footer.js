@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { st } from '../theme/tokens';
+import { st } from '../styles/styles';
 
 export default function Footer({ go }) {
   return (

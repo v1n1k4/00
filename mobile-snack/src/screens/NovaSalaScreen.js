@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { C, st } from '../theme/tokens';
+import { C, st } from '../styles/styles';
 
 export default function NovaSalaScreen({ rooms, setRooms, go, notify }) {
   const [nome, setNome] = useState('');

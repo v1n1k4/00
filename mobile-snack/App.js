@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StatusBar } from 'react-native';
 
-import { C, st } from './src/theme/tokens';
+import { C, st } from './src/styles/styles';
 import { INITIAL_ROOMS } from './src/data/mockData';
 
 import Header from './src/components/Header';
@@ -23,7 +23,7 @@ import CadastroScreen from './src/screens/CadastroScreen';
    ├── App.js
    ├── package.json
    └── src/
-       ├── theme/tokens.js              (Paleta Institucional Brutalista + estilos)
+       ├── styles/styles.js              (Estilos gerais do aplicativo)
        ├── data/mockData.js             (9 páginas, nós neurais, salas, grade, equipe)
        ├── components/
        │   ├── Header.js                (Cabeçalho, abas rápidas e drawer lateral)

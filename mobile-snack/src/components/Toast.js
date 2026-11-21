@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { C, st } from '../theme/tokens';
+import { C, st } from '../styles/styles';
 
 export default function Toast({ toast }) {
   if (!toast) return null;

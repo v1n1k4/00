@@ -33,13 +33,6 @@
       cursor: pointer; text-decoration: none; text-transform: uppercase;
     }
     .fg-btn:hover, .fg-btn.on { background: var(--blue); border-color: var(--iceBright); color: #fff; }
-    .fg-tokens {
-      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-      padding: 12px 20px; background: #111827; border-bottom: 2px solid #1E293B;
-      font-family: monospace; font-size: .75rem;
-    }
-    .sw { display: inline-flex; align-items: center; gap: 6px; background: #1E293B; padding: 4px 10px; border: 1px solid #334155; }
-    .sw i { width: 14px; height: 14px; display: inline-block; border: 1px solid #fff; }
 
     .fg-stage { padding: 28px 24px 80px; transform-origin: top left; }
     .fg-grid {
@@ -108,20 +101,8 @@
       <button class="fg-btn" id="btnMob" onclick="setMode('mobile')">Mobile Snack (375)</button>
       <button class="fg-btn" onclick="setZoom(0.85)">Zoom 85%</button>
       <button class="fg-btn" onclick="setZoom(1)">Zoom 100%</button>
-      <a class="fg-btn" href="https://snack.expo.dev/35Wlv_p3QjFLFs-t_h8c8" target="_blank" rel="noopener">Abrir no Expo Snack ↗</a>
+      <a class="fg-btn" href="https://snack.expo.dev/G-RPsJwgRYl_F98D2DTzl" target="_blank" rel="noopener">Abrir no Expo Snack ↗</a>
     </div>
-  </div>
-
-  <div class="fg-tokens">
-    <strong>DESIGN TOKENS:</strong>
-    <span class="sw"><i style="background:#0F172A"></i>--ink #0F172A</span>
-    <span class="sw"><i style="background:#F1F5F9"></i>--paper #F1F5F9</span>
-    <span class="sw"><i style="background:#FFFFFF"></i>--white #FFFFFF</span>
-    <span class="sw"><i style="background:#1E3A8A"></i>--blue #1E3A8A</span>
-    <span class="sw"><i style="background:#DBEAFE"></i>--ice #DBEAFE</span>
-    <span class="sw"><i style="background:#93C5FD"></i>--ice-bright #93C5FD</span>
-    <span class="sw"><i style="background:#B91C1C"></i>--red #B91C1C</span>
-    <span class="sw"><i style="background:#0F766E"></i>--teal #0F766E</span>
   </div>
 
   <div class="fg-stage" id="stage">

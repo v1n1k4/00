@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { C, st } from '../theme/tokens';
+import { C, st } from '../styles/styles';
 import { INITIAL_USERS } from '../data/mockData';
 
 export default function CadastrosScreen({ notify }) {

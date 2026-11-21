@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
-import { C, st } from '../theme/tokens';
+import { C, st } from '../styles/styles';
 import { NEURAL_STEPS, TIMETABLE, TEAM } from '../data/mockData';
 import NeuralNode from '../components/NeuralNode';
 
