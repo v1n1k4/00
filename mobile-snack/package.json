@@ -1,0 +1,11 @@
+{
+  "name": "claex-mobile-snack",
+  "version": "1.0.0",
+  "description": "CLAEX — Motor Inteligente de Grades Escolares (Expo Snack React Native, 9 telas, paleta institucional brutalista)",
+  "main": "App.js",
+  "dependencies": {
+    "expo": "~52.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.3"
+  }
+}

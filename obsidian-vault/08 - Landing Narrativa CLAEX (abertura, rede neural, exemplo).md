@@ -10,3 +10,7 @@ Roteiro (áudio do grupo): logo → CLAEX → rede neural → exemplo → integr
 
 ## Paleta institucional (v14)
 - Marinho escuro `#0F172A`, ardósia `#F1F5F9`, azul institucional `#1E3A8A`, azul gelo `#DBEAFE` / `#93C5FD`, bordô `#B91C1C`.
+
+## Mobile Expo Snack + Canvas Figma (9 páginas)
+- App React Native completo: `mobile-snack/App.js` + `mobile-snack/package.json` (9 telas navegáveis com a paleta institucional brutalista).
+- Canvas Figma com os 9 artboards (Desktop 1440px + Mobile 375px): `lolooo-main/src/main/resources/static/figma_canvas.html`.

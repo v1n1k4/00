@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLAEX — Canvas Figma (9 Páginas · Desktop + Mobile Snack)</title>
+  <link rel="stylesheet" href="css/minimal.css" />
+  <link rel="stylesheet" href="css/brutalist.css" />
+  <style>
+    :root {
+      --ink: #0F172A; --paper: #F1F5F9; --white: #FFFFFF;
+      --blue: #1E3A8A; --ice: #DBEAFE; --iceBright: #93C5FD;
+      --red: #B91C1C; --teal: #0F766E; --slate: #CBD5E1; --muted: #334155;
+    }
+    * { box-sizing: border-box; border-radius: 0 !important; }
+    body {
+      margin: 0; background: #0B1120; color: #F8FAFC;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background-image: radial-gradient(#334155 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .fg-top {
+      position: sticky; top: 0; z-index: 90;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      padding: 12px 20px; background: #0F172A; border-bottom: 3px solid #1E293B;
+    }
+    .fg-brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: -.02em; font-size: 1rem; }
+    .fg-tag { background: var(--ice); color: var(--ink); font-family: monospace; font-weight: 700; font-size: .72rem; padding: 3px 8px; border: 2px solid var(--ink); }
+    .fg-ctrls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .fg-btn {
+      background: #1E293B; color: #F8FAFC; border: 2px solid #475569;
+      padding: 7px 12px; font-family: monospace; font-weight: 700; font-size: .75rem;
+      cursor: pointer; text-decoration: none; text-transform: uppercase;
+    }
+    .fg-btn:hover, .fg-btn.on { background: var(--blue); border-color: var(--iceBright); color: #fff; }
+    .fg-tokens {
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+      padding: 12px 20px; background: #111827; border-bottom: 2px solid #1E293B;
+      font-family: monospace; font-size: .75rem;
+    }
+    .sw { display: inline-flex; align-items: center; gap: 6px; background: #1E293B; padding: 4px 10px; border: 1px solid #334155; }
+    .sw i { width: 14px; height: 14px; display: inline-block; border: 1px solid #fff; }
+
+    .fg-stage { padding: 28px 24px 80px; transform-origin: top left; }
+    .fg-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(560px, 1fr));
+      gap: 28px; align-items: start;
+    }
+    .fg-grid.mode-mobile { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+
+    .artboard {
+      background: #1E293B; border: 3px solid #334155;
+      box-shadow: 8px 8px 0 #020617; padding: 14px;
+    }
+    .ab-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding-bottom: 10px; margin-bottom: 12px; border-bottom: 2px solid #334155;
+      font-family: monospace; font-size: .75rem;
+    }
+    .ab-title { font-weight: 700; color: var(--iceBright); }
+    .ab-file { color: #94A3B8; }
+    .ab-open { color: #fff; background: var(--blue); padding: 4px 9px; text-decoration: none; font-weight: 700; border: 1px solid var(--iceBright); }
+
+    /* Miniatura fiel do artboard */
+    .ab-screen {
+      background: var(--paper); color: var(--ink); border: 3px solid var(--ink);
+      padding: 14px; font-size: 12px;
+      background-image: linear-gradient(#0F172A0D 1px, transparent 1px), linear-gradient(90deg, #0F172A0D 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .mode-mobile .ab-screen { max-width: 375px; margin: 0 auto; border-width: 4px; }
+    .mini-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #fff; border: 2px solid var(--ink); padding: 6px 10px; margin-bottom: 10px;
+      font-family: monospace; font-weight: 700; font-size: 10px;
+    }
+    .mini-card {
+      background: #fff; border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px; margin-top: 8px;
+    }
+    .mini-pill {
+      display: inline-block; background: var(--ice); color: var(--ink);
+      border: 2px solid var(--ink); padding: 1px 6px; font-family: monospace; font-weight: 700; font-size: 9px;
+    }
+    .mini-h { font-weight: 900; font-size: 16px; letter-spacing: -.03em; margin: 6px 0 4px; text-transform: uppercase; border-bottom: 4px solid var(--blue); display: inline-block; }
+    .mini-btn { display: inline-block; background: var(--blue); color: #fff; border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding: 5px 10px; font-family: monospace; font-weight: 700; font-size: 10px; margin-top: 6px; }
+    .mini-cal { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 6px; font-family: monospace; font-size: 9px; font-weight: 700; }
+    .mini-cal span { border: 1.5px solid var(--ink); padding: 4px; text-align: center; background: #fff; }
+    .mini-cal .hd { background: var(--ink); color: #fff; }
+    .mini-cal .b { background: var(--blue); color: #fff; }
+    .mini-cal .l { background: var(--ice); color: var(--ink); }
+    .mini-cal .r { background: var(--red); color: #fff; }
+    .mini-foot { background: var(--ink); color: #fff; padding: 8px 10px; margin-top: 10px; font-family: monospace; font-size: 9px; display: flex; justify-content: space-between; }
+    .mini-foot b { color: var(--iceBright); }
+    .mini-in { border: 2px solid var(--ink); background: #fff; padding: 5px 8px; font-family: monospace; font-size: 10px; margin-top: 4px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <div class="fg-top">
+    <div class="fg-brand">
+      <span>❖ CLAEX // FIGMA BOARD</span>
+      <span class="fg-tag">9 ARTBOARDS · PALETA INSTITUCIONAL v14</span>
+      <span class="fg-tag">DESKTOP 1440px + MOBILE SNACK 375px</span>
+    </div>
+    <div class="fg-ctrls">
+      <button class="fg-btn on" id="btnDesk" onclick="setMode('desktop')">Desktop (1440)</button>
+      <button class="fg-btn" id="btnMob" onclick="setMode('mobile')">Mobile Snack (375)</button>
+      <button class="fg-btn" onclick="setZoom(0.85)">Zoom 85%</button>
+      <button class="fg-btn" onclick="setZoom(1)">Zoom 100%</button>
+      <a class="fg-btn" href="https://snack.expo.dev/?platform=android&name=CLAEX%20Mobile&sdkVersion=52.0.0&sourceUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fv1n1k4%2F00%2Fmain%2Fmobile-snack%2FApp.js" target="_blank" rel="noopener">Abrir no Expo Snack ↗</a>
+    </div>
+  </div>
+
+  <div class="fg-tokens">
+    <strong>DESIGN TOKENS:</strong>
+    <span class="sw"><i style="background:#0F172A"></i>--ink #0F172A</span>
+    <span class="sw"><i style="background:#F1F5F9"></i>--paper #F1F5F9</span>
+    <span class="sw"><i style="background:#FFFFFF"></i>--white #FFFFFF</span>
+    <span class="sw"><i style="background:#1E3A8A"></i>--blue #1E3A8A</span>
+    <span class="sw"><i style="background:#DBEAFE"></i>--ice #DBEAFE</span>
+    <span class="sw"><i style="background:#93C5FD"></i>--ice-bright #93C5FD</span>
+    <span class="sw"><i style="background:#B91C1C"></i>--red #B91C1C</span>
+    <span class="sw"><i style="background:#0F766E"></i>--teal #0F766E</span>
+  </div>
+
+  <div class="fg-stage" id="stage">
+    <div class="fg-grid" id="grid">
+
+      <!-- 01 · INDEX.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">01 / LANDING NARRATIVA (ABERTURA + REDE NEURAL + EXEMPLO + EQUIPE)</span>
+          <span class="ab-file">index.html</span>
+          <a class="ab-open" href="index.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>INÍCIO · COMO FUNCIONA · EXEMPLO · PERFIS · EQUIPE</span><span>[CONTA]</span></div>
+          <div style="background:#0F172A;color:#fff;padding:18px;text-align:center;border:2px solid #0F172A">
+            <div style="font-size:28px;font-weight:900;letter-spacing:-1px">CLAE<span style="color:#93C5FD">X</span></div>
+            <div style="font-family:monospace;font-size:9px;border:1px solid #fff;display:inline-block;padding:2px 8px;margin-top:4px">MOTOR INTELIGENTE DE GRADES ESCOLARES</div>
+          </div>
+          <div class="mini-card">
+            <span class="mini-pill">02 / COMO FUNCIONA</span><br/>
+            <span class="mini-h">TUDO SE LIGA NO MOTOR.</span>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;font-family:monospace;font-size:9px;font-weight:700">
+              <div style="border:2px solid #0F172A;padding:4px">01 PROFESSORES</div>
+              <div style="border:2px solid #0F172A;padding:4px;background:#DBEAFE">03 TURMAS ●</div>
+              <div style="border:2px solid #0F172A;padding:4px">04 REGRAS</div>
+              <div style="border:2px solid #0F172A;padding:4px">02 SALAS</div>
+              <div style="border:2px solid #0F172A;padding:4px;background:#0F172A;color:#93C5FD;text-align:center">❖ MOTOR</div>
+              <div style="border:2px solid #0F172A;padding:4px">05 OTIMIZADOR</div>
+            </div>
+          </div>
+          <div class="mini-card">
+            <span class="mini-pill">03 / EXEMPLO · 0 CONFLITOS · 94%</span>
+            <div class="mini-cal">
+              <span class="hd">SEG</span><span class="hd">TER</span><span class="hd">QUA</span><span class="hd">QUI</span><span class="hd">SEX</span>
+              <span class="b">MAT</span><span class="l">HIST</span><span class="l">FÍS</span><span class="b">QUÍM</span><span>ART</span>
+              <span class="l">ING</span><span>GEO</span><span class="b">BIO</span><span class="l">PORT</span><span>ED.F</span>
+            </div>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>05 / EQUIPE: DSP · VC · SAB</span></div>
+        </article>
+
+      <!-- 02 · LISTAR_SALA.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">02 / QUADRO DE SALAS &amp; TURMAS</span>
+          <span class="ab-file">listar_sala.html</span>
+          <a class="ab-open" href="listar_sala.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>INÍCIO · [SALAS] · GRADE</span><span>[ENTRAR]</span></div>
+          <div class="mini-card">
+            <span class="mini-pill">UNIDADE CONECTADA</span>
+            <div style="font-weight:900;font-size:15px;margin-top:4px">CENTRO PAULA SOUZA</div>
+            <div style="font-size:11px">Professores Cadastrados: <b>5</b> · Salas Ativas no BD: <b>2</b></div>
+          </div>
+          <div style="margin-top:10px"><span class="mini-pill">MATRIZ DE AMBIENTES // BANCO DE DADOS</span></div>
+          <div class="mini-h">SALAS DE AULA DISPONÍVEIS</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="mini-card">
+              <span class="mini-pill">SALA #1</span> <b style="float:right;color:#1E3A8A;font-family:monospace;font-size:9px">VER GRADE →</b>
+              <div style="font-weight:900;margin-top:6px">3º Ensino Médio A (Integral)</div>
+              <div style="font-size:10px;color:#334155">6 aulas/dia • 50min • Admin CLAEX</div>
+            </div>
+            <div class="mini-card">
+              <span class="mini-pill">SALA #2</span> <b style="float:right;color:#1E3A8A;font-family:monospace;font-size:9px">VER GRADE →</b>
+              <div style="font-weight:900;margin-top:6px">2º Ensino Médio B (Tecnologia)</div>
+              <div style="font-size:10px;color:#334155">5 aulas/dia • 50min • Admin CLAEX</div>
+            </div>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>© 2026 CLAEX EDUCAÇÃO</span></div>
+        </div>
+      </article>
+
+      <!-- 03 · GRADE.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">03 / GRADE HORÁRIA + ORQUESTRADOR NSGA-II</span>
+          <span class="ab-file">grade.html</span>
+          <a class="ab-open" href="grade.html?id=1">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>INÍCIO · SALAS · [GRADE]</span><span>[ADMIN]</span></div>
+          <span class="mini-pill">TURMA / AMBIENTE SELECIONADO</span><br/>
+          <span class="mini-h">3º ENSINO MÉDIO A (INTEGRAL)</span>
+          <div class="mini-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+            <span style="font-family:monospace;font-weight:700;font-size:10px">❖ ORQUESTRADOR CLAEX V10: Gemini 2.5 Pro</span>
+            <span class="mini-pill">Equilíbrio Cognitivo</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px">
+            <div class="mini-card" style="margin:0"><small style="font-family:monospace;font-size:8px">FITNESS</small><div style="font-weight:900;font-size:15px">1000</div></div>
+            <div class="mini-card" style="margin:0"><small style="font-family:monospace;font-size:8px">EQUILÍBRIO</small><div style="font-weight:900;font-size:15px">100%</div></div>
+            <div class="mini-card" style="margin:0"><small style="font-family:monospace;font-size:8px">JANELAS</small><div style="font-weight:900;font-size:15px">100%</div></div>
+            <div class="mini-card" style="margin:0"><small style="font-family:monospace;font-size:8px">GEMINADAS</small><div style="font-weight:900;font-size:15px">6 bl.</div></div>
+          </div>
+          <div class="mini-cal">
+            <span class="hd">SEG</span><span class="hd">TER</span><span class="hd">QUA</span><span class="hd">QUI</span><span class="hd">SEX</span>
+            <span class="b">MATEMÁTICA</span><span class="l">HISTÓRIA</span><span class="l">FÍSICA</span><span class="b">QUÍMICA</span><span>ARTES</span>
+            <span class="l">INGLÊS</span><span>GEOGRAFIA</span><span class="b">BIOLOGIA</span><span class="l">PORTUGUÊS</span><span>ED. FÍSICA</span>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>NSGA-II + SIMULATED ANNEALING</span></div>
+        </div>
+      </article>
+
+      <!-- 04 · PAINEL_PROFESSOR.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">04 / PAINEL DO PROFESSOR (DISPONIBILIDADE)</span>
+          <span class="ab-file">painel_professor.html</span>
+          <a class="ab-open" href="painel_professor.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>ÁREA DO PROFESSOR</span><span>[PROF. MARINA]</span></div>
+          <span class="mini-pill">ÁREA DOCENTE // DISPONIBILIDADE SEMANAL</span><br/>
+          <span class="mini-h">PAINEL DO PROFESSOR</span>
+          <div class="mini-card">
+            <div style="font-weight:900">PROF. MARINA COSTA · MATEMÁTICA &amp; FÍSICA</div>
+            <div style="font-size:10px;color:#334155;margin-bottom:6px">Selecione os dias e turnos disponíveis para alocação automática:</div>
+            <div class="mini-cal">
+              <span class="hd">SEG</span><span class="hd">TER</span><span class="hd">QUA</span><span class="hd">QUI</span><span class="hd">SEX</span>
+              <span class="b">MANHÃ ✓</span><span class="b">MANHÃ ✓</span><span class="b">MANHÃ ✓</span><span class="b">MANHÃ ✓</span><span class="b">MANHÃ ✓</span>
+              <span class="b">TARDE ✓</span><span>LIVRE</span><span class="l">PLANEJ.</span><span>LIVRE</span><span class="b">TARDE ✓</span>
+            </div>
+            <span class="mini-btn">SALVAR DISPONIBILIDADE</span>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>SINCRONIZADO COM O MOTOR</span></div>
+        </div>
+      </article>
+
+      <!-- 05 · TABELA_CADASTROS.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">05 / TABELA DE CADASTROS &amp; DOCENTES</span>
+          <span class="ab-file">tabela_cadastros.html</span>
+          <a class="ab-open" href="tabela_cadastros.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>DIRETÓRIO ACADÊMICO</span><span>[ADMIN]</span></div>
+          <span class="mini-pill">GESTÃO DE ENTIDADES // RBAC</span><br/>
+          <span class="mini-h">PROFESSORES &amp; USUÁRIOS</span>
+          <div class="mini-card" style="padding:0">
+            <div style="display:grid;grid-template-columns:1.4fr 1.6fr .8fr;background:#0F172A;color:#fff;padding:6px 8px;font-family:monospace;font-size:9px;font-weight:700">
+              <span>NOME</span><span>E-MAIL</span><span>PERFIL</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.4fr 1.6fr .8fr;padding:6px 8px;border-top:2px solid #0F172A;font-size:10px">
+              <b>Prof. Marina Costa</b><span>marina@cps.sp.gov.br</span><span class="mini-pill">PROFESSOR</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.4fr 1.6fr .8fr;padding:6px 8px;border-top:2px solid #0F172A;font-size:10px">
+              <b>Prof. Carlos Eduardo</b><span>carlos@cps.sp.gov.br</span><span class="mini-pill">PROFESSOR</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.4fr 1.6fr .8fr;padding:6px 8px;border-top:2px solid #0F172A;font-size:10px">
+              <b>Coord. Roberto Lima</b><span>roberto@cps.sp.gov.br</span><span class="mini-pill">ADMIN</span>
+            </div>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>4 REGISTROS ATIVOS</span></div>
+        </div>
+      </article>
+
+      <!-- 06 · FORM_NOVA_SALA.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">06 / CADASTRAR NOVA SALA &amp; DISCIPLINAS</span>
+          <span class="ab-file">form_nova_sala.html</span>
+          <a class="ab-open" href="form_nova_sala.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>NOVA SALA / TURMA</span><span>[ADMIN]</span></div>
+          <span class="mini-pill">CRIAÇÃO DE AMBIENTE ESCOLAR</span><br/>
+          <span class="mini-h">CADASTRAR NOVA SALA</span>
+          <div class="mini-card">
+            <div style="font-family:monospace;font-size:9px;font-weight:700">NOME DA SALA / TURMA</div>
+            <div class="mini-in">1º Ensino Médio C (Integral)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px">
+              <div><div style="font-family:monospace;font-size:8px;font-weight:700">AULAS/DIA</div><div class="mini-in">6</div></div>
+              <div><div style="font-family:monospace;font-size:8px;font-weight:700">DURAÇÃO (M)</div><div class="mini-in">50</div></div>
+              <div><div style="font-family:monospace;font-size:8px;font-weight:700">INÍCIO</div><div class="mini-in">07:30</div></div>
+            </div>
+            <span class="mini-btn">SALVAR E GERAR AMBIENTE</span>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>FORMULÁRIO DE TURMA</span></div>
+        </div>
+      </article>
+
+      <!-- 07 · CONFIG_SALA.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">07 / CONFIGURAÇÃO DE SALA &amp; RESTRIÇÕES</span>
+          <span class="ab-file">config_sala.html</span>
+          <a class="ab-open" href="config_sala.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>PARÂMETROS DA SALA</span><span>[ADMIN]</span></div>
+          <span class="mini-pill">AJUSTE FINO // PARÂMETROS</span><br/>
+          <span class="mini-h">CONFIGURAR SALA</span>
+          <div class="mini-card">
+            <div style="font-weight:900">3º ENSINO MÉDIO A (INTEGRAL)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+              <div><div style="font-family:monospace;font-size:8px;font-weight:700">HORÁRIO INICIAL</div><div class="mini-in">07:30</div></div>
+              <div><div style="font-family:monospace;font-size:8px;font-weight:700">INTERVALO (MIN)</div><div class="mini-in">20</div></div>
+            </div>
+            <span class="mini-btn">ATUALIZAR PARÂMETROS</span>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>CONFIG_SALA</span></div>
+        </div>
+      </article>
+
+      <!-- 08 · FORM_LOGIN.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">08 / AUTENTICAÇÃO CENTRAL (LOGIN)</span>
+          <span class="ab-file">form_login.html</span>
+          <a class="ab-open" href="form_login.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>INÍCIO · SALAS · GRADE</span><span>[ENTRAR]</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:8px">
+            <div class="mini-card">
+              <span class="mini-pill">[AUTENTICAÇÃO CENTRAL]</span>
+              <div style="font-weight:900;font-size:16px;margin-top:6px">BEM-VINDO AO <span style="color:#1E3A8A">CLAEX</span></div>
+              <p style="font-size:10px;margin:6px 0 0">Acesse sua conta para gerenciar horários e otimizar salas em tempo real.</p>
+            </div>
+            <div class="mini-card">
+              <span class="mini-pill">PORTAL DO USUÁRIO</span>
+              <div style="font-weight:900;margin-top:4px">ENTRAR NO SISTEMA</div>
+              <div class="mini-in">Nome cadastrado no banco</div>
+              <div class="mini-in">••••••••</div>
+              <span class="mini-btn" style="width:100%;text-align:center">ENTRAR NO SISTEMA</span>
+            </div>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>PORTAL SEGURO</span></div>
+        </div>
+      </article>
+
+      <!-- 09 · FORM_CADASTRO.HTML -->
+      <article class="artboard">
+        <div class="ab-head">
+          <span class="ab-title">09 / REGISTRO DE ENTIDADE (CADASTRO)</span>
+          <span class="ab-file">form_cadastro.html</span>
+          <a class="ab-open" href="form_cadastro.html">Abrir página ↗</a>
+        </div>
+        <div class="ab-screen">
+          <div class="mini-nav"><span>☰ CLAEX</span><span>INÍCIO · SALAS · GRADE</span><span>[CRIAR CONTA]</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:8px">
+            <div class="mini-card">
+              <span class="mini-pill">[REGISTRO DE ENTIDADE]</span>
+              <div style="font-weight:900;font-size:16px;margin-top:6px">JUNTE-SE AO <span style="color:#1E3A8A">CLAEX</span></div>
+              <p style="font-size:10px;margin:6px 0 0">Cadastre sua instituição, professor ou estudante.</p>
+            </div>
+            <div class="mini-card">
+              <span class="mini-pill">FORMULÁRIO DE CADASTRO</span>
+              <div class="mini-in">Escola Estadual / Prof. Carlos</div>
+              <div class="mini-in">seuemail@exemplo.com</div>
+              <div class="mini-in">Perfil: ALUNO / PROFESSOR / ADMIN</div>
+              <span class="mini-btn" style="width:100%;text-align:center">CONCLUIR CADASTRO</span>
+            </div>
+          </div>
+          <div class="mini-foot"><b>CLAEX</b><span>CADASTRO MULTIPERFIL</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <script>
+    function setMode(m) {
+      var g = document.getElementById('grid');
+      g.classList.toggle('mode-mobile', m === 'mobile');
+      document.getElementById('btnDesk').classList.toggle('on', m === 'desktop');
+      document.getElementById('btnMob').classList.toggle('on', m === 'mobile');
+    }
+    function setZoom(z) {
+      var s = document.getElementById('stage');
+      s.style.transform = 'scale(' + z + ')';
+      s.style.width = (100 / z) + '%';
+    }
+  </script>
+</body>
+</html>
