@@ -5,7 +5,7 @@ Este diretório contém o aplicativo mobile completo do **CLAEX** em **React Nat
 ## 1. Abrir direto no Expo Snack
 
 - **Link direto (carrega `App.js` do GitHub):**
-  `https://snack.expo.dev/?platform=android&name=CLAEX%20Mobile&sdkVersion=52.0.0&sourceUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fv1n1k4%2F00%2Fmain%2Fmobile-snack%2FApp.js`
+  `https://snack.expo.dev/KA_iu8w-ESerS2bZ9yLYX
 - Ou acesse `https://snack.expo.dev/` e cole o conteúdo de [`mobile-snack/App.js`](App.js).
 
 ## 2. As 9 Telas Incluídas em `App.js`
