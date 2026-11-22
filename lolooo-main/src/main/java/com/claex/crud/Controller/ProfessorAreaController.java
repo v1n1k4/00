@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalTime;
 import java.util.Map;
 
-@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 @RestController
 @RequestMapping("/professor")
 public class ProfessorAreaController {

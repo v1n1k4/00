@@ -1,5 +1,7 @@
 package com.claex.crud.Entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,8 @@ public class ProfessorEntity {
     private String email_professor;
 
     @Column(nullable = false)
+    // WRITE_ONLY: a senha (hash) é aceita na entrada mas NUNCA é devolvida no JSON das APIs
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha_professor;
 
     public ProfessorEntity() {

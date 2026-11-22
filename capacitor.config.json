@@ -1,0 +1,16 @@
+{
+  "appId": "com.claex.app",
+  "appName": "CLAEX",
+  "webDir": "lolooo-main/src/main/resources/static",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#0F172A"
+  }
+}

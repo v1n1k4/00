@@ -7,6 +7,7 @@ import com.claex.crud.Entity.CadastroEntity;
 import com.claex.crud.Entity.ProfessorEntity;
 import com.claex.crud.Repository.CadastroRepository;
 import com.claex.crud.Repository.ProfessorRepository;
+import com.claex.crud.security.PasswordService;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class CadastroService {
 
     @Autowired
     private ProfessorRepository professorRepository;
+
+    @Autowired
+    private PasswordService passwordService;
 
     // LISTAR TODOS
     public List<CadastroEntity> listarTodos() {
@@ -31,6 +35,8 @@ public class CadastroService {
 
     // SALVAR
     public CadastroEntity salvar(CadastroEntity cadastro) {
+        // Senha SEMPRE gravada como hash BCrypt (nunca texto puro)
+        cadastro.setSenha(passwordService.hash(cadastro.getSenha()));
         CadastroEntity salvo = repository.save(cadastro);
         sincronizarProfessor(salvo);
         return salvo;
@@ -51,7 +57,7 @@ public class CadastroService {
     public CadastroEntity atualizar(Long id, CadastroEntity cadastro) {
         CadastroEntity existente = buscarPorId(id);
         existente.setNome(cadastro.getNome());
-        existente.setSenha(cadastro.getSenha());
+        existente.setSenha(passwordService.hash(cadastro.getSenha()));
         existente.setEmail(cadastro.getEmail());
         existente.setTipo(cadastro.getTipo());
         CadastroEntity salvo = repository.save(existente);

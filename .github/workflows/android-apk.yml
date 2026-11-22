@@ -1,0 +1,60 @@
+name: "CLAEX Android App — Gerar APK Nativo (Capacitor + Gradle)"
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-android-apk:
+    name: "Compilar CLAEX-android-debug.apk"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Configurar Java 17 (necessário para o Android Gradle Plugin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar Capacitor e gerar projeto Android nativo
+        run: |
+          npm install
+          npx cap add android
+          npx cap sync android
+
+      - name: Compilar APK com Gradle
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk ../CLAEX-android-debug.apk
+
+      - name: Publicar APK como Artefato no GitHub Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: CLAEX-android-apk
+          path: CLAEX-android-debug.apk
+          retention-days: 30
+
+      - name: Criar Release com o APK quando houver tag (v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: CLAEX-android-debug.apk
+          generate_release_notes: true

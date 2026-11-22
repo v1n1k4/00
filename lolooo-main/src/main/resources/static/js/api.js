@@ -10,6 +10,23 @@
     'use strict';
     let usuarioAtual = null;
 
+    // Escape de HTML contra JavaScript Injection (XSS) ao montar innerHTML
+    function escapeHtml(str) {
+        return String(str == null ? '' : str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // URL base da API: vazia na web (mesma origem -> oculta a topologia interna);
+    // no app Android (Capacitor) pode apontar para o servidor configurado em claex_api_base.
+    function apiUrl(path) {
+        const base = (localStorage.getItem('claex_api_base') || '').replace(/\/+$/, '');
+        return base + path;
+    }
+
     function isAdminRole(tipo) {
         const t = (tipo || '').toLowerCase();
         return t === 'administrador' || t === 'admin' || t === 'escola';
@@ -24,6 +41,8 @@
     }
 
     window.API = {
+        escapeHtml,
+        apiUrl,
         getUsuarioAtual() {
             if (!usuarioAtual) {
                 const salvo = sessionStorage.getItem('claex_user');
@@ -105,7 +124,7 @@
                     const badgeLabel = admin ? 'ADM' : (prof ? 'PROFESSOR' : 'ALUNO');
                     headerActions.innerHTML = `
                         <span style="font-size: 0.82rem; color: var(--neon-lime); font-family: var(--font-mono); margin-right: 6px;">
-                            ${user.nome} [${badgeLabel}]
+                            ${escapeHtml(user.nome)} [${badgeLabel}]
                         </span>
                         ${(prof || admin) ? '<a href="painel_professor.html" class="btn-ghost" style="padding: 8px 14px; font-size: 0.82rem;">Minhas Infos</a>' : ''}
                         <button id="btn-sair-header" type="button" class="btn-ghost" style="color: #ff6666; border-color: rgba(255,59,48,0.3); cursor: pointer; padding: 8px 14px; font-size: 0.82rem;">Sair</button>
@@ -149,36 +168,54 @@
         // Endpoints de Cadastros e Autenticação
         cadastros: {
             async salvar(nome, email, senha, tipo) {
-                const params = new URLSearchParams({ nome, email, senha, tipo });
-                const response = await fetch(`/form_cadastro-html/salvar?${params.toString()}`, { method: 'POST' });
+                const body = new URLSearchParams({ nome, email, senha, tipo });
+                const response = await fetch(apiUrl('/form_cadastro-html/salvar'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                    body
+                });
                 const text = await response.text();
                 return { ok: response.ok, msg: text, status: response.status };
             },
             async listar() {
-                const response = await fetch('/form_cadastro-html/listar');
+                const response = await fetch(apiUrl('/form_cadastro-html/listar'));
                 if (!response.ok) throw new Error('Erro ao listar cadastros');
                 return await response.json();
             },
             async atualizar(id, nome, senha, tipo) {
-                const params = new URLSearchParams({ nome, senha, tipo });
-                const response = await fetch(`/form_cadastro-html/atualizar/${id}?${params.toString()}`, { method: 'PUT' });
-                return { ok: response.ok, status: response.status };
+                const body = new URLSearchParams({ nome, senha, tipo });
+                const response = await fetch(apiUrl(`/form_cadastro-html/atualizar/${encodeURIComponent(id)}`), {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                    body
+                });
+                const text = await response.text();
+                return { ok: response.ok, status: response.status, msg: text };
             },
             async deletar(id) {
-                const response = await fetch(`/form_cadastro-html/deletar/${id}`, { method: 'DELETE' });
+                const response = await fetch(apiUrl(`/form_cadastro-html/deletar/${id}`), { method: 'DELETE' });
                 return { ok: response.ok, status: response.status };
             }
         },
 
         async login(login, senha) {
-            const params = new URLSearchParams({ login, senha });
-            const response = await fetch(`/login/entrar?${params.toString()}`, { method: 'POST' });
+            const body = new URLSearchParams({ login, senha });
+            const response = await fetch(apiUrl('/login/entrar'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                body
+            });
             let data = {};
             try { data = await response.json(); } catch (e) {}
             if (response.ok) {
                 window.API.setUsuarioAtual(data);
             }
-            return { ok: response.ok, status: response.status, data: data };
+            return {
+                ok: response.ok,
+                status: response.status,
+                retryAfter: Number(response.headers.get('Retry-After') || data.retryAfter || 0),
+                data: data
+            };
         },
 
         // Endpoints da Área do Professor (Disponibilidade e Matérias próprias)
@@ -186,14 +223,14 @@
             async listarDisponibilidade() {
                 const user = window.API.getUsuarioAtual();
                 const idProf = user && user.id ? `?idProfessor=${user.id}` : '';
-                const res = await fetch(`/professor/disponibilidade${idProf}`);
+                const res = await fetch(apiUrl(`/professor/disponibilidade${idProf}`));
                 if (!res.ok) throw new Error(await res.text());
                 return await res.json();
             },
             async salvarDisponibilidade(payload) {
                 const user = window.API.getUsuarioAtual();
                 const body = Object.assign({}, payload, { idProfessor: user ? user.id : null });
-                const res = await fetch('/professor/disponibilidade', {
+                const res = await fetch(apiUrl('/professor/disponibilidade'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
@@ -204,20 +241,20 @@
             async deletarDisponibilidade(id) {
                 const user = window.API.getUsuarioAtual();
                 const idProf = user && user.id ? `?idProfessor=${user.id}` : '';
-                const res = await fetch(`/professor/disponibilidade/${id}${idProf}`, { method: 'DELETE' });
+                const res = await fetch(apiUrl(`/professor/disponibilidade/${id}${idProf}`), { method: 'DELETE' });
                 return { ok: res.ok };
             },
             async listarMaterias() {
                 const user = window.API.getUsuarioAtual();
                 const idProf = user && user.id ? `?idProfessor=${user.id}` : '';
-                const res = await fetch(`/professor/materias${idProf}`);
+                const res = await fetch(apiUrl(`/professor/materias${idProf}`));
                 if (!res.ok) throw new Error(await res.text());
                 return await res.json();
             },
             async vincularMateria(payload) {
                 const user = window.API.getUsuarioAtual();
                 const body = Object.assign({}, payload, { idProfessor: user ? user.id : null });
-                const res = await fetch('/professor/materias', {
+                const res = await fetch(apiUrl('/professor/materias'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
@@ -228,7 +265,7 @@
             async desvincularMateria(id) {
                 const user = window.API.getUsuarioAtual();
                 const idProf = user && user.id ? `?idProfessor=${user.id}` : '';
-                const res = await fetch(`/professor/materias/${id}${idProf}`, { method: 'DELETE' });
+                const res = await fetch(apiUrl(`/professor/materias/${id}${idProf}`), { method: 'DELETE' });
                 return { ok: res.ok };
             }
         },
@@ -236,17 +273,17 @@
         // Endpoints de Salas
         salas: {
             async listar() {
-                const response = await fetch('/salas/listar');
+                const response = await fetch(apiUrl('/salas/listar'));
                 if (!response.ok) throw new Error('Erro ao listar salas');
                 return await response.json();
             },
             async buscarPorId(id) {
-                const response = await fetch(`/salas/${id}`);
+                const response = await fetch(apiUrl(`/salas/${id}`));
                 if (!response.ok) throw new Error('Sala não encontrada');
                 return await response.json();
             },
             async salvar(sala) {
-                const response = await fetch('/salas/salvar', {
+                const response = await fetch(apiUrl('/salas/salvar'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(sala)
@@ -255,7 +292,7 @@
                 return await response.json();
             },
             async atualizar(id, sala) {
-                const response = await fetch(`/salas/${id}`, {
+                const response = await fetch(apiUrl(`/salas/${id}`), {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(sala)
@@ -264,7 +301,7 @@
                 return await response.json();
             },
             async deletar(id) {
-                const response = await fetch(`/salas/${id}`, { method: 'DELETE' });
+                const response = await fetch(apiUrl(`/salas/${id}`), { method: 'DELETE' });
                 return { ok: response.ok };
             }
         },
@@ -272,7 +309,7 @@
         // Endpoints de Matérias
         materias: {
             async listar() {
-                const response = await fetch('/materias/listar');
+                const response = await fetch(apiUrl('/materias/listar'));
                 if (!response.ok) return [];
                 return await response.json();
             }
@@ -281,7 +318,7 @@
         // Endpoints de Professores
         professores: {
             async listar() {
-                const response = await fetch('/professores/listar');
+                const response = await fetch(apiUrl('/professores/listar'));
                 if (!response.ok) return [];
                 return await response.json();
             }
@@ -290,13 +327,13 @@
         // Endpoints de Grade Horária, Otimizador Memético NSGA-II + SA e Orquestrador Multi-Modelo IA
         grade: {
             async buscar(idSala) {
-                const response = await fetch(`/grade/buscar/${idSala}`);
+                const response = await fetch(apiUrl(`/grade/buscar/${idSala}`));
                 if (!response.ok) throw new Error('Grade não encontrada');
                 return await response.json();
             },
             async gerar(idSala, materiasPayload, estrategia = 'memetico-sa') {
                 const params = new URLSearchParams({ estrategia });
-                const response = await fetch(`/grade/gerargrade/${idSala}?${params.toString()}`, {
+                const response = await fetch(apiUrl(`/grade/gerargrade/${idSala}?${params.toString()}`), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(materiasPayload)
@@ -304,23 +341,23 @@
                 return { ok: response.ok };
             },
             async listarModelosIa() {
-                const response = await fetch('/grade/ia/modelos');
+                const response = await fetch(apiUrl('/grade/ia/modelos'));
                 if (!response.ok) return [];
                 return await response.json();
             },
             async analisarComIa(idSala, modelo = 'gemini-2.5-pro') {
                 const params = new URLSearchParams({ modelo });
-                const response = await fetch(`/grade/ia/analisar/${idSala}?${params.toString()}`);
+                const response = await fetch(apiUrl(`/grade/ia/analisar/${idSala}?${params.toString()}`));
                 if (!response.ok) throw new Error('Erro ao analisar grade com IA');
                 return await response.json();
             },
             async listarRegrasIa(idSala) {
-                const response = await fetch(`/grade/ia/regras/${idSala}`);
+                const response = await fetch(apiUrl(`/grade/ia/regras/${idSala}`));
                 if (!response.ok) return [];
                 return await response.json();
             },
             async ensinarRegraIa(idSala, payload) {
-                const response = await fetch(`/grade/ia/aprender/${idSala}`, {
+                const response = await fetch(apiUrl(`/grade/ia/aprender/${idSala}`), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -329,7 +366,7 @@
                 return await response.json();
             },
             async removerRegraIa(idRegra) {
-                const response = await fetch(`/grade/ia/regras/${idRegra}`, { method: 'DELETE' });
+                const response = await fetch(apiUrl(`/grade/ia/regras/${idRegra}`), { method: 'DELETE' });
                 return { ok: response.ok };
             }
         }
@@ -348,5 +385,11 @@
         document.addEventListener('DOMContentLoaded', () => window.API.aplicarPermissoesUI());
     } else {
         window.API.aplicarPermissoesUI();
+    }
+
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
     }
 })();

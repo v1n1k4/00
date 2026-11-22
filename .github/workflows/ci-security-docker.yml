@@ -1,0 +1,54 @@
+name: "CLAEX CI — Segurança, Back-End Java & Docker"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  security-and-docker:
+    name: "Auditoria SQLi / XSS / Rate Limit + Build Java & Docker"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Verificar que nenhum arquivo .env ou chave privada foi commitado
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$|(^|/)\.env\.(local|prod)|\.keystore$|\.jks$'; then
+            echo "ERRO: Arquivo de segredo (.env / keystore) encontrado no repositório!"
+            exit 1
+          fi
+          echo "OK: Nenhum arquivo .env ou keystore rastreado pelo Git."
+
+      - name: Configurar Python 3.12 e testar camadas de segurança (SQLi, XSS, 429 Rate Limit)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Executar suíte de segurança contra a API
+        working-directory: backend_python
+        run: |
+          pip install -r requirements.txt
+          uvicorn main:app --host 127.0.0.1 --port 8081 &
+          SERVER_PID=$!
+          sleep 3
+          python3 security_test.py
+          kill $SERVER_PID || true
+
+      - name: Configurar Java 17 (Eclipse Temurin) e compilar Back-End Spring Boot
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "maven"
+
+      - name: Compilar pacote Java Spring Boot (lolooo-main)
+        working-directory: lolooo-main
+        run: mvn -B -DskipTests package
+
+      - name: Validar build da imagem Docker principal
+        run: docker build -t claex-app:ci .

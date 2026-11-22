@@ -1,0 +1,42 @@
+# ============================================================================
+# .dockerignore — Arquivos que NÃO entram no contexto de build do Docker
+# ============================================================================
+# Por que existe?
+#   1. Segurança: impede que arquivos sensíveis (.env, chaves, bancos locais)
+#      sejam copiados acidentalmente para dentro da imagem Docker.
+#   2. Velocidade: evita enviar pastas pesadas (.git, node_modules, target,
+#      vídeos) para o daemon do Docker a cada "docker build".
+# ============================================================================
+
+.git
+.github
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+*.jks
+*.p12
+
+# Artefatos locais de build e dependências
+node_modules
+lolooo-main/target
+backend_python/__pycache__
+backend_python/.venv
+.venv
+venv
+
+# Bancos de dados locais (o container cria/monta seu próprio volume)
+data
+lolooo-main/data
+backend_python/data
+*.db
+*.sqlite
+*.sqlite3
+
+# Arquivos pesados de documentação/mídia que o servidor não precisa em runtime
+*.zip
+docs/*.mp4
+obsidian-vault
+android

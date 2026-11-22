@@ -475,7 +475,8 @@ public class GeminiScheduleAdvisorService {
         if (!geminiKey.isEmpty()) {
             String geminiModel = modelId.startsWith("gemini") ? modelId : DEFAULT_MODEL;
             try {
-                String url = String.format(GEMINI_GENERATE_URL, geminiModel) + "?key=" + geminiKey;
+                // A chave vai no header x-goog-api-key (e NÃO na URL ?key=...), assim não aparece em logs de proxy/servidor
+                String url = String.format(GEMINI_GENERATE_URL, geminiModel);
                 String jsonPayload = "{\"contents\":[{\"parts\":[{\"text\":\"" + escapeJson(prompt) + "\"}]}]," +
                         "\"generationConfig\":{\"temperature\":0.35,\"maxOutputTokens\":700}}";
 
@@ -483,6 +484,7 @@ public class GeminiScheduleAdvisorService {
                         .uri(URI.create(url))
                         .timeout(Duration.ofSeconds(25))
                         .header("Content-Type", "application/json")
+                        .header("x-goog-api-key", geminiKey)
                         .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                         .build();
 

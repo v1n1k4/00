@@ -84,6 +84,13 @@
             color: var(--text-primary);
         }
     </style>
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLAEX">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 <body>
     <header id="main-header">
@@ -273,11 +280,11 @@
                 }
                 tbody.innerHTML = lista.map(item => `
                     <tr>
-                        <td><strong>${item.diaSemana}</strong></td>
+                        <td><strong>${window.API.escapeHtml(item.diaSemana)}</strong></td>
                         <td style="font-family: var(--font-mono); color: var(--accent-ink); font-weight: 600;">${(item.horarioInicial || '').substring(0,5)}</td>
                         <td style="font-family: var(--font-mono); color: var(--accent-ink); font-weight: 600;">${(item.horarioFinal || '').substring(0,5)}</td>
-                        <td>${item.modalidade || 'Presencial'}</td>
-                        <td style="color: var(--text-secondary);">${item.observacao || '—'}</td>
+                        <td>${window.API.escapeHtml(item.modalidade || 'Presencial')}</td>
+                        <td style="color: var(--text-secondary);">${window.API.escapeHtml(item.observacao || '—')}</td>
                         <td style="text-align: right;">
                             <button type="button" class="btn-ghost" style="color: var(--status-danger); border-color: rgba(220,38,38,0.3); padding: 6px 12px; font-size: 0.78rem;" onclick="deletarDisponibilidade(${item.id})">Remover</button>
                         </td>
@@ -344,8 +351,8 @@
                         <article class="spotlight-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
                             <div>
                                 <div class="telemetry-tag" style="margin-bottom: 6px;">DISCIPLINA VINCULADA</div>
-                                <h3 style="font-size: 1.25rem;">${nomeMat}</h3>
-                                <p style="font-size: 0.85rem; margin-top: 6px;">Nível: <strong>${mp.nivelEnsino || 'Médio'}</strong> • Experiência: <strong>${mp.experiencia || '—'}</strong></p>
+                                <h3 style="font-size: 1.25rem;">${window.API.escapeHtml(nomeMat)}</h3>
+                                <p style="font-size: 0.85rem; margin-top: 6px;">Nível: <strong>${window.API.escapeHtml(mp.nivelEnsino || 'Médio')}</strong> • Experiência: <strong>${window.API.escapeHtml(mp.experiencia || '—')}</strong></p>
                             </div>
                             <button type="button" class="btn-ghost" style="color: var(--status-danger); border-color: rgba(220,38,38,0.3); font-size: 0.78rem; padding: 6px 12px; align-self: flex-start;" onclick="desvincularMateria(${mp.id})">Desvincular</button>
                         </article>
@@ -412,7 +419,7 @@
                                 <span class="telemetry-tag" style="margin: 0; font-size: 0.65rem;">SALA #${s.id_sala}</span>
                                 <span style="color: var(--accent-ink); font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700;">VER GRADE →</span>
                             </div>
-                            <p>${s.nome_sala}</p>
+                            <p>${window.API.escapeHtml(s.nome_sala)}</p>
                             <div style="margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
                                 ${s.quant_aula || 6} aulas/dia • ${s.duracao_aula || 50}min
                             </div>

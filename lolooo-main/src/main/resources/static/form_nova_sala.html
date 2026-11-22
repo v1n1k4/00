@@ -53,6 +53,13 @@
             border-color: #111112;
         }
     </style>
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLAEX">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 <body>
     <header id="main-header">
@@ -207,11 +214,11 @@
 
                 if (escolas.length > 0) {
                     escolas.forEach(e => {
-                        selectEscola.innerHTML += `<option value="${e.id}">${e.nome}</option>`;
+                        selectEscola.innerHTML += `<option value="${window.API.escapeHtml(e.id)}">${window.API.escapeHtml(e.nome)}</option>`;
                     });
                 } else if (cadastros.length > 0) {
                     cadastros.forEach(c => {
-                        selectEscola.innerHTML += `<option value="${c.id}">${c.nome} (${c.tipo})</option>`;
+                        selectEscola.innerHTML += `<option value="${window.API.escapeHtml(c.id)}">${window.API.escapeHtml(c.nome)} (${window.API.escapeHtml(c.tipo)})</option>`;
                     });
                 } else {
                     selectEscola.innerHTML = `<option value="1">Escola Padrão (ID 1)</option>`;

@@ -1,0 +1,124 @@
+# ============================================================================
+# docker-compose.yml — Orquestração Completa do CLAEX (App + Banco + Volumes)
+# ============================================================================
+# Como subir tudo com 1 comando:
+#   cp .env.example .env
+#   docker compose up --build -d
+#
+# Para subir também o motor Java 17 Spring Boot + MySQL 8:
+#   docker compose --profile java up --build -d
+#
+# Conceitos importantes para estudo:
+#   - env_file / environment: injeta as chaves de API (GEMINI_API_KEY, etc.) e
+#     senhas do banco a partir do arquivo .env local, sem gravar segredos na imagem.
+#   - networks (claex_internal): cria uma rede virtual isolada; o MySQL não
+#     precisa ficar exposto para a internet, apenas para os containers do CLAEX.
+#   - volumes (claex_data, mysql_data): garante que os cadastros, salas e grades
+#     continuem salvos mesmo se o container for removido ou atualizado.
+#   - security_opt (no-new-privileges:true): impede escalonamento de privilégio
+#     dentro do container.
+# ============================================================================
+
+services:
+  # --------------------------------------------------------------------------
+  # 1. Serviço Principal: CLAEX Web + API (FastAPI + SQLAlchemy + PWA Android)
+  # --------------------------------------------------------------------------
+  claex-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: claex-app
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8081}:8081"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - PORT=8081
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./data/claex_db.sqlite}
+      - SECRET_KEY=${SECRET_KEY:-}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8081,https://localhost,capacitor://localhost}
+      - LOGIN_MAX_ATTEMPTS=${LOGIN_MAX_ATTEMPTS:-5}
+      - LOGIN_MAX_ATTEMPTS_IP=${LOGIN_MAX_ATTEMPTS_IP:-20}
+      - LOGIN_WINDOW_MINUTES=${LOGIN_WINDOW_MINUTES:-15}
+      - LOGIN_LOCK_MINUTES=${LOGIN_LOCK_MINUTES:-15}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    volumes:
+      - claex_data:/app/data
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - claex_internal
+
+  # --------------------------------------------------------------------------
+  # 2. Banco de Dados Relacional MySQL 8 (ativado com --profile java)
+  # --------------------------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: claex-mysql
+    profiles: ["java"]
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-crud_clientes}
+      MYSQL_USER: ${DB_USERNAME:-claex_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-claex_local_pass}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-claex_root_local_pass}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - claex_internal
+
+  # --------------------------------------------------------------------------
+  # 3. Back-End Java 17 Spring Boot (Dev #01 Vini) — ativado com --profile java
+  # --------------------------------------------------------------------------
+  claex-java:
+    build:
+      context: ./lolooo-main
+      dockerfile: Dockerfile
+    container_name: claex-java
+    profiles: ["java"]
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8082:8081"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - PORT=8081
+      - DB_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-crud_clientes}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - DB_USERNAME=${DB_USERNAME:-claex_user}
+      - DB_PASSWORD=${DB_PASSWORD:-claex_local_pass}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8081,http://localhost:8082,https://localhost,capacitor://localhost}
+      - LOGIN_MAX_ATTEMPTS=${LOGIN_MAX_ATTEMPTS:-5}
+      - LOGIN_LOCK_MINUTES=${LOGIN_LOCK_MINUTES:-15}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    volumes:
+      - claex_java_data:/app/data
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - claex_internal
+
+volumes:
+  claex_data:
+  claex_java_data:
+  mysql_data:
+
+networks:
+  claex_internal:
+    driver: bridge

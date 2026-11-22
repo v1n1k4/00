@@ -33,6 +33,13 @@
         }
         .shake { animation: shake 0.35s ease; }
     </style>
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLAEX">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 <body>
     <header id="main-header">
@@ -162,10 +169,16 @@
                     } else {
                         window.location.href = "listar_sala.html";
                     }
-                } else if (result.status === 404) {
-                    mostrarErro(result.data.erro || "Usuário não encontrado no banco de dados!");
-                } else if (result.status === 401) {
-                    mostrarErro(result.data.erro || "Senha incorreta!");
+                } else if (result.status === 429) {
+                    const seg = result.retryAfter || 900;
+                    const min = Math.max(1, Math.ceil(seg / 60));
+                    mostrarErro((result.data && result.data.erro) || `Muitas tentativas de login. Aguarde ${min} min antes de tentar novamente.`);
+                } else if (result.status === 401 || result.status === 404) {
+                    const rest = (result.data && typeof result.data.tentativasRestantes === 'number')
+                        ? ` (${result.data.tentativasRestantes} tentativa(s) restante(s) antes do bloqueio)` : '';
+                    mostrarErro(((result.data && result.data.erro) || "Usuário ou senha inválidos.") + rest);
+                } else if (result.status === 400) {
+                    mostrarErro((result.data && result.data.erro) || "Entrada inválida ou bloqueada pela camada de segurança.");
                 } else {
                     mostrarErro("Erro inesperado ao validar credenciais.");
                 }

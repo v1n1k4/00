@@ -1,0 +1,41 @@
+{
+  "name": "CLAEX — Sistema Institucional de Grades Horárias",
+  "short_name": "CLAEX",
+  "description": "Plataforma de gestão acadêmica e geração inteligente de grades horárias (Otimizador Memético NSGA-II + IA).",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0F172A",
+  "theme_color": "#0F172A",
+  "lang": "pt-BR",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Salas e Grades",
+      "short_name": "Salas",
+      "url": "./listar_sala.html",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Área do Professor",
+      "short_name": "Professor",
+      "url": "./painel_professor.html",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import com.claex.crud.Entity.ProfessorEntity;
 import com.claex.crud.Repository.CadastroRepository;
 import com.claex.crud.Repository.MateriaRepository;
 import com.claex.crud.Repository.ProfessorRepository;
+import com.claex.crud.security.PasswordService;
 
 @Component
 public class DataSeeder implements CommandLineRunner {
@@ -24,6 +25,15 @@ public class DataSeeder implements CommandLineRunner {
 
     @Autowired
     private ProfessorRepository professorRepository;
+
+    @Autowired
+    private PasswordService passwordService;
+
+    /** Senha inicial das contas de demonstração: vem da variável de ambiente, nunca fixa no código em produção. */
+    private String senhaSeed() {
+        String env = System.getenv("CLAEX_SEED_PASSWORD");
+        return passwordService.hash(env != null && !env.isBlank() ? env : "1234");
+    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -47,7 +57,7 @@ public class DataSeeder implements CommandLineRunner {
             CadastroEntity adm = new CadastroEntity();
             adm.setNome("Administrador CLAEX");
             adm.setEmail("admin@claex.com");
-            adm.setSenha("1234");
+            adm.setSenha(senhaSeed());
             adm.setTipo("administrador");
             cadastroRepository.save(adm);
         }
@@ -66,7 +76,7 @@ public class DataSeeder implements CommandLineRunner {
                 CadastroEntity c = new CadastroEntity();
                 c.setNome(pData[0]);
                 c.setEmail(pData[1]);
-                c.setSenha("1234");
+                c.setSenha(senhaSeed());
                 c.setTipo("professor");
                 cadastroRepository.save(c);
             }

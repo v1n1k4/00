@@ -314,3 +314,30 @@ header .header-actions span { color: var(--ink) !important; font-family: var(--f
 .cx-member .telemetry-tag { align-self: flex-start; }
 .cx-mono, .cx-stepnum b, .cx-ex-conf, .cx-ex-q, .cx-metric, .brand-logo { font-weight: 900; }
 .editorial-serif-em { color: var(--blue) !important; }
+
+
+/* ============================================================================
+   ANDROID & MOBILE PORTABILITY (PWA / Capacitor WebView / Touch ergonomics)
+   ============================================================================ */
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+body {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    overscroll-behavior-y: none;
+}
+@media (max-width: 768px) {
+    input, select, textarea, button, .btn-neon, .btn-ghost, .submit {
+        min-height: 44px;
+        font-size: 16px !important; /* evita auto-zoom forçado no Android/iOS ao focar inputs */
+    }
+    .table-wrap, .grade-container, .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

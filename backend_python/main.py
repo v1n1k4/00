@@ -24,6 +24,9 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Time, create_engine, func
 from sqlalchemy.orm import Session, declarative_base, relationship, sessionmaker
 from starlette.middleware.sessions import SessionMiddleware
+from urllib.parse import parse_qsl
+
+import security as sec
 
 # ----------------------------------------------------------------- banco
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/claex_db.sqlite")
@@ -194,7 +197,8 @@ def t(v: Optional[time]):
 def s_cadastro(c: Optional[Cadastro]):
     if not c:
         return None
-    return {"id": c.id, "nome": c.nome, "email": c.email, "senha": c.senha, "tipo": c.tipo}
+    # a senha (hash) NUNCA é devolvida pela API
+    return {"id": c.id, "nome": c.nome, "email": c.email, "tipo": c.tipo}
 
 
 def s_professor(p: Optional[Professor]):
@@ -204,7 +208,6 @@ def s_professor(p: Optional[Professor]):
         "id_professor": p.id_professor,
         "nome_professor": p.nome_professor,
         "email_professor": p.email_professor,
-        "senha_professor": p.senha_professor,
     }
 
 
@@ -342,7 +345,7 @@ def seed():
                 Cadastro(
                     nome="Administrador CLAEX",
                     email="admin@claex.com",
-                    senha="1234",
+                    senha=sec.hash_senha(os.getenv("CLAEX_SEED_PASSWORD", "1234")),
                     tipo="administrador",
                 )
             )
@@ -357,7 +360,7 @@ def seed():
         ]
         for nome_p, email_p in profs_padrao:
             if not db.query(Cadastro).filter_by(email=email_p).first():
-                db.add(Cadastro(nome=nome_p, email=email_p, senha="1234", tipo="professor"))
+                db.add(Cadastro(nome=nome_p, email=email_p, senha=sec.hash_senha(os.getenv("CLAEX_SEED_PASSWORD", "1234")), tipo="professor"))
         db.commit()
 
         for c in db.query(Cadastro).all():
@@ -833,14 +836,40 @@ def grades_da_escola(db: Session, sala: Sala):
 
 # ----------------------------------------------------------------- app
 app = FastAPI(title="CLAEX v10")
-app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "claex-dev-secret"))
+# SECRET_KEY vem do ambiente; sem ela, gera uma chave aleatória a cada execução (nunca fixa no código)
+SECRET_KEY = os.getenv("SECRET_KEY") or sec.secrets.token_urlsafe(48)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SECRET_KEY,
+    https_only=os.getenv("COOKIE_SECURE", "false").lower() == "true",
+    same_site="lax",
+)
+ALLOWED_ORIGINS = [
+    o.strip()
+    for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:8081,https://localhost,capacitor://localhost").split(",")
+    if o.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=".*",
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
+    allow_headers=["Content-Type", "X-Requested-With"],
+    expose_headers=["Retry-After"],
 )
+# Último adicionado = primeiro a executar: inspeção SQLi/XSS + headers de segurança
+app.add_middleware(sec.SecurityMiddleware)
+limiter = sec.LoginAttemptLimiter()
+
+
+async def ler_parametros(request: Request) -> dict:
+    """Aceita parâmetros tanto na query string (legado) quanto no corpo
+    application/x-www-form-urlencoded (novo — senhas não vão mais na URL)."""
+    dados = dict(request.query_params)
+    if "application/x-www-form-urlencoded" in request.headers.get("content-type", ""):
+        corpo = (await request.body()).decode("utf-8", errors="ignore")
+        dados.update(dict(parse_qsl(corpo, keep_blank_values=True)))
+    return dados
 
 
 @app.on_event("startup")
@@ -855,18 +884,39 @@ def erro(status: int, msg: str):
 
 # ---- cadastro
 @app.post("/form_cadastro-html/salvar")
-def cad_salvar(nome: str, email: str, senha: str, tipo: str = "aluno", db: Session = Depends(get_db)):
+async def cad_salvar(request: Request, db: Session = Depends(get_db)):
+    p = await ler_parametros(request)
+    nome, email, senha = p.get("nome", "").strip(), p.get("email", "").strip().lower(), p.get("senha", "")
+    tipo = (p.get("tipo") or "aluno").lower()
+    ip = sec.client_ip(request)
+    espera = limiter.segundos_bloqueado(ip, "__cadastro__")
+    if espera:
+        return PlainTextResponse("Muitas tentativas de cadastro. Aguarde alguns minutos.",
+                                 status_code=429, headers={"Retry-After": str(espera)})
+    problema = None
+    if not sec.NOME_VALIDO.match(nome):
+        problema = "Nome inválido (use apenas letras, números e espaços, 2 a 120 caracteres)."
+    elif len(email) > 180 or not sec.EMAIL_VALIDO.match(email):
+        problema = "E-mail inválido."
+    elif tipo not in sec.TIPOS_VALIDOS:
+        problema = "Tipo de perfil inválido."
+    else:
+        problema = sec.validar_forca(senha)
+    if problema:
+        limiter.registrar_falha(ip, "__cadastro__")
+        return erro(400, f"Erro: {problema}")
+    # ORM -> SQL parametrizado (filter_by gera "WHERE email = ?")
     if db.query(Cadastro).filter_by(email=email).first():
         return erro(400, "Erro: O e-mail informado já está cadastrado!")
     try:
-        c = Cadastro(nome=nome, email=email, senha=senha, tipo=tipo)
+        c = Cadastro(nome=nome, email=email, senha=sec.hash_senha(senha), tipo=tipo)
         db.add(c)
         db.commit()
         sincronizar_professor(db, c)
         return PlainTextResponse("Cadastro realizado com sucesso!")
-    except Exception as e:
+    except Exception:
         db.rollback()
-        return erro(500, f"Erro interno no servidor: {e}")
+        return erro(500, "Erro interno no servidor.")
 
 
 @app.get("/form_cadastro-html/listar")
@@ -875,20 +925,23 @@ def cad_listar(db: Session = Depends(get_db)):
 
 
 @app.put("/form_cadastro-html/atualizar/{id}")
-def cad_atualizar(
-    id: int,
-    nome: Optional[str] = None,
-    senha: Optional[str] = None,
-    tipo: str = "aluno",
-    db: Session = Depends(get_db),
-):
+async def cad_atualizar(id: int, request: Request, db: Session = Depends(get_db)):
+    p = await ler_parametros(request)
+    nome, senha, tipo = p.get("nome"), p.get("senha"), (p.get("tipo") or "aluno").lower()
     c = db.get(Cadastro, id)
     if not c:
         return erro(400, "Erro ao atualizar cadastro: Cadastro não encontrado")
+    if nome is not None and not sec.NOME_VALIDO.match(nome.strip()):
+        return erro(400, "Erro: Nome inválido.")
+    if tipo not in sec.TIPOS_VALIDOS:
+        return erro(400, "Erro: Tipo de perfil inválido.")
+    if senha:
+        problema = sec.validar_forca(senha)
+        if problema:
+            return erro(400, f"Erro: {problema}")
+        c.senha = sec.hash_senha(senha)
     if nome is not None:
-        c.nome = nome
-    if senha is not None:
-        c.senha = senha
+        c.nome = nome.strip()
     c.tipo = tipo
     db.commit()
     sincronizar_professor(db, c)
@@ -910,13 +963,39 @@ def cad_deletar(id: int, db: Session = Depends(get_db)):
 
 
 # ---- login
+CREDENCIAIS_INVALIDAS = "Usuário ou senha inválidos."
+
+
 @app.post("/login/entrar")
-def login(login: str, senha: str, request: Request, db: Session = Depends(get_db)):
+async def login(request: Request, db: Session = Depends(get_db)):
+    p = await ler_parametros(request)
+    login, senha = (p.get("login") or "").strip(), p.get("senha") or ""
+    ip = sec.client_ip(request)
+
+    # 1) bloqueado por excesso de tentativas -> 429
+    espera = limiter.segundos_bloqueado(ip, login)
+    if espera:
+        return JSONResponse(
+            {"erro": f"Muitas tentativas de login. Tente novamente em {max(1, espera // 60)} min.",
+             "retryAfter": espera},
+            status_code=429, headers={"Retry-After": str(espera)},
+        )
+    if not login or len(login) > 120 or not senha or len(senha) > 72:
+        return JSONResponse({"erro": CREDENCIAIS_INVALIDAS}, status_code=400)
+
+    # 2) consulta parametrizada via ORM
     u = db.query(Cadastro).filter_by(nome=login).first() or db.query(Cadastro).filter_by(email=login).first()
-    if not u:
-        return JSONResponse({"erro": "Usuário não cadastrado!"}, status_code=404)
-    if u.senha != senha:
-        return JSONResponse({"erro": "Senha incorreta!"}, status_code=401)
+    if not u or not sec.verificar_senha(senha, u.senha):
+        restantes = limiter.registrar_falha(ip, login)
+        return JSONResponse({"erro": CREDENCIAIS_INVALIDAS, "tentativasRestantes": restantes}, status_code=401)
+
+    limiter.registrar_sucesso(ip, login)
+    # 3) migração transparente texto puro -> PBKDF2
+    if not sec.is_hash(u.senha):
+        u.senha = sec.hash_senha(senha)
+        db.commit()
+        sincronizar_professor(db, u)
+    request.session.clear()  # evita session fixation
     request.session["usuarioLogado"] = u.id
     return {
         "mensagem": "Login realizado com sucesso!",

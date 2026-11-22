@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="css/minimal.css">
     <link rel="stylesheet" href="css/brutalist.css">
     <script src="https://cdn.jsdelivr.net/npm/motion@11.15.0/dist/motion.js"></script>
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLAEX">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 <body>
     <header id="main-header">
@@ -149,7 +156,8 @@
                     document.getElementById("sala-count").textContent = salas.length;
 
                     salas.forEach((sala) => {
-                        const escolaNome = (sala.escola && sala.escola.nome) ? sala.escola.nome : "Instituição";
+                        const esc = window.API.escapeHtml;
+                        const escolaNome = esc((sala.escola && sala.escola.nome) ? sala.escola.nome : "Instituição");
                         sect.innerHTML += `
                             <a href="grade.html?id=${sala.id_sala}" style="text-decoration: none;">
                                 <article class="caixa_sala spotlight-card">
@@ -157,7 +165,7 @@
                                         <span class="telemetry-tag" style="margin: 0; font-size: 0.65rem;">SALA #${sala.id_sala}</span>
                                         <span style="color: var(--accent-ink); font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700;">VER GRADE →</span>
                                     </div>
-                                    <p>${sala.nome_sala}</p>
+                                    <p>${esc(sala.nome_sala)}</p>
                                     <div style="margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
                                         ${sala.quant_aula || 6} aulas/dia • ${sala.duracao_aula || 50}min • ${escolaNome}
                                     </div>
@@ -179,7 +187,7 @@
                 sect.innerHTML = `
                     <div class="error-banner" style="grid-column: 1 / -1; text-align: center; padding: 36px;">
                         <p style="font-weight: 700; margin-bottom: 6px; color: inherit;">Falha de comunicação com o banco de dados.</p>
-                        <small style="font-family: var(--font-mono);">${error.message}</small>
+                        <small style="font-family: var(--font-mono);">${window.API.escapeHtml(error.message)}</small>
                     </div>
                 `;
             }

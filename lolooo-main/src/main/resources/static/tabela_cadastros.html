@@ -79,6 +79,13 @@
     .toast.show { opacity: 1; }
     .toast.erro  { border-color: var(--status-danger); color: #FCA5A5; }
   </style>
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLAEX">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 <body>
 
@@ -259,24 +266,29 @@
           tabela.innerHTML = `<tr><td colspan="6"><div class="empty-state">Nenhum cadastro encontrado no banco de dados.</div></td></tr>`;
           return;
         }
+        const esc = window.API.escapeHtml;
         tabela.innerHTML = dados.map(c => {
-          const idStr = String(c.id);
+          const idStr = esc(c.id);
+          const nomeEsc = esc(c.nome || '');
+          const emailEsc = esc(c.email || '');
+          const tipoEsc = esc(c.tipo || 'aluno');
           return `
           <tr>
             <td class="id-cell">#${idStr}</td>
-            <td><strong>${c.nome || ''}</strong></td>
-            <td style="color: var(--text-secondary);">${c.email || ''}</td>
-            <td><span class="badge ${badgeClass(c.tipo)}">${c.tipo || 'aluno'}</span></td>
+            <td><strong>${nomeEsc}</strong></td>
+            <td style="color: var(--text-secondary);">${emailEsc}</td>
+            <td><span class="badge ${badgeClass(c.tipo)}">${tipoEsc}</span></td>
             <td>
-              <span class="senha-oculta" id="senha-${idStr}" style="font-family: var(--font-mono); font-size: 0.85rem;">••••••••</span>
-              <button type="button" class="btn-action" style="color: var(--text-secondary); font-size: 12px;" onclick="toggleVerSenha('${idStr}','${c.senha || ''}')" title="Revelar senha">Ver</button>
+              <span class="senha-oculta" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);" title="A senha é armazenada apenas como hash criptográfico e nunca trafega na API">Protegida (Hash)</span>
             </td>
             <td style="text-align:right;">
-              <button type="button" class="btn-action btn-edit" onclick="abrirEdicao('${idStr}','${(c.nome || '').replace(/'/g, "\\'")}','${c.tipo || 'aluno'}')">Editar</button>
-              <button type="button" class="btn-action btn-delete" onclick="abrirExclusao('${idStr}')">Excluir</button>
+              <button type="button" class="btn-action btn-edit" data-id="${idStr}" data-nome="${nomeEsc}" data-tipo="${tipoEsc}">Editar</button>
+              <button type="button" class="btn-action btn-delete" data-del="${idStr}">Excluir</button>
             </td>
           </tr>`;
         }).join("");
+        tabela.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => abrirEdicao(b.dataset.id, b.dataset.nome, b.dataset.tipo)));
+        tabela.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', () => abrirExclusao(b.dataset.del)));
       } catch (e) {
         console.error("Erro ao listar:", e);
         tabela.innerHTML = `<tr><td colspan="6"><div class="empty-state">Falha ao conectar com o banco de dados.</div></td></tr>`;

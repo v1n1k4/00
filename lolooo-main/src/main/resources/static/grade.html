@@ -86,6 +86,13 @@
             gap: 10px;
         }
     </style>
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLAEX">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 <body>
 
@@ -505,8 +512,8 @@
                             rowHtml += `
                                 <td>
                                     <div class="aula-slot-filled">
-                                        <span class="aula-slot-materia">${nomeMateria}</span>
-                                        ${nomeProf ? `<span class="aula-slot-prof">${nomeProf}</span>` : ''}
+                                        <span class="aula-slot-materia">${window.API.escapeHtml(nomeMateria)}</span>
+                                        ${nomeProf ? `<span class="aula-slot-prof">${window.API.escapeHtml(nomeProf)}</span>` : ''}
                                         <span class="cog-badge ${cog.cls}">${cog.label}</span>
                                     </div>
                                 </td>
@@ -705,8 +712,8 @@
                             <div style="font-family: var(--font-mono); font-size: 0.72rem; color: ${corTag}; font-weight: 700;">
                                 [${r.tipoRegra}] ALVO: ${r.alvo || 'GLOBAL'}${diaTxt} (Máx Seguidas: ${r.maxAulasSeguidas || 2} | Máx/Dia: ${r.maxAulasDiaProfessor || 2})
                             </div>
-                            <div style="font-size: 0.84rem; color: var(--text-pure); margin-top: 3px;">${r.descricao}</div>
-                            ${r.analiseGemini ? `<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; font-style: italic;">${r.analiseGemini}</div>` : ''}
+                            <div style="font-size: 0.84rem; color: var(--text-pure); margin-top: 3px;">${window.API.escapeHtml(r.descricao)}</div>
+                            ${r.analiseGemini ? `<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; font-style: italic;">${window.API.escapeHtml(r.analiseGemini)}</div>` : ''}
                         </div>
                         ${isAdmin ? `<button onclick="removerRegraAprendida(${r.id})" class="btn-ghost" style="padding: 4px 8px; font-size: 0.72rem; color: var(--status-danger);" title="Remover regra">✕</button>` : ''}
                     </div>

@@ -1,3 +1,16 @@
+# =====================================================================
+#Segredos e Variáveis de Ambiente — NUNCA enviar para o GitHub
+# =====================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+*.jks
+*.p12
+local.properties
+
 # Java / Maven
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -11,8 +24,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Node / Android / Capacitor
+node_modules/
+android/app/build/
+android/.gradle/
+android/build/
+*.apk
+*.aab
+
 # Databases & Local Runtime Data
-data/
+/data/
+/lolooo-main/data/
+/backend_python/data/
 *.db
 *.sqlite
 *.sqlite3

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "CLAEX Mobile",
+    "slug": "claex-mobile",
+    "version": "10.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "primaryColor": "#0F172A",
+    "backgroundColor": "#F1F5F9",
+    "androidStatusBar": {
+      "backgroundColor": "#0F172A",
+      "barStyle": "light-content"
+    },
+    "android": {
+      "package": "com.claex.mobile",
+      "versionCode": 10,
+      "adaptiveIcon": {
+        "backgroundColor": "#0F172A"
+      },
+      "permissions": []
+    }
+  }
+}

@@ -25,6 +25,13 @@
             color: #FCA5A5;
         }
     </style>
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLAEX">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 <body>
     <header id="main-header">
@@ -94,7 +101,7 @@
                     </div>
                     <div>
                         <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 6px;">Senha de Acesso</label>
-                        <input type="password" id="senha" placeholder="Crie uma senha segura">
+                        <input type="password" id="senha" placeholder="Mín. 8 caracteres (letras e números)" minlength="8" maxlength="72" autocomplete="new-password">
                     </div>
                     <div>
                         <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 6px;">Tipo de Perfil</label>
