@@ -169,6 +169,14 @@
                 <h2 id="nome_sala" style="color: var(--text-pure); font-size: 2rem;">Carregando Sala...</h2>
                 <div id="sala_detalhes" style="font-size: 0.78rem; color: var(--text-secondary); font-family: var(--font-mono); margin-top: 4px;"></div>
             </div>
+                        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <button type="button" class="btn-ghost" id="btn_export_pdf" onclick="exportarGradePdf()" title="Baixar grade em PDF">
+                    Exportar PDF
+                </button>
+                <button type="button" class="btn-ghost" id="btn_export_excel" onclick="exportarGradeExcel()" title="Baixar grade em Excel (.xlsx)">
+                    Exportar Excel
+                </button>
+            </div>
             <div id="acoes_admin_sala" class="admin-only" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                 <a href="config_sala.html" id="link_alterar_sala" class="btn-ghost">
                     Configurações da Sala
@@ -819,5 +827,9 @@
             });
         })();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+    <script src="js/grade-export.js" defer></script>
 </body>
 </html>

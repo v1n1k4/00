@@ -402,11 +402,7 @@ body {
         white-space: nowrap;
     }
     #main-header .header-actions > span {
-        max-width: 96px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding: 4px 6px !important;
-        font-size: 0.62rem !important;
+        display: none !important; /* evita sobrepor a logo CLAEX no celular quando logado */
     }
 
     /* 3. Container global e seções da Landing Page */
