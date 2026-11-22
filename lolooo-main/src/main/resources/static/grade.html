@@ -258,6 +258,15 @@
                 <button class="btn-neon admin-only" onclick="gerarOuRecalcularGrade()">Gerar Grade com Otimizador Memético NSGA-II</button>
             </div>
 
+            <div class="grade-day-picker" id="grade_day_picker" role="tablist" aria-label="Selecionar dia da semana">
+                <button type="button" class="grade-day-btn is-active" data-day="all">Todos</button>
+                <button type="button" class="grade-day-btn" data-day="1">Seg</button>
+                <button type="button" class="grade-day-btn" data-day="2">Ter</button>
+                <button type="button" class="grade-day-btn" data-day="3">Qua</button>
+                <button type="button" class="grade-day-btn" data-day="4">Qui</button>
+                <button type="button" class="grade-day-btn" data-day="5">Sex</button>
+            </div>
+            <div class="grade-scroll-wrap">
             <table id="tabela_grade" aria-label="Matriz de Horários da Turma">
                 <thead>
                     <tr>
@@ -277,6 +286,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </section>
 
         <!-- PAINEL MULTI-MODELO IA & APRENDIZADO DE REGRAS PEDAGÓGICAS -->
@@ -794,5 +804,20 @@
     <script src="js/motion-ui.js"></script>
     <script src="js/unlumen-effects.js"></script>
     <script src="js/calex-ui.js"></script>
+    <script>
+        (function () {
+            const picker = document.getElementById('grade_day_picker');
+            const table = document.getElementById('tabela_grade');
+            if (!picker || !table) return;
+            picker.addEventListener('click', (e) => {
+                const btn = e.target.closest('.grade-day-btn');
+                if (!btn) return;
+                picker.querySelectorAll('.grade-day-btn').forEach(b => b.classList.remove('is-active'));
+                btn.classList.add('is-active');
+                const day = btn.dataset.day;
+                table.setAttribute('data-day-filter', day);
+            });
+        })();
+    </script>
 </body>
 </html>

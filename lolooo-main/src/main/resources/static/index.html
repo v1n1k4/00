@@ -106,6 +106,18 @@
                         <h3 id="stepTitle">Professores</h3>
                         <p id="stepText">Cada professor informa quando pode dar aula. O motor respeita as janelas de disponibilidade e a carga semanal.</p>
                         <div class="cx-bar" aria-hidden="true"><i id="stepBar" style="width:16%"></i></div>
+                        <div class="cx-step-controls" role="group" aria-label="Selecionar etapa do motor">
+                            <button type="button" class="cx-step-arrow" id="comoPrev" aria-label="Etapa anterior">←</button>
+                            <div class="cx-step-pills" id="comoPills">
+                                <button type="button" class="cx-step-pill is-active" data-i="0">01</button>
+                                <button type="button" class="cx-step-pill" data-i="1">02</button>
+                                <button type="button" class="cx-step-pill" data-i="2">03</button>
+                                <button type="button" class="cx-step-pill" data-i="3">04</button>
+                                <button type="button" class="cx-step-pill" data-i="4">05</button>
+                                <button type="button" class="cx-step-pill" data-i="5">06</button>
+                            </div>
+                            <button type="button" class="cx-step-arrow" id="comoNext" aria-label="Próxima etapa">→</button>
+                        </div>
                     </div>
                     <ol class="cx-steps-list">
 <li><b>01 · Professores</b> Cada professor informa quando pode dar aula. O motor respeita as janelas de disponibilidade e a carga semanal.</li>
@@ -156,12 +168,17 @@
                 <div class="cx-story-head">
                     <span class="cx-eyebrow">03 / Exemplo</span>
                     <h2 id="ex-t">Do caos à grade em 4 passos.</h2>
-                    <ol class="cx-ex-steps" aria-live="polite">
-                        <li data-s="0"><b>01</b> Requisitos entram</li>
-                        <li data-s="1"><b>02</b> Conflitos aparecem</li>
-                        <li data-s="2"><b>03</b> O motor otimiza</li>
-                        <li data-s="3"><b>04</b> Grade pronta</li>
+                    <ol class="cx-ex-steps" aria-live="polite" role="tablist" aria-label="Selecionar passo da grade">
+                        <li data-s="0" role="tab" tabindex="0"><b>01</b> Requisitos entram</li>
+                        <li data-s="1" role="tab" tabindex="0"><b>02</b> Conflitos aparecem</li>
+                        <li data-s="2" role="tab" tabindex="0"><b>03</b> O motor otimiza</li>
+                        <li data-s="3" role="tab" tabindex="0"><b>04</b> Grade pronta</li>
                     </ol>
+                    <div class="cx-ex-nav" role="group" aria-label="Navegar passos da grade">
+                        <button type="button" class="cx-step-arrow" id="exPrev">← Anterior</button>
+                        <span class="cx-ex-nav-label" id="exStepLabel">Passo 1 de 4</span>
+                        <button type="button" class="cx-step-arrow" id="exNext">Próximo →</button>
+                    </div>
                     <div class="cx-ex-meter">
                         <div class="cx-card"><small>Conflitos</small><div class="cx-ex-conf" id="exConf">0</div></div>
                         <div class="cx-card"><small>Qualidade</small><div class="cx-ex-q" id="exQ">0%</div><div class="cx-bar" aria-hidden="true"><i id="exBar" style="width:0%"></i></div></div>

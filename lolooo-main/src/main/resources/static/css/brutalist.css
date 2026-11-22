@@ -282,7 +282,6 @@ header .header-actions span { color: var(--ink) !important; font-family: var(--f
     .cx-stepnum b { font-size: 2rem; } .cx-stepcard h3 { font-size: 1.2rem; }
     .cx-stepcard { padding: 12px; }
     .cx-net-wrap { order: -1; } .cx-net { max-height: 38svh; }
-    .cx-ex-steps { display: none; }
     .cx-ex-meter { margin-bottom: 8px; }
     .cx-ex-conf, .cx-ex-q { font-size: 1.8rem; }
     .cx-team-grid { grid-template-columns: 1fr; }
@@ -685,5 +684,166 @@ body {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         max-width: 100%;
+    }
+}
+
+/* ============================================================================
+   CONTROLES INTERATIVOS DE SELEÇÃO DE ETAPAS (REDE NEURAL, 4 PASSOS & GRADE)
+   ============================================================================ */
+.cx-ex-steps li {
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s, transform 0.12s, box-shadow 0.12s;
+}
+.cx-ex-steps li:hover {
+    opacity: 1;
+    background: var(--yellow);
+}
+.cx-step-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+}
+.cx-step-pills {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+    flex: 1;
+}
+.cx-step-pill,
+.cx-step-arrow {
+    background: var(--white);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 6px 4px;
+    cursor: pointer;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s, color 0.12s;
+}
+.cx-step-arrow {
+    padding: 6px 10px;
+    white-space: nowrap;
+}
+.cx-step-pill.is-active {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 2px 2px 0 var(--ink);
+}
+.cx-step-arrow:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+.cx-ex-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 10px 0 12px;
+}
+.cx-ex-nav-label {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    color: var(--ink);
+}
+
+/* Seletor de dias e scroll suave na página grade.html */
+.grade-day-picker {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.grade-day-btn {
+    background: var(--white);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    padding: 8px 4px;
+    min-height: 38px;
+    cursor: pointer;
+}
+.grade-day-btn.is-active {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 2px 2px 0 var(--ink);
+}
+.grade-scroll-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+}
+#tabela_grade[data-day-filter="1"] th:not(:nth-child(1)):not(:nth-child(2)),
+#tabela_grade[data-day-filter="1"] td:not(:nth-child(1)):not(:nth-child(2)),
+#tabela_grade[data-day-filter="2"] th:not(:nth-child(1)):not(:nth-child(3)),
+#tabela_grade[data-day-filter="2"] td:not(:nth-child(1)):not(:nth-child(3)),
+#tabela_grade[data-day-filter="3"] th:not(:nth-child(1)):not(:nth-child(4)),
+#tabela_grade[data-day-filter="3"] td:not(:nth-child(1)):not(:nth-child(4)),
+#tabela_grade[data-day-filter="4"] th:not(:nth-child(1)):not(:nth-child(5)),
+#tabela_grade[data-day-filter="4"] td:not(:nth-child(1)):not(:nth-child(5)),
+#tabela_grade[data-day-filter="5"] th:not(:nth-child(1)):not(:nth-child(6)),
+#tabela_grade[data-day-filter="5"] td:not(:nth-child(1)):not(:nth-child(6)) {
+    display: none;
+}
+#tabela_grade[data-day-filter="1"] td[colspan="5"],
+#tabela_grade[data-day-filter="2"] td[colspan="5"],
+#tabela_grade[data-day-filter="3"] td[colspan="5"],
+#tabela_grade[data-day-filter="4"] td[colspan="5"],
+#tabela_grade[data-day-filter="5"] td[colspan="5"] {
+    display: table-cell;
+}
+
+/* No celular (<= 900px): desativa a trava de scroll gigante (480vh/400vh) para rolagem fluida e sem cortar linhas */
+@media (max-width: 900px) {
+    .cx-story,
+    .cx-story-ex {
+        height: auto !important;
+        padding: 32px 0 !important;
+    }
+    .cx-story-pin {
+        position: static !important;
+        top: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 0 !important;
+    }
+    .cx-ex-steps {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin: 8px 0 6px !important;
+        font-size: 0.66rem !important;
+    }
+    .cx-ex-steps li {
+        padding: 8px 8px !important;
+        border-width: 2px !important;
+        line-height: 1.2 !important;
+    }
+    .cx-ex-steps li b {
+        margin-right: 4px !important;
+    }
+    .cx-ex .cx-grid, .cx-grid {
+        grid-auto-rows: minmax(44px, auto) !important;
+    }
+    .claex-telemetry-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+    .claex-telemetry-val {
+        font-size: 1.5rem !important;
     }
 }
