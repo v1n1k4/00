@@ -36,7 +36,7 @@
         const customBase = localStorage.getItem('claex_api_base');
         if (customBase) return false;
         const h = location.hostname || '';
-        return h.endsWith('.github.io') || location.protocol === 'file:' || location.protocol === 'capacitor:';
+        return h.endsWith('.github.io') || location.protocol === 'file:' || location.protocol === 'capacitor:' || Boolean(window.Capacitor);
     }
 
     // =========================================================================

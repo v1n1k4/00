@@ -29,6 +29,14 @@ jobs:
           distribution: "temurin"
           java-version: "21"
 
+      - name: Cache de pacotes do Gradle (evita HTTP 429 do Maven Central)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-claex-v1
+
       - name: Aceitar licenças do Android SDK pré-instalado no runner
         run: |
           yes | "${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
@@ -39,11 +47,12 @@ jobs:
           npx cap add android
           npx cap sync android
 
-      - name: Compilar APK com Gradle
+      - name: Compilar APK com Gradle (com espelho Google Maven Central para evitar 429)
         working-directory: android
         run: |
+          sed -i 's|mavenCentral()|maven { url "https://maven-central.storage-download.googleapis.com/maven2/" }; mavenCentral()|g' build.gradle
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon --max-workers=2
           cp app/build/outputs/apk/debug/app-debug.apk ../CLAEX-android-debug.apk
 
       - name: Publicar APK como Artefato no GitHub Actions
