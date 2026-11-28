@@ -8,7 +8,7 @@
  *  - Chamadas de API (/login, /salas, /grade, /form_cadastro-html, /professor):
  *    NUNCA são cacheadas em disco por segurança (dados autenticados não ficam no cache).
  */
-const CACHE_NAME = 'claex-pwa-v15';
+const CACHE_NAME = 'claex-pwa-v16';
 const STATIC_SHELL = [
   './',
   './index.html',
