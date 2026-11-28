@@ -8,7 +8,7 @@
  *  - Chamadas de API (/login, /salas, /grade, /form_cadastro-html, /professor):
  *    NUNCA são cacheadas em disco por segurança (dados autenticados não ficam no cache).
  */
-const CACHE_NAME = 'claex-pwa-v14';
+const CACHE_NAME = 'claex-pwa-v15';
 const STATIC_SHELL = [
   './',
   './index.html',
@@ -30,7 +30,10 @@ const STATIC_SHELL = [
   './js/calex-ui.js',
   './js/calex-story.js',
   './img/icon-192.png',
-  './img/icon-512.png'
+  './img/icon-512.png',
+  './img/vini.jpg',
+  './img/daniel.jpg',
+  './img/samuel.jpg'
 ];
 
 const API_PREFIXES = [

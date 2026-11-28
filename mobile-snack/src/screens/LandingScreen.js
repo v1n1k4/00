@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Animated, Easing } from 'react-native';
 import { C, st } from '../styles/styles';
 import { NEURAL_STEPS, TIMETABLE, TEAM } from '../data/mockData';
 import NeuralNode from '../components/NeuralNode';
@@ -221,7 +221,13 @@ export default function LandingScreen({ go }) {
         {TEAM.map((m) => (
           <View key={m.mono} style={[st.card, { marginTop: 12 }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-              <View style={st.monoAvatar}><Text style={st.monoAvatarTxt}>{m.mono}</Text></View>
+              <View style={[st.monoAvatar, { overflow: 'hidden' }]}>
+                {m.photo ? (
+                  <Image source={{ uri: m.photo }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+                ) : (
+                  <Text style={st.monoAvatarTxt}>{m.mono}</Text>
+                )}
+              </View>
               <View style={{ marginLeft: 12, flex: 1 }}>
                 <View style={st.tagIce}><Text style={st.tagIceTxt}>{m.num}</Text></View>
                 <Text style={st.h3}>{m.name.toUpperCase()}</Text>

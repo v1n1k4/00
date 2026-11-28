@@ -32,9 +32,9 @@ export const TIMETABLE = [
 ];
 
 export const TEAM = [
-  { mono: 'VC', num: '#01', name: 'Vini', role: 'Back-End Java, Arquitetura & IA', desc: 'Criação do back-end em Java + Spring Boot, persistência JPA/MySQL, APIs RESTful, integração com IA e o motor CLAEX.', tags: ['Java 17', 'Spring Boot', 'MySQL', 'IA'] },
-  { mono: 'DSP', num: '#02', name: 'Daniel', role: 'Desenvolvedor Full-Stack', desc: 'Desenvolvimento de interfaces, integração com APIs e apoio na modelagem dos fluxos escolares.', tags: ['Front-End', 'APIs REST', 'Full-Stack'] },
-  { mono: 'SAB', num: '#03', name: 'Samuel', role: 'Desenvolvedor Full-Stack', desc: 'Fluxos de dados escolares ponta a ponta, regras de negócio e experiência do usuário.', tags: ['Spring Data', 'JavaScript', 'UX Flow'] },
+  { mono: 'VC', num: '#01', name: 'Vini', role: 'Back-End Java, Arquitetura & IA', desc: 'Criação do back-end em Java + Spring Boot, persistência JPA/MySQL, APIs RESTful, integração com IA e o motor CLAEX.', tags: ['Java 17', 'Spring Boot', 'MySQL', 'IA'], photo: 'https://media.licdn.com/dms/image/v2/D4D03AQE3d-M5KCrZ7w/profile-displayphoto-scale_200_200/B4DZu6Xd1tJsAY-/0/1768358273500?e=2147483647&v=beta&t=zH5JQG4Bs_e5jcaTZgcfZoSPCH6A9hv0Y8dwCVBVhKM' },
+  { mono: 'DSP', num: '#02', name: 'Daniel', role: 'Desenvolvedor Full-Stack', desc: 'Desenvolvimento de interfaces, integração com APIs e apoio na modelagem dos fluxos escolares.', tags: ['Front-End', 'APIs REST', 'Full-Stack'], photo: 'https://media.licdn.com/dms/image/v2/D4D03AQFvJd5dKxhTJQ/profile-displayphoto-shrink_200_200/B4DZYvrVA6G4AY-/0/1744556613033?e=2147483647&v=beta&t=vcfFsJG-aaz67lDVg82S-_WRuBQFVQYsU5vZ6jkMgZw' },
+  { mono: 'SAB', num: '#03', name: 'Samuel', role: 'Desenvolvedor Full-Stack', desc: 'Fluxos de dados escolares ponta a ponta, regras de negócio e experiência do usuário.', tags: ['Spring Data', 'JavaScript', 'UX Flow'], photo: 'https://media.licdn.com/dms/image/v2/D4D03AQELYFLLYv5zvg/profile-displayphoto-shrink_200_200/B4DZZEmjjmHIAY-/0/1744907680442?e=2147483647&v=beta&t=vQNpdqaQsttS8XcYOIKfv_qqOFew6dLcWXFLRMyB3oA' },
 ];
 
 export const INITIAL_USERS = [
